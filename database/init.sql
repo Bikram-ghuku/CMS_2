@@ -7,6 +7,7 @@ CREATE TABLE users
     pswd     text NOT NULL,
     role     text NOT NULL,
     CONSTRAINT PK_user PRIMARY KEY (user_id)
+    CONSTRAINT chk_role CHECK (role IN ('admin', 'inven_manage', 'worker'))
 );
 
 CREATE TABLE inventory
