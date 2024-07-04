@@ -20,6 +20,7 @@ var (
 	db_pass  string
 	db_name  string
 	db       *sql.DB
+	port     string
 )
 
 func main() {
@@ -38,6 +39,7 @@ func main() {
 		log.Panic(err.Error())
 	}
 
+	port = os.Getenv("PORT")
 	psqlconn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", db_host, db_port, db_uname, db_pass, db_name)
 
 	db, err = sql.Open("postgres", psqlconn)
@@ -50,8 +52,8 @@ func main() {
 		log.Panic(err.Error())
 	}
 
-	log.Println("Listening on port: 8000")
-	if err := http.ListenAndServe("0.0.0.0:8000", http.DefaultServeMux); err != nil {
+	log.Printf("Listening on port: %s", port)
+	if err := http.ListenAndServe(fmt.Sprintf("0.0.0.0:%s", port), http.DefaultServeMux); err != nil {
 		log.Panicln(err.Error())
 	}
 }
