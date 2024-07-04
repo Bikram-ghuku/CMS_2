@@ -8,6 +8,7 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/bikram-ghuku/CMS/backend/controllers"
 	"github.com/joho/godotenv"
 
 	_ "github.com/lib/pq"
@@ -51,6 +52,13 @@ func main() {
 	if err != nil {
 		log.Panic(err.Error())
 	}
+	http.HandleFunc("POST /user/login", func(w http.ResponseWriter, r *http.Request) {
+		controllers.Login(w, r, db)
+	})
+
+	http.HandleFunc("POST /user/register", func(w http.ResponseWriter, r *http.Request) {
+		controllers.Register(w, r, db)
+	})
 
 	log.Printf("Listening on port: %s", port)
 	if err := http.ListenAndServe(fmt.Sprintf("0.0.0.0:%s", port), http.DefaultServeMux); err != nil {
