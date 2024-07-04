@@ -7,7 +7,7 @@ CREATE TABLE users
     user_id  uuid DEFAULT uuid_generate_v4() NOT NULL,
     username text NOT NULL,
     pswd     text NOT NULL,
-    role     user_role NOT NULL,
+    role     user_role DEFAULT 'worker' NOT NULL,
     CONSTRAINT PK_user PRIMARY KEY (user_id)
 );
 
