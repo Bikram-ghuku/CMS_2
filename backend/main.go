@@ -9,6 +9,8 @@ import (
 	"strconv"
 
 	"github.com/joho/godotenv"
+
+	_ "github.com/lib/pq"
 )
 
 var (
@@ -33,19 +35,19 @@ func main() {
 
 	db_port, err = strconv.Atoi(os.Getenv("DB_PORT"))
 	if err != nil {
-		log.Println(err.Error())
+		log.Panic(err.Error())
 	}
 
 	psqlconn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", db_host, db_port, db_uname, db_pass, db_name)
 
 	db, err = sql.Open("postgres", psqlconn)
 	if err != nil {
-		log.Println(err.Error())
+		log.Panic(err.Error())
 	}
 
 	err = db.Ping()
 	if err != nil {
-		log.Println(err.Error())
+		log.Panic(err.Error())
 	}
 
 	log.Println("Listening on port: 8000")
