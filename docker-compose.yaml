@@ -10,6 +10,7 @@ services:
       - PGHOST=${DB_HOST}
     volumes:
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres"]
       interval: 5s
