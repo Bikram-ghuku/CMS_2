@@ -1,13 +1,14 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+CREATE TYPE user_role AS ENUM ('admin', 'inven_manage', 'worker');
+
 CREATE TABLE users
 (
     user_id  uuid DEFAULT uuid_generate_v4() NOT NULL,
     username text NOT NULL,
     pswd     text NOT NULL,
-    role     text NOT NULL,
+    role     user_role NOT NULL,
     CONSTRAINT PK_user PRIMARY KEY (user_id)
-    CONSTRAINT chk_role CHECK (role IN ('admin', 'inven_manage', 'worker'))
 );
 
 CREATE TABLE inventory
