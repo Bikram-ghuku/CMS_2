@@ -83,6 +83,23 @@ func main() {
 		controllers.DeleteProduct(w, r, db)
 	})
 
+	//Complaints Routes
+	http.HandleFunc("POST /comp/add", func(w http.ResponseWriter, r *http.Request) {
+		controllers.AddComplaint(w, r, db)
+	})
+
+	http.HandleFunc("POST /comp/close", func(w http.ResponseWriter, r *http.Request) {
+		controllers.CloseComplaint(w, r, db)
+	})
+
+	http.HandleFunc("GET /comp/all", func(w http.ResponseWriter, r *http.Request) {
+		controllers.GetAllComp(w, r, db)
+	})
+
+	http.HandleFunc("POST /comp/update", func(w http.ResponseWriter, r *http.Request) {
+		controllers.UpdateComp(w, r, db)
+	})
+
 	log.Printf("Listening on port: %s", port)
 	if err := http.ListenAndServe(fmt.Sprintf("0.0.0.0:%s", port), http.DefaultServeMux); err != nil {
 		log.Panicln(err.Error())
