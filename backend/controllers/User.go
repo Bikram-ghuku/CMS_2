@@ -6,9 +6,12 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"time"
 
 	"github.com/bikram-ghuku/CMS/backend/models"
 	"github.com/bikram-ghuku/CMS/backend/services"
+	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -21,9 +24,26 @@ var resStruct struct {
 	Msg string `json:"msg"`
 }
 
+var loginResStruct struct {
+	Msg   string `json:"msg"`
+	Token string `json:"token"`
+}
+
+type LoginJwtFields struct {
+	Uname string `json:"uname"`
+	Role  string `json:"role"`
+}
+
+type LoginJwtClaims struct {
+	LoginJwtFields
+	jwt.RegisteredClaims
+}
+
 func Register(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	if err := json.NewDecoder(req.Body).Decode(&user); err != nil {
 		log.Println(err.Error())
+		http.Error(res, "Bad Request", http.StatusBadRequest)
+		return
 	}
 
 	hashPswd, err := services.HashPassword(user.Pswd)
@@ -50,8 +70,11 @@ func Register(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 }
 
 func Login(res http.ResponseWriter, req *http.Request, db *sql.DB) {
+	jwt_secret := os.Getenv("JWT_SECRET")
 	if err := json.NewDecoder(req.Body).Decode(&user); err != nil {
 		log.Println(err.Error())
+		http.Error(res, "Bad Request", http.StatusBadRequest)
+		return
 	}
 
 	row := db.QueryRow(`SELECT * FROM users WHERE username= $1`, user.Uname)
@@ -68,14 +91,35 @@ func Login(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	err = bcrypt.CompareHashAndPassword([]byte(DB_user.Password), []byte(user.Pswd))
 	if err != nil {
 		log.Println(err.Error())
-		http.Error(res, "Password Wrong", http.StatusUnauthorized)
+		http.Error(res, "Wrong Password", http.StatusUnauthorized)
+		return
+	}
+
+	issueTime := time.Now()
+	expiryTime := issueTime.AddDate(0, 0, 90)
+
+	claims := &LoginJwtClaims{
+		LoginJwtFields: LoginJwtFields{Uname: DB_user.Username, Role: string(DB_user.Role)},
+		RegisteredClaims: jwt.RegisteredClaims{
+			IssuedAt:  jwt.NewNumericDate(issueTime),
+			ExpiresAt: jwt.NewNumericDate(expiryTime),
+		},
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	tokenString, err := token.SignedString([]byte(jwt_secret))
+	if err != nil {
+		fmt.Println("Error Sigining JWT: ", err.Error())
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
 
 	http.Header.Add(res.Header(), "content-type", "application/json")
-	resStruct.Msg = "User Login Success"
+	loginResStruct.Msg = "User Login Success"
+	loginResStruct.Token = tokenString
 
-	if err = json.NewEncoder(res).Encode(&resStruct); err != nil {
+	if err = json.NewEncoder(res).Encode(&loginResStruct); err != nil {
 		log.Println(err.Error())
 		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
 		return
