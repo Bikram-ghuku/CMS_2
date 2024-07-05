@@ -52,12 +52,35 @@ func main() {
 	if err != nil {
 		log.Panic(err.Error())
 	}
+
+	// User Routes
 	http.HandleFunc("POST /user/login", func(w http.ResponseWriter, r *http.Request) {
 		controllers.Login(w, r, db)
 	})
 
 	http.HandleFunc("POST /user/register", func(w http.ResponseWriter, r *http.Request) {
 		controllers.Register(w, r, db)
+	})
+
+	// Inventory Routes
+	http.HandleFunc("POST /inven/addItem", func(w http.ResponseWriter, r *http.Request) {
+		controllers.AddProducts(w, r, db)
+	})
+
+	http.HandleFunc("GET /inven/all", func(w http.ResponseWriter, r *http.Request) {
+		controllers.GetAllProducts(w, r, db)
+	})
+
+	http.HandleFunc("GET /inven/allId", func(w http.ResponseWriter, r *http.Request) {
+		controllers.GetProductByID(w, r, db)
+	})
+
+	http.HandleFunc("POST /inven/invUpdate", func(w http.ResponseWriter, r *http.Request) {
+		controllers.UpdateProduct(w, r, db)
+	})
+
+	http.HandleFunc("POST /inven/delinv", func(w http.ResponseWriter, r *http.Request) {
+		controllers.DeleteProduct(w, r, db)
 	})
 
 	log.Printf("Listening on port: %s", port)
