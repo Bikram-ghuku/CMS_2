@@ -24,11 +24,6 @@ var resStruct struct {
 	Msg string `json:"msg"`
 }
 
-var loginResStruct struct {
-	Msg   string `json:"msg"`
-	Token string `json:"token"`
-}
-
 type LoginJwtFields struct {
 	Uname string `json:"uname"`
 	Role  string `json:"role"`
@@ -115,13 +110,18 @@ func Login(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 		return
 	}
 
-	http.Header.Add(res.Header(), "content-type", "application/json")
-	loginResStruct.Msg = "User Login Success"
-	loginResStruct.Token = tokenString
-
-	if err = json.NewEncoder(res).Encode(&loginResStruct); err != nil {
-		log.Println(err.Error())
-		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
-		return
+	cookie := http.Cookie{
+		Name:     "heimdall",
+		Value:    tokenString,
+		Expires:  expiryTime,
+		HttpOnly: true,
+		Secure:   true,
+		SameSite: http.SameSiteNoneMode,
+		Path:     "/",
 	}
+
+	http.SetCookie(res, &cookie)
+	res.WriteHeader(http.StatusOK)
+	res.Header().Set("Content-Type", "text/plain")
+	res.Write([]byte("Login Successful"))
 }
