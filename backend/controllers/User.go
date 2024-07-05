@@ -24,16 +24,6 @@ var resStruct struct {
 	Msg string `json:"msg"`
 }
 
-type LoginJwtFields struct {
-	Uname string `json:"uname"`
-	Role  string `json:"role"`
-}
-
-type LoginJwtClaims struct {
-	LoginJwtFields
-	jwt.RegisteredClaims
-}
-
 type UserListItem struct {
 	Uname  string `db:"username" json:"uname"`
 	UserId string `db:"user_id" json:"user_id"`
@@ -99,8 +89,8 @@ func Login(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	issueTime := time.Now()
 	expiryTime := issueTime.AddDate(0, 0, 90)
 
-	claims := &LoginJwtClaims{
-		LoginJwtFields: LoginJwtFields{Uname: DB_user.Username, Role: string(DB_user.Role)},
+	claims := &models.LoginJwtClaims{
+		LoginJwtFields: models.LoginJwtFields{Uname: DB_user.Username, Role: string(DB_user.Role)},
 		RegisteredClaims: jwt.RegisteredClaims{
 			IssuedAt:  jwt.NewNumericDate(issueTime),
 			ExpiresAt: jwt.NewNumericDate(expiryTime),
