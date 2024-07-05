@@ -15,7 +15,8 @@ const Login = () => {
     setLoad(true)
     fetch(BACKEND_URL+'/user/login', {
       method: "POST",
-      body: JSON.stringify({"uname": username, "pswd": password})
+      body: JSON.stringify({"uname": username, "pswd": password}),
+      credentials: "include"
     }).then((data) => {
       if(data.ok){
         toast.success("Login successful", {
