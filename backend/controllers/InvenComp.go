@@ -6,10 +6,11 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/bikram-ghuku/CMS/backend/middleware"
 )
 
 var InvenBody struct {
-	UserId  string  `json:"user_id"`
 	CompId  string  `json:"comp_id"`
 	ItemId  string  `json:"item_id"`
 	ItemQty float64 `json:"item_qty"`
@@ -36,7 +37,8 @@ func InvenToComp(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 		return
 	}
 
-	query := fmt.Sprintf("INSERT INTO inven_used(user_id, comp_id, item_id, item_used) VALUES ('%s', '%s', '%s', %f)", InvenBody.UserId, InvenBody.CompId, InvenBody.ItemId, InvenBody.ItemQty)
+	claims := middleware.GetClaims(req)
+	query := fmt.Sprintf("INSERT INTO inven_used(user_id, comp_id, item_id, item_used) VALUES ('%s', '%s', '%s', %f)", claims.Uname, InvenBody.CompId, InvenBody.ItemId, InvenBody.ItemQty)
 
 	_, err := db.Exec(query)
 	if err != nil {

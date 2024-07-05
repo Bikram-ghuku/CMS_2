@@ -75,3 +75,11 @@ func JWTMiddleware(handler http.Handler) http.Handler {
 		handler.ServeHTTP(res, req.WithContext(ctx))
 	})
 }
+
+func GetClaims(r *http.Request) models.LoginJwtClaims {
+	if claims, ok := r.Context().Value(claimsKey).(models.LoginJwtClaims); ok {
+		fmt.Println(claims)
+		return claims
+	}
+	return models.LoginJwtClaims{}
+}
