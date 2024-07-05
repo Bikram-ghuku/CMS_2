@@ -104,6 +104,11 @@ func main() {
 		controllers.UpdateComp(w, r, db)
 	})
 
+	// Inventory Used
+	http.HandleFunc("POST /inven/use", func(w http.ResponseWriter, r *http.Request) {
+		controllers.InvenToComp(w, r, db)
+	})
+
 	log.Printf("Listening on port: %s", port)
 	if err := http.ListenAndServe(fmt.Sprintf("0.0.0.0:%s", port), http.DefaultServeMux); err != nil {
 		log.Panicln(err.Error())
