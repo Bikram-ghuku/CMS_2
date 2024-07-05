@@ -17,11 +17,10 @@ type contextKey string
 
 const claimsKey = contextKey("claims")
 
-var jwt_secret = os.Getenv("JWT_SECRET")
-
 func JWTMiddleware(handler http.Handler) http.Handler {
 	return http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
-		cookie, err := req.Cookie("heimdall")
+		var jwt_secret = os.Getenv("JWT_SECRET")
+		cookie, err := req.Cookie("session-token")
 		if err != nil {
 			http.Error(res, "No JWT session token found.", http.StatusUnauthorized)
 			return
@@ -48,8 +47,8 @@ func JWTMiddleware(handler http.Handler) http.Handler {
 				http.Error(res, "Session Expired", http.StatusUnauthorized)
 				return
 			}
-
-			http.Error(res, err.Error(), http.StatusInternalServerError)
+			log.Println(err.Error())
+			http.Error(res, "Internal Server Error", http.StatusInternalServerError)
 			return
 		}
 
