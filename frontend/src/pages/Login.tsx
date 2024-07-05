@@ -10,7 +10,6 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoad, setLoad] = useState(false);
-
   const handleLogin = () => {
     setLoad(true)
     fetch(BACKEND_URL+'/user/login', {
@@ -22,10 +21,14 @@ const Login = () => {
         toast.success("Login successful", {
           position: "bottom-center"
         })
+        setTimeout(() => {
+          document.location = "./"
+        }, 1000)
       }else{
         toast.error("Login Error", {
           position: "bottom-center"
         })
+        setLoad(false)
       }
     })
   }
@@ -65,7 +68,7 @@ const Login = () => {
           </div>
         </div>
       </div>
-      <ToastContainer />
+      <ToastContainer autoClose={1000}/>
     </>
   );
 };
