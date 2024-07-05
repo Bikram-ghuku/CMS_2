@@ -1,0 +1,97 @@
+$bg-color: #121212;
+$form-bg: #1a1a1a;
+$text-color: #ffffff;
+$accent-color: #4CAF50;
+$border-radius: 8px;
+$danger-color: #dc3545;
+$success-color: #28a745;
+
+.comp-main{
+    background-color: $form-bg;
+    padding: 40px;
+    border-radius: $border-radius;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    height: 600px;
+    width: 1000px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    flex-direction: column;
+    .comp-title{
+        height: 5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        .comp-title-txt{
+            font-size: 2.5rem;
+            font-weight: 900;
+            line-height: 4rem;
+        }
+        .comp-title-desc{
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #94a3b8;
+        }
+    }
+
+    .comp-table-wrap {
+        overflow-y: scroll;
+        height: 500px;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        .comp-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+          
+            th, td {
+                padding: 0.5rem;
+                text-align: center;
+                border-bottom: 1px solid $text-color;
+            }
+            
+            .tb-desc{
+                width: 400px;
+            }
+
+            th {
+                background-color: $form-bg;
+                font-weight: bold;
+                width: 200px;
+            }
+          
+            td {
+                a {
+                    color: $accent-color;
+                    text-decoration: none;
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
+          
+            .tr-open {
+                color: $success-color;
+            }
+          
+            .tr-closed {
+                color: $danger-color;
+            }
+        }
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    @media screen and (max-width: 600px) {
+        width: 280px;
+    }
+}
+
+.sm-hide{
+    @media screen and (max-width: 600px) {
+        display: none;
+    }
+}
