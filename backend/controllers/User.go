@@ -37,6 +37,7 @@ type LoginJwtClaims struct {
 type UserListItem struct {
 	Uname  string `db:"username" json:"uname"`
 	UserId string `db:"user_id" json:"user_id"`
+	Role   string `db:"role" json:"role"`
 }
 
 func Register(res http.ResponseWriter, req *http.Request, db *sql.DB) {
@@ -132,7 +133,7 @@ func Login(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 }
 
 func GetAllUser(res http.ResponseWriter, req *http.Request, db *sql.DB) {
-	query := "SELECT user_id, username FROM users"
+	query := "SELECT user_id, username, role FROM users"
 	rows, err := db.Query(query)
 	if err != nil && err != sql.ErrNoRows {
 		log.Println(err.Error())
@@ -143,7 +144,7 @@ func GetAllUser(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	users := []UserListItem{}
 	for rows.Next() {
 		user := UserListItem{}
-		rows.Scan(&user.UserId, &user.Uname)
+		rows.Scan(&user.UserId, &user.Uname, &user.Role)
 		users = append(users, user)
 	}
 
