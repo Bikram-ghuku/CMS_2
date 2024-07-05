@@ -62,6 +62,10 @@ func main() {
 		controllers.Register(w, r, db)
 	})
 
+	http.HandleFunc("GET /user/all", func(w http.ResponseWriter, r *http.Request) {
+		controllers.GetAllUser(w, r, db)
+	})
+
 	// Inventory Routes
 	http.HandleFunc("POST /inven/addItem", func(w http.ResponseWriter, r *http.Request) {
 		controllers.AddProducts(w, r, db)
