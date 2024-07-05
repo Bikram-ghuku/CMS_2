@@ -111,7 +111,7 @@ func Login(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	}
 
 	cookie := http.Cookie{
-		Name:     "heimdall",
+		Name:     "session-token",
 		Value:    tokenString,
 		Expires:  expiryTime,
 		HttpOnly: true,
