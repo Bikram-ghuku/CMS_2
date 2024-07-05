@@ -1,7 +1,7 @@
   // Login.js
 
   import { useState } from 'react';
-  import './Login.scss';
+  import '../styles/Login.scss'
   import logo from '../assets/IIT_Kharagpur_Logo.png'
 
     const Login = () => {
