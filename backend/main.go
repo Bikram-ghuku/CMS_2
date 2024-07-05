@@ -11,6 +11,7 @@ import (
 	"github.com/bikram-ghuku/CMS/backend/controllers"
 	"github.com/bikram-ghuku/CMS/backend/middleware"
 	"github.com/joho/godotenv"
+	"github.com/rs/cors"
 
 	_ "github.com/lib/pq"
 )
@@ -35,6 +36,7 @@ func main() {
 	db_uname = os.Getenv("DB_UNAME")
 	db_pass = os.Getenv("DB_PSWD")
 	db_name = os.Getenv("DB_NAME")
+	frontend_url := os.Getenv("FRONTEND_URL")
 
 	db_port, err = strconv.Atoi(os.Getenv("DB_PORT"))
 	if err != nil {
@@ -142,8 +144,15 @@ func main() {
 	})
 	http.Handle("POST /inven/use", middleware.JWTMiddleware(invUseHandler))
 	log.Println("Loaded Route: POST /inven/use")
+
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{frontend_url},
+		AllowCredentials: true,
+	})
+
+	handler := c.Handler(http.DefaultServeMux)
 	log.Printf("Listening on port: %s", port)
-	if err := http.ListenAndServe(fmt.Sprintf("0.0.0.0:%s", port), http.DefaultServeMux); err != nil {
+	if err := http.ListenAndServe(fmt.Sprintf("0.0.0.0:%s", port), handler); err != nil {
 		log.Panicln(err.Error())
 	}
 }
