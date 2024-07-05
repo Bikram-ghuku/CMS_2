@@ -6,7 +6,7 @@ CREATE TYPE comp_status AS ENUM ('open', 'closed');
 CREATE TABLE users
 (
     user_id  uuid DEFAULT uuid_generate_v4() NOT NULL,
-    username text NOT NULL,
+    username text NOT NULL UNIQUE,
     pswd     text NOT NULL,
     role     user_role DEFAULT 'worker' NOT NULL,
     CONSTRAINT PK_user PRIMARY KEY (user_id)
