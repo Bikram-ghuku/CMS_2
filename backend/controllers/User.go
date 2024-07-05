@@ -115,7 +115,7 @@ func Login(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 		Name:     "session-token",
 		Value:    tokenString,
 		Expires:  expiryTime,
-		HttpOnly: true,
+		HttpOnly: false,
 		Secure:   true,
 		SameSite: http.SameSiteNoneMode,
 		Path:     "/",
