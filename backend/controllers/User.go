@@ -68,6 +68,11 @@ func Login(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 		return
 	}
 
+	if user.Pswd == "" || user.Uname == "" {
+		http.Error(res, "Username or password cannot be empty", http.StatusBadRequest)
+		return
+	}
+
 	row := db.QueryRow(`SELECT * FROM users WHERE username= $1`, user.Uname)
 
 	DB_user := models.User{}
