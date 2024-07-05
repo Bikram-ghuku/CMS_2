@@ -22,7 +22,7 @@ const Login = () => {
           position: "bottom-center"
         })
         setTimeout(() => {
-          document.location = "./"
+          document.location = "./dashboard"
         }, 1000)
       }else{
         toast.error("Login Error", {
