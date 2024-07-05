@@ -9,6 +9,7 @@ import (
 	"strconv"
 
 	"github.com/bikram-ghuku/CMS/backend/controllers"
+	"github.com/bikram-ghuku/CMS/backend/middleware"
 	"github.com/joho/godotenv"
 
 	_ "github.com/lib/pq"
@@ -58,56 +59,88 @@ func main() {
 		controllers.Login(w, r, db)
 	})
 	log.Println("Loaded Route: POST /user/login")
-	http.HandleFunc("POST /user/register", func(w http.ResponseWriter, r *http.Request) {
+
+	//----
+	registerHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		controllers.Register(w, r, db)
 	})
+	http.Handle("POST /user/register", middleware.JWTMiddleware(registerHandler))
 	log.Println("Loaded Route: POST /user/register")
-	http.HandleFunc("GET /user/all", func(w http.ResponseWriter, r *http.Request) {
+
+	//----
+	allUserHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		controllers.GetAllUser(w, r, db)
 	})
+	http.Handle("GET /user/all", middleware.JWTMiddleware(allUserHandler))
 	log.Println("Loaded Route: GET /user/all")
+
 	// Inventory Routes
-	http.HandleFunc("POST /inven/addItem", func(w http.ResponseWriter, r *http.Request) {
+	addItemHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		controllers.AddProducts(w, r, db)
 	})
+	http.Handle("POST /inven/addItem", middleware.JWTMiddleware(addItemHandler))
 	log.Println("Loaded Route: POST /inven/addItem")
-	http.HandleFunc("GET /inven/all", func(w http.ResponseWriter, r *http.Request) {
+
+	// -----
+	allItemHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		controllers.GetAllProducts(w, r, db)
 	})
+	http.Handle("GET /inven/all", middleware.JWTMiddleware(allItemHandler))
 	log.Println("Loaded Route: GET /inven/all")
-	http.HandleFunc("GET /inven/allId", func(w http.ResponseWriter, r *http.Request) {
+
+	// -----
+	allIdItemHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		controllers.GetProductByID(w, r, db)
 	})
+	http.Handle("GET /inven/allId", middleware.JWTMiddleware(allIdItemHandler))
 	log.Println("Loaded Route: GET /inven/allId")
-	http.HandleFunc("POST /inven/invUpdate", func(w http.ResponseWriter, r *http.Request) {
+
+	//-----
+	updateItemHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		controllers.UpdateProduct(w, r, db)
 	})
+	http.Handle("POST /inven/invUpdate", middleware.JWTMiddleware(updateItemHandler))
 	log.Println("Loaded Route: POST /inven/invUpdate")
-	http.HandleFunc("POST /inven/delinv", func(w http.ResponseWriter, r *http.Request) {
+
+	//-----
+	delItemHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		controllers.DeleteProduct(w, r, db)
 	})
+	http.Handle("POST /inven/delinv", middleware.JWTMiddleware(delItemHandler))
 	log.Println("Loaded Route: POST /inven/delinv")
+
 	//Complaints Routes
-	http.HandleFunc("POST /comp/add", func(w http.ResponseWriter, r *http.Request) {
+	addCompHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		controllers.AddComplaint(w, r, db)
 	})
+	http.Handle("POST /comp/add", middleware.JWTMiddleware(addCompHandler))
 	log.Println("Loaded Route: POST /comp/add")
-	http.HandleFunc("POST /comp/close", func(w http.ResponseWriter, r *http.Request) {
+
+	//-----
+	closeCompHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		controllers.CloseComplaint(w, r, db)
 	})
+	http.Handle("POST /comp/close", middleware.JWTMiddleware(closeCompHandler))
 	log.Println("Loaded Route: POST /comp/close")
-	http.HandleFunc("GET /comp/all", func(w http.ResponseWriter, r *http.Request) {
+
+	//------
+	allCompHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		controllers.GetAllComp(w, r, db)
 	})
+	http.Handle("GET /comp/all", middleware.JWTMiddleware(allCompHandler))
 	log.Println("Loaded Route: GET /comp/all")
-	http.HandleFunc("POST /comp/update", func(w http.ResponseWriter, r *http.Request) {
+
+	//-------
+	updtCompHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		controllers.UpdateComp(w, r, db)
 	})
+	http.Handle("POST /comp/update", middleware.JWTMiddleware(updtCompHandler))
 	log.Println("Loaded Route: POST /comp/update")
 	// Inventory Used
-	http.HandleFunc("POST /inven/use", func(w http.ResponseWriter, r *http.Request) {
+	invUseHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		controllers.InvenToComp(w, r, db)
 	})
+	http.Handle("POST /inven/use", middleware.JWTMiddleware(invUseHandler))
 	log.Println("Loaded Route: POST /inven/use")
 	log.Printf("Listening on port: %s", port)
 	if err := http.ListenAndServe(fmt.Sprintf("0.0.0.0:%s", port), http.DefaultServeMux); err != nil {
