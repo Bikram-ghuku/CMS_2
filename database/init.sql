@@ -1,6 +1,7 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TYPE user_role AS ENUM ('admin', 'inven_manage', 'worker');
+CREATE TYPE comp_status AS ENUM ('open', 'closed');
 
 CREATE TABLE users
 (
@@ -27,7 +28,7 @@ CREATE TABLE complaints
     comp_nos     text NOT NULL,
     comp_loc     text NOT NULL,
     comp_des     text NOT NULL,
-    comp_stat    text NOT NULL,
+    comp_stat    comp_status NOT NULL,
     comp_date    timestamp(6) with time zone NOT NULL,
     fin_datetime timestamp(6) with time zone NOT NULL,
     fin_text     text NOT NULL,
