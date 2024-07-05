@@ -48,14 +48,6 @@ h2 {
     margin-bottom: 20px;
 }
 
-label {
-    color: $text-color;
-    display: block;
-    font-size: 14px;
-    text-align: left;
-    margin-bottom: 8px;
-}
-
 input[type="text"],
 input[type="password"] {
     padding: 15px;
@@ -81,8 +73,28 @@ button {
     font-size: 16px;
     text-transform: uppercase;
     transition: background-color 0.3s ease;
-
     &:hover {
-    background-color: darken($accent-color, 10%);
+        background-color: darken($accent-color, 10%);
+    }
+}
+
+.msg{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+}
+
+.animate-spin{
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
     }
 }
