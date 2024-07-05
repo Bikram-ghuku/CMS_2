@@ -30,8 +30,8 @@ CREATE TABLE complaints
     comp_des     text NOT NULL,
     comp_stat    comp_status NOT NULL,
     comp_date    timestamp(6) with time zone NOT NULL,
-    fin_datetime timestamp(6) with time zone NOT NULL,
-    fin_text     text NOT NULL,
+    fin_datetime timestamp(6) with time zone NULL,
+    fin_text     text NULL,
     CONSTRAINT PK_complaints PRIMARY KEY (comp_id)
 );
 
