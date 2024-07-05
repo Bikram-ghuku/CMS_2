@@ -34,6 +34,11 @@ type LoginJwtClaims struct {
 	jwt.RegisteredClaims
 }
 
+type UserListItem struct {
+	Uname  string `db:"username" json:"uname"`
+	UserId string `db:"user_id" json:"user_id"`
+}
+
 func Register(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	if err := json.NewDecoder(req.Body).Decode(&user); err != nil {
 		log.Println(err.Error())
@@ -124,4 +129,29 @@ func Login(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	res.WriteHeader(http.StatusOK)
 	res.Header().Set("Content-Type", "text/plain")
 	res.Write([]byte("Login Successful"))
+}
+
+func GetAllUser(res http.ResponseWriter, req *http.Request, db *sql.DB) {
+	query := "SELECT user_id, username FROM users"
+	rows, err := db.Query(query)
+	if err != nil && err != sql.ErrNoRows {
+		log.Println(err.Error())
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+	users := []UserListItem{}
+	for rows.Next() {
+		user := UserListItem{}
+		rows.Scan(&user.UserId, &user.Uname)
+		users = append(users, user)
+	}
+
+	res.Header().Add("Content-Type", "application/json")
+	err = json.NewEncoder(res).Encode(users)
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
 }
