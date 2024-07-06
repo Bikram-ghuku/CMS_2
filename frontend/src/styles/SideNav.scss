@@ -1,0 +1,55 @@
+$sidenav-width: 250px;
+$sidenav-bg-color: #282c34;
+$sidenav-text-color: #fff;
+$sidenav-hover-bg-color: #404654;
+
+.sidenav {
+    width: $sidenav-width;
+    background-color: $sidenav-bg-color;
+    color: $sidenav-text-color;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(0);
+
+    &.closed {
+        transform: translateX(-100%);
+    }
+
+    .title{
+        background: none;
+        border: none;
+        color: $sidenav-text-color;
+        font-size: 1.5rem;
+        padding: 1rem;
+    }
+
+    nav {
+        margin-top: 2rem;
+    
+        ul {
+            list-style: none;
+            padding: 0;
+      
+            li {
+                display: flex;
+                align-items: center;
+                padding: 1rem;
+                cursor: pointer;
+                &:hover {
+                    background-color: $sidenav-hover-bg-color;
+                }
+
+                svg {
+                    margin-right: 1rem;
+                }
+
+                span {
+                    display: inline-block;
+                }
+            }
+        }
+    }
+}
