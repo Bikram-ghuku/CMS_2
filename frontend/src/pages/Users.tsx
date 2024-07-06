@@ -6,23 +6,36 @@ import { ToastContainer, toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import "../styles/Users.scss"
 import { Plus } from 'lucide-react';
+import Modal from 'react-modal'
 
 type user = {
     uname:string,
     user_id:string,
     role:string
 }
+
+const roleOptions = [['admin', 'Administrator'], ['worker', 'Worker'], ['inven_manage', 'Inventory Manager']];
+
+
 function Users() {
     const [users, setUsers] = useState<user[]>([])
+    const [filteredUsers, setFilteredUsers] = useState<user[]>([]);
+    const [searchInput, setSearchInput] = useState<string>('');
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [newUsername, setNewUsername] = useState<string>('');
+    const [newPassword, setNewPassword] = useState<string>('');
+    const [newRole, setNewRole] = useState<string>(roleOptions[0][0]);
+
     useEffect(() => {
         fetch(BACKEND_URL+'/user/all', {
             method:"GET",
             credentials:'include'
         }).then((data) => {
             if(data.ok){
-                data.json().then((jsondata:user[]) => [
+                data.json().then((jsondata:user[]) => {
                     setUsers(jsondata)
-                ])
+                    setFilteredUsers(jsondata)
+                })
             }else{
                 toast.error("Loading Error", {
                     position: "bottom-center"
@@ -30,6 +43,46 @@ function Users() {
             }
         })
     }, [])
+
+    const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const inputValue = event.target.value;
+        setSearchInput(inputValue);
+        filterUsers(inputValue);
+    };
+
+    const filterUsers = (searchText: string) => {
+        const filtered = users.filter((user) =>
+            user.uname.toLowerCase().includes(searchText.toLowerCase())
+        );
+        setFilteredUsers(filtered);
+    };
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setNewUsername(event.target.value);
+    };
+
+    const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setNewPassword(event.target.value);
+    };
+
+    const handleRoleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setNewRole(event.target.value);
+    };
+
+    const handleRegister = () => {
+        console.log("Username:", newUsername);
+        console.log("Password:", newPassword);
+        console.log("Role:", newRole);
+    };
+
     return (
         <div>
             <SideNav />
@@ -40,10 +93,12 @@ function Users() {
                     <div className="user-search">
                         <input
                             placeholder='Enter Name to search'
+                            value={searchInput}
+                            onChange={handleSearchInputChange}
                         />
                     </div>
                     <div className="user-add">
-                        <button className='user-add-btn'>
+                        <button className='user-add-btn' onClick={() => openModal()}>
                             <Plus /> New user
                         </button>
                     </div>
@@ -59,7 +114,7 @@ function Users() {
                         </thead>
                         <tbody>
                             {
-                                users.map((item, idx) => {
+                                filteredUsers.map((item, idx) => {
 
                                     return (
                                         <tr key={idx}>
@@ -76,6 +131,36 @@ function Users() {
                     </table>
                 </div>
             </div>
+            <Modal
+                isOpen={isModalOpen}
+                onRequestClose={closeModal}
+                contentLabel="New User Modal"
+                className="modal"
+                overlayClassName="overlay"
+            >
+                <h2>New User Registration</h2>
+                <form>
+                    <label>Username:</label>
+                    <input
+                        type="text"
+                        value={newUsername}
+                        onChange={handleUsernameChange}
+                    />
+                    <label>Password:</label>
+                    <input
+                        type="password"
+                        value={newPassword}
+                        onChange={handlePasswordChange}
+                    />
+                    <label>Role:</label>
+                    <select value={newRole} onChange={handleRoleChange}>
+                        {roleOptions.map((role, index) => (
+                            <option key={index} value={role[0]}>{role[1]}</option>
+                        ))}
+                    </select>
+                    <button type="button" onClick={handleRegister}>Register</button>
+                </form>
+            </Modal>
             <ToastContainer/>
         </div>
     )
