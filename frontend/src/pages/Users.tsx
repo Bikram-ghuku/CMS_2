@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import "../styles/Users.scss"
 import { Plus } from 'lucide-react';
 import Modal from 'react-modal'
+import Footer from '../components/Footer';
 
 type user = {
     uname:string,
@@ -177,6 +178,7 @@ function Users() {
                 </form>
             </Modal>
             <ToastContainer/>
+            <Footer />
         </div>
     )
 }

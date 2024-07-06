@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import "../styles/Complaint.scss"
 import { Plus } from 'lucide-react';
 import Modal from 'react-modal'
+import Footer from '../components/Footer';
 
 type complaint = {
     comp_id:string,
@@ -188,6 +189,7 @@ function Complaint() {
                 </form>
             </Modal>
             <ToastContainer/>
+            <Footer />
         </div>
     )
 }
