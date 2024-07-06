@@ -93,11 +93,11 @@ function Complaint() {
             setNewLoc('')
             setNewDesc('')
             if(data.ok){
-                toast.success("New User added successfully", {
+                toast.success("New Item added successfully", {
                     position: "bottom-center"
                 })
             }else{
-                toast.error("Error adding new user", {
+                toast.error("Error adding new item", {
                     position: "bottom-center"
                 })
             }
@@ -113,7 +113,7 @@ function Complaint() {
                 <div className="user-actions">
                     <div className="user-search">
                         <input
-                            placeholder='Enter Name to search'
+                            placeholder='Enter desc to search'
                             value={searchInput}
                             onChange={handleSearchInputChange}
                         />
@@ -163,7 +163,7 @@ function Complaint() {
             <Modal
                 isOpen={isModalOpen}
                 onRequestClose={closeModal}
-                contentLabel="New User Modal"
+                contentLabel="New Complaint Modal"
                 className="modal"
                 overlayClassName="overlay"
             >
