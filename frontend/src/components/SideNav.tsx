@@ -1,38 +1,57 @@
 import { Home, User, LogOut, Megaphone, Package, PackageOpen } from 'lucide-react';
 import '../styles/SideNav.scss';
+import { Link } from 'react-router-dom';
+import logo from '../assets/IIT_Kharagpur_Logo.png'
+
 
 const SideNav = () => {
 	return (
     	<div className={`sidenav`}>
       		<div className="title">
-        		CIMS
+				<img src={logo} alt="IIT Kharagpur Logo" className="logo" />
+				<div className='title-text'>
+					Complaints & Inventory Management System
+			  </div>
       		</div>
       		<nav>
         		<ul>
-          			<li>
-						<Home />
-						<span>Home</span>
-					</li>
-        			<li>
-						<User />
-						<span>Users</span>
-          			</li>
-					<li>
-						<Megaphone />
-						<span>Complaints</span>
-					</li>
-					<li>
-						<Package />
-						<span>Inventory</span>
-					</li>
-					<li>
-						<PackageOpen />
-						<span>Inventory Used</span>
-					</li>
-          			<li>
-            			<LogOut />
-            			<span>Logout</span>
-          			</li>
+					<Link to="/dashboard">
+						<li>
+							<Home />
+							<span>Home</span>
+						</li>
+					</Link>
+					<Link to="/users">
+        				<li>
+							<User />
+							<span>Users</span>
+						
+          				</li>
+					</Link>
+					<Link to="/complaint">
+						<li>
+							<Megaphone />
+							<span>Complaints</span>
+						</li>
+					</Link>
+					<Link to="/inventory">
+						<li>
+							<Package />
+							<span>Inventory</span>
+						</li>
+					</Link>
+					<Link to="/invenused">
+						<li>
+							<PackageOpen />
+							<span>Inventory Used</span>
+						</li>
+					</Link>
+					<Link to="/login">
+						<li>
+							<LogOut />
+							<span>Logout</span>
+						</li>
+					</Link>
         		</ul>
       		</nav>
     	</div>

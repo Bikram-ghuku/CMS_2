@@ -19,13 +19,23 @@ $sidenav-hover-bg-color: #404654;
     }
 
     .title{
+        height: 15rem;
         background: none;
         border: none;
         color: $sidenav-text-color;
         font-size: 2rem;
-        line-height: 40px;
-        font-weight: 900;
         padding: 10px 10px 0px 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+        .logo{
+            height: 7.5rem;
+        }
+        div{
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
     }
 
     nav {
@@ -34,6 +44,10 @@ $sidenav-hover-bg-color: #404654;
         ul {
             list-style: none;
             padding: 0;
+            a{
+                color: #fff;
+                text-decoration: none;
+            }
       
             li {
                 display: flex;
