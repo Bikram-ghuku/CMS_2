@@ -98,7 +98,7 @@ function Home() {
                     </div>
                     <div className="home-inven-use-table">
                         <table>
-                            <tbody>
+                            <thead>
                                 <tr>
                                     <th>Item Id</th>
                                     <th>Item Name</th>
@@ -107,6 +107,9 @@ function Home() {
                                     <th>Closed Date</th>
                                     <th>Closed Time</th>
                                 </tr>
+                            </thead>
+                            <tbody>
+                                
                             </tbody>
                         </table>
                     </div>
