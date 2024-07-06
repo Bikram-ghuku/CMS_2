@@ -13,20 +13,25 @@ function PieChart({ customProps }: { customProps: Cprop }) {
     const options = {
         responsive: true,
         maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                labels: {
+                    color: 'rgb(255, 255, 255)'
+                }
+            }
+        }
     };
-
-    console.log(customProps)
 
     const [data, _] = useState({
         labels: [
-            'Open',
-            'Closed',
+            'Open Complaints',
+            'Closed Complaints',
         ],
         datasets: [{
             label: 'Available Complaints',
             data: [openComp, closeComp],
             backgroundColor: [
-                'rgb(255, 99, 132)',
+                '#0090df',
                 '#4CAF50',
             ],
             hoverOffset: 4
@@ -34,7 +39,8 @@ function PieChart({ customProps }: { customProps: Cprop }) {
     });
     
     return (
-        <div className="chart-container" style={{width: "100%", height:"100%"}}>
+        <div className="chart-container" style={{width: "100%", height:"70%"}}>
+            <h3 style={{ textAlign: "center" }}>Complaints</h3>
             <Pie
                 data={data}
                 options={options}
