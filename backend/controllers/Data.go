@@ -8,15 +8,17 @@ import (
 )
 
 var resData struct {
-	Inventory  float64 `json:"inven_nos"`
-	Complaints float64 `json:"comp_nos"`
-	Users      float64 `json:"user_nos"`
+	Inventory        float64 `json:"inven_nos"`
+	Complaints_open  float64 `json:"comp_open_nos"`
+	Complaints_close float64 `json:"comp_close_nos"`
+	Users            float64 `json:"user_nos"`
 }
 
 func GetNumData(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	queryUser := "SELECT COUNT(*) FROM users"
 	queryInven := "SELECT COUNT(*) FROM inventory"
-	queryComp := "SELEC COUNT(*) FROM complaints"
+	queryCompOpen := "SELECT COUNT(*) FROM complaints WHERE comp_stat='open'"
+	queryCompClose := "SELECT COUNT(*) FROM complaints WHERE comp_stat='closed'"
 
 	row := db.QueryRow(queryUser)
 	row.Scan(&resData.Users)
@@ -24,8 +26,11 @@ func GetNumData(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	row = db.QueryRow(queryInven)
 	row.Scan(&resData.Inventory)
 
-	row = db.QueryRow(queryComp)
-	row.Scan(&resData.Complaints)
+	row = db.QueryRow(queryCompOpen)
+	row.Scan(&resData.Complaints_open)
+
+	row = db.QueryRow(queryCompClose)
+	row.Scan(&resData.Complaints_close)
 
 	http.Header.Add(res.Header(), "content-type", "application/json")
 
