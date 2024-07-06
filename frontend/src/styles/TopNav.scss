@@ -1,0 +1,19 @@
+$sidenav-width: 300px;
+$sidenav-bg-color: #282c34;
+
+.top-nav{
+    position: absolute;
+    top: 0;
+    left: $sidenav-width - 20px;
+    height: 75px;
+    width: calc(100vw - $sidenav-width);
+    background-color: $sidenav-bg-color;
+    padding-right: 20px;
+    .top-nav-items{
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        gap: 5px;
+    }
+}
