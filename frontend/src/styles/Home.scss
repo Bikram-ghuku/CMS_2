@@ -88,9 +88,9 @@ $item-yellow-border: #da8c10;
             }
         }
 
-        .home-inven-use{
+        .home-stats{
             height: calc(100% - 365px);
-            .home-inven-use-title{
+            .home-stats-title{
                 height: 55px;
                 line-height: 55px;
                 font-size: 1.5rem;
@@ -98,19 +98,12 @@ $item-yellow-border: #da8c10;
                 text-align: center;
             }
 
-            .home-inven-use-table{
+            .home-stats-graphs{
                 height: calc(100% - 55px);
-                overflow-y: scroll;
                 display: flex;
-                justify-content: center;
-                align-items: start;
-                table{
-                    width: 90%;
-                    th, td{
-                        line-height: 2rem;
-                        border-bottom: white 2px solid;
-                        text-align: center;
-                    }
+                flex-direction: row;
+                .home-stats-graph1{
+                    width: 50%;
                 }
             }
         }

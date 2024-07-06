@@ -6,6 +6,7 @@ import { Boxes, Loader2, Megaphone, User, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { BACKEND_URL } from "../constants";
 import { ToastContainer, toast } from 'react-toastify';
+import PieChart from "../components/PieChart";
 
 type claims = {
     uname:string,
@@ -14,18 +15,22 @@ type claims = {
 
 type nums = {
     inven_nos:number,
-    comp_nos:number,
+    comp_open_nos:number,
+    comp_close_nos:number,
     user_nos:number
 }
 function Home() {
     const sessionCookie = getCookie("session-token")
     const claimsJson:claims = jwtDecode(sessionCookie!)
     const [load, setIsLoad] = useState(true)
+    const [chartData, setChartData] = useState({openComp: 0, closeComp: 0})
     const [numData, setNumData] = useState<nums>({
         inven_nos:0,
-        comp_nos:0,
+        comp_open_nos:0,
+        comp_close_nos:0,
         user_nos:0
     })
+
     if(claimsJson.role == "worker"){
         document.location = "./complaints"
     }
@@ -35,10 +40,11 @@ function Home() {
             method:"GET",
             credentials: "include"
         }).then((data) => {
-            setIsLoad(false)
             if(data.ok){
                 data.json().then((data) => {
+                    setIsLoad(false)
                     setNumData(data)
+                    setChartData({openComp: data.comp_open_nos, closeComp: data.comp_close_nos})
                 })
             }else{
                 toast.error("Loading Error", {
@@ -47,6 +53,7 @@ function Home() {
             }
         })
     }, [])
+
     return (
         <div className="home-main">
             <div className="home-side-nav">
@@ -65,7 +72,7 @@ function Home() {
                         <div className="opts-item item-green">
                             <div className="opt-item-left">
                                 <div className="opts-item-title">Complaints</div>
-                                <div className="opts-item-nos">{numData.comp_nos}</div>
+                                <div className="opts-item-nos">{numData.comp_open_nos + numData.comp_close_nos}</div>
                             </div>
                             <div className="opts-item-icon">
                             {load ? <Loader2 className='animate-spin' size={100} /> : <Megaphone size={100} strokeWidth={1}/>}
@@ -92,26 +99,15 @@ function Home() {
                     </div>
                 </div>
                 <hr className="home-hr"/>
-                <div className="home-inven-use">
-                    <div className="home-inven-use-title">
-                        Inventory Used
+                <div className="home-stats">
+                    <div className="home-stats-title">
+                        Statistics
                     </div>
-                    <div className="home-inven-use-table">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Item Id</th>
-                                    <th>Item Name</th>
-                                    <th>Complain Number</th>
-                                    <th>Quantity Used</th>
-                                    <th>Closed Date</th>
-                                    <th>Closed Time</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                            </tbody>
-                        </table>
+                    <div className="home-stats-graphs">
+                        <div className="home-stats-graph1">
+                            {!load && <PieChart customProps={chartData}/>}
+                        </div>
+                        <div className="home-stats-graph2"></div>
                     </div>
                 </div>
                 <div className="home-footer">
