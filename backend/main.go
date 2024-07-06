@@ -152,6 +152,13 @@ func main() {
 	http.Handle("POST /inven/use", middleware.JWTMiddleware(invUseHandler))
 	log.Println("Loaded Route: POST /inven/use")
 
+	// Data Routes
+	numHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		controllers.GetNumData(w, r, db)
+	})
+	http.Handle("GET /stat/num", middleware.JWTMiddleware(numHandler))
+	log.Println("Loaded Route: GET /stat/num")
+
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{frontend_url},
 		AllowCredentials: true,
