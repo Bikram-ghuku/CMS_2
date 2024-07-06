@@ -1,11 +1,9 @@
 import { Home, User, LogOut, Megaphone, Package, PackageOpen } from 'lucide-react';
 import '../styles/SideNav.scss';
-import { useState } from 'react';
 
 const SideNav = () => {
-  	const [isOpen, _] = useState(true);
 	return (
-    	<div className={`sidenav ${isOpen ? 'open' : 'closed'}`}>
+    	<div className={`sidenav`}>
       		<div className="title">
         		CIMS
       		</div>
