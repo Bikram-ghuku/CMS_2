@@ -1,4 +1,4 @@
-$sidenav-width: 250px;
+$sidenav-width: 300px;
 $sidenav-bg-color: #282c34;
 $sidenav-text-color: #fff;
 $sidenav-hover-bg-color: #404654;
@@ -22,8 +22,10 @@ $sidenav-hover-bg-color: #404654;
         background: none;
         border: none;
         color: $sidenav-text-color;
-        font-size: 1.5rem;
-        padding: 1rem;
+        font-size: 2rem;
+        line-height: 40px;
+        font-weight: 900;
+        padding: 10px 10px 0px 20px;
     }
 
     nav {
