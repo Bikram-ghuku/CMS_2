@@ -78,9 +78,24 @@ function Users() {
     };
 
     const handleRegister = () => {
-        console.log("Username:", newUsername);
-        console.log("Password:", newPassword);
-        console.log("Role:", newRole);
+        fetch(BACKEND_URL+"/user/rolereg", {
+            method:"POST",
+            credentials:"include",
+            body:JSON.stringify({uname: newUsername, pswd: newPassword, role: newRole})
+        }).then((data) => {
+            setIsModalOpen(false)
+            setNewPassword('')
+            setNewUsername('')
+            if(data.ok){
+                toast.success("New User added successfully", {
+                    position: "bottom-center"
+                })
+            }else{
+                toast.error("Error adding new user", {
+                    position: "bottom-center"
+                })
+            }
+        })
     };
 
     return (
