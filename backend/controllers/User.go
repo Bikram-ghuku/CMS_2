@@ -179,7 +179,7 @@ func RegisterByRole(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
-	_, err = db.Exec(fmt.Sprintf("INSERT INTO users(username, pswd, role) VALUES('%s', '%s', %s)", userRole.Uname, hashPswd, userRole.Role))
+	_, err = db.Exec(fmt.Sprintf("INSERT INTO users(username, pswd, role) VALUES('%s', '%s', '%s')", userRole.Uname, hashPswd, userRole.Role))
 	if err != nil {
 		log.Println(err.Error())
 		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
