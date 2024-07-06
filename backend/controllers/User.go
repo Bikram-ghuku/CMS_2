@@ -9,6 +9,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/bikram-ghuku/CMS/backend/middleware"
 	"github.com/bikram-ghuku/CMS/backend/models"
 	"github.com/bikram-ghuku/CMS/backend/services"
 	"github.com/golang-jwt/jwt/v5"
@@ -18,6 +19,12 @@ import (
 var user struct {
 	Uname string `json:"uname"`
 	Pswd  string `json:"pswd"`
+}
+
+var userRole struct {
+	Uname string          `json:"uname"`
+	Pswd  string          `json:"pswd"`
+	Role  models.UserRole `json:"role"`
 }
 
 var resStruct struct {
@@ -146,6 +153,43 @@ func GetAllUser(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	res.Header().Add("Content-Type", "application/json")
 	err = json.NewEncoder(res).Encode(users)
 	if err != nil {
+		log.Println(err.Error())
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+}
+
+func RegisterByRole(res http.ResponseWriter, req *http.Request, db *sql.DB) {
+	claims := middleware.GetClaims(req)
+
+	if claims.Role != "admin" {
+		http.Error(res, "User Unauthorised", http.StatusUnauthorized)
+		return
+	}
+
+	if err := json.NewDecoder(req.Body).Decode(&userRole); err != nil {
+		log.Println(err.Error())
+		http.Error(res, "Bad Request", http.StatusBadRequest)
+		return
+	}
+
+	hashPswd, err := services.HashPassword(userRole.Pswd)
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+	_, err = db.Exec(fmt.Sprintf("INSERT INTO users(username, pswd, role) VALUES('%s', '%s', %s)", userRole.Uname, hashPswd, userRole.Role))
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+	http.Header.Add(res.Header(), "content-type", "application/json")
+	resStruct.Msg = "User Register Success"
+
+	if err = json.NewEncoder(res).Encode(&resStruct); err != nil {
 		log.Println(err.Error())
 		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
 		return

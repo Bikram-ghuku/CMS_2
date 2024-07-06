@@ -76,6 +76,13 @@ func main() {
 	http.Handle("GET /user/all", middleware.JWTMiddleware(allUserHandler))
 	log.Println("Loaded Route: GET /user/all")
 
+	// ------
+	regRoleUser := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		controllers.RegisterByRole(w, r, db)
+	})
+	http.Handle("POST /user/rolereg", middleware.JWTMiddleware(regRoleUser))
+	log.Println("Loaded Route: POST /user/rolereg")
+
 	// Inventory Routes
 	addItemHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		controllers.AddProducts(w, r, db)
