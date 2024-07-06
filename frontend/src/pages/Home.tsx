@@ -92,7 +92,25 @@ function Home() {
                     </div>
                 </div>
                 <hr className="home-hr"/>
-                <div className="home-inven-use"></div>
+                <div className="home-inven-use">
+                    <div className="home-inven-use-title">
+                        Inventory Used
+                    </div>
+                    <div className="home-inven-use-table">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th>Item Id</th>
+                                    <th>Item Name</th>
+                                    <th>Complain Number</th>
+                                    <th>Quantity Used</th>
+                                    <th>Closed Date</th>
+                                    <th>Closed Time</th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                 <div className="home-footer">
                         Copyright © Sanitary Section, IIT Kharagpur.
                 </div>
