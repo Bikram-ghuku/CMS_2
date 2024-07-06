@@ -1,0 +1,16 @@
+$sidenav-width: 300px;
+
+.footer {
+    background-color: #282c34;
+    color: #fff;
+    text-align: center;
+    height: 50px;
+    position: fixed;
+    width: calc(100vw - $sidenav-width);
+    bottom: 0;
+    left: $sidenav-width;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
