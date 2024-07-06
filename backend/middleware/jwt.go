@@ -77,9 +77,17 @@ func JWTMiddleware(handler http.Handler) http.Handler {
 }
 
 func GetClaims(r *http.Request) models.LoginJwtClaims {
-	if claims, ok := r.Context().Value(claimsKey).(models.LoginJwtClaims); ok {
-		fmt.Println(claims)
-		return claims
+	claimsJSON, ok := r.Context().Value(claimsKey).([]byte)
+	if !ok {
+		fmt.Println("Error: Claims not found or invalid type in context")
+		return models.LoginJwtClaims{}
 	}
-	return models.LoginJwtClaims{}
+
+	var claims models.LoginJwtClaims
+	err := json.Unmarshal(claimsJSON, &claims)
+	if err != nil {
+		fmt.Printf("Error: Failed to unmarshal claims JSON: %v\n", err)
+		return models.LoginJwtClaims{}
+	}
+	return claims
 }
