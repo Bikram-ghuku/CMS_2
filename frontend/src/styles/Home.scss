@@ -1,7 +1,11 @@
 $sidenav-bg-color: #282c34;
-$item-blue-color: #3498db;
+$item-blue-color: #00c0ef;
+$item-blue-border: #00add7;
 $item-green-color: #2ecc71; 
+$item-green-border: #00a65a;
 $item-yellow-color: #f39c12;
+$item-yellow-border: #da8c10;
+
 .home-main{
     display: flex;
     .home-side-nav{
@@ -26,6 +30,7 @@ $item-yellow-color: #f39c12;
             width: 100%;
             display: flex;
             flex-direction: column;
+            padding-bottom: 20px;
             .opts-title{
                 font-size: 2.5rem;
                 font-weight: 900;
@@ -68,16 +73,33 @@ $item-yellow-color: #f39c12;
 
                 .item-blue{
                     background-color: $item-blue-color;
+                    border-left: $item-blue-border 10px solid;
                 }
 
                 .item-green{
                     background-color: $item-green-color;
+                    border-left: $item-green-border 10px solid;
                 }
 
                 .item-yellow{
                     background-color: $item-yellow-color;
+                    border-left: $item-yellow-border 10px solid;
                 }
             }
+        }
+
+        .home-inven-use{
+            height: calc(100% - 365px);
+        }
+
+
+        .home-footer{
+            height: 50px;
+            background-color: $sidenav-bg-color;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
         }
     }
 }
