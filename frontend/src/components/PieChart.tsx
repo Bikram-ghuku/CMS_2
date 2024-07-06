@@ -34,7 +34,7 @@ function PieChart({ customProps }: { customProps: Cprop }) {
     });
     
     return (
-        <div className="chart-container" style={{width: "100%", height:"300px"}}>
+        <div className="chart-container" style={{width: "100%", height:"100%"}}>
             <Pie
                 data={data}
                 options={options}
