@@ -110,7 +110,7 @@ func UpdateComp(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 		return
 	}
 
-	query := fmt.Sprintf("UPDATE complaints SET comp_loc = '%s', comp_des = '%s', comp_date = '%s' WHERE comp_nos = '%s' AND comp_id = '%s'", UpdtCompBody.CompLoc, UpdtCompBody.CompDes, UpdtCompBody.CompDate.Format(time.RFC3339Nano), UpdtCompBody.CompNos, UpdtCompBody.CompId)
+	query := fmt.Sprintf("UPDATE complaints SET comp_nos = '%s', comp_loc = '%s', comp_des = '%s', comp_date = '%s' WHERE comp_id = '%s'", UpdtCompBody.CompNos, UpdtCompBody.CompLoc, UpdtCompBody.CompDes, UpdtCompBody.CompDate.Format(time.RFC3339Nano), UpdtCompBody.CompId)
 
 	_, err := db.Exec(query)
 	if err != nil {
