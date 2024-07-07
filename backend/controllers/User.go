@@ -221,7 +221,7 @@ func ResetPswd(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
-	_, err = db.Exec(fmt.Sprintf("UPDATE users SET pswd = '%s', username='%s' WHERE user_id = '%s'", UserChngPswd.Pswd, hashPswd, UserChngPswd.UserId))
+	_, err = db.Exec(fmt.Sprintf("UPDATE users SET pswd = '%s', username='%s' WHERE user_id = '%s'", hashPswd, UserChngPswd.Uname, UserChngPswd.UserId))
 	if err != nil {
 		log.Println(err.Error())
 		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
