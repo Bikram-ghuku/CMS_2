@@ -66,6 +66,7 @@ const AddInventoryModal: React.FC<AddInventoryModalProps> = ({
             isOpen={isOpen}
             onRequestClose={onRequestClose}
             contentLabel="New Inventory Modal"
+            ariaHideApp={false}
             className="modal"
             overlayClassName="overlay"
         >

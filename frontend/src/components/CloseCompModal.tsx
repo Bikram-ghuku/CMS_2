@@ -57,6 +57,7 @@ const CloseCompModal: React.FC<AddInventoryModalProps> = ({
             onRequestClose={onRequestClose}
             contentLabel="New Inventory Modal"
             className="modal"
+            ariaHideApp={false}
             overlayClassName="overlay"
         >
             <h2>Close Complaint</h2>
