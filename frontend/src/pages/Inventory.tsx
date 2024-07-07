@@ -118,7 +118,7 @@ function Inventory() {
                                             <td>{'₹'+item.item_price}</td>
                                             <td>{item.item_qty}</td>
                                             <td>
-                                                <div onClick={() => openDetModal(item)}>View Details</div>
+                                                <div onClick={() => openDetModal(item)} className='btn-opt'>View Details</div>
                                             </td>
                                         </tr>
                                     )
