@@ -3,11 +3,11 @@ import SideNav from '../components/SideNav'
 import TopNav from '../components/TopNav'
 import { BACKEND_URL } from '../constants'
 import { ToastContainer, toast } from 'react-toastify';
-import { Link } from 'react-router-dom';
 import "../styles/Users.scss"
 import { Plus } from 'lucide-react';
-import Modal from 'react-modal'
 import Footer from '../components/Footer';
+import NewUserModal from '../components/NewUserModal';
+import ChangePswdModal from '../components/ChangePswdModal';
 
 type user = {
     uname:string,
@@ -15,17 +15,15 @@ type user = {
     role:string
 }
 
-const roleOptions = [['admin', 'Administrator'], ['worker', 'Worker'], ['inven_manage', 'Inventory Manager']];
-
+const empty:user = {uname: "", user_id:"", role:"worker"}
 
 function Users() {
     const [users, setUsers] = useState<user[]>([])
     const [filteredUsers, setFilteredUsers] = useState<user[]>([]);
     const [searchInput, setSearchInput] = useState<string>('');
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const [newUsername, setNewUsername] = useState<string>('');
-    const [newPassword, setNewPassword] = useState<string>('');
-    const [newRole, setNewRole] = useState<string>(roleOptions[0][0]);
+    const [currUser, setCurrUser] = useState<user>(empty)
+    const [isPswdModalOpen, setIsPswdModalOpen] = useState<boolean>(false);
 
     useEffect(() => {
         fetch(BACKEND_URL+'/user/all', {
@@ -66,38 +64,15 @@ function Users() {
         setIsModalOpen(false);
     };
 
-    const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setNewUsername(event.target.value);
+    const openPswdModal = (user:user) => {
+        setCurrUser(user)
+        setIsPswdModalOpen(true);
     };
 
-    const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setNewPassword(event.target.value);
+    const closePswdModal = () => {
+        setIsPswdModalOpen(false);
     };
-
-    const handleRoleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setNewRole(event.target.value);
-    };
-
-    const handleRegister = () => {
-        fetch(BACKEND_URL+"/user/rolereg", {
-            method:"POST",
-            credentials:"include",
-            body:JSON.stringify({uname: newUsername, pswd: newPassword, role: newRole})
-        }).then((data) => {
-            setIsModalOpen(false)
-            setNewPassword('')
-            setNewUsername('')
-            if(data.ok){
-                toast.success("New User added successfully", {
-                    position: "bottom-center"
-                })
-            }else{
-                toast.error("Error adding new user", {
-                    position: "bottom-center"
-                })
-            }
-        })
-    };
+    
 
     return (
         <div>
@@ -137,7 +112,7 @@ function Users() {
                                             <td>{item.uname}</td>
                                             <td>{item.role}</td>
                                             <td>
-                                                <Link to={"./forgot_pswd/"+item.user_id}>Forgot Password</Link>
+                                                <div onClick={() => openPswdModal(item)} className='btn-opt'>Forgot Password</div>
                                             </td>
                                         </tr>
                                     )
@@ -147,36 +122,8 @@ function Users() {
                     </table>
                 </div>
             </div>
-            <Modal
-                isOpen={isModalOpen}
-                onRequestClose={closeModal}
-                contentLabel="New User Modal"
-                className="modal"
-                overlayClassName="overlay"
-            >
-                <h2>New User Registration</h2>
-                <form>
-                    <label>Username:</label>
-                    <input
-                        type="text"
-                        value={newUsername}
-                        onChange={handleUsernameChange}
-                    />
-                    <label>Password:</label>
-                    <input
-                        type="password"
-                        value={newPassword}
-                        onChange={handlePasswordChange}
-                    />
-                    <label>Role:</label>
-                    <select value={newRole} onChange={handleRoleChange}>
-                        {roleOptions.map((role, index) => (
-                            <option key={index} value={role[0]}>{role[1]}</option>
-                        ))}
-                    </select>
-                    <button type="button" onClick={handleRegister}>Register</button>
-                </form>
-            </Modal>
+            <ChangePswdModal isOpen={isPswdModalOpen} onRequestClose={closePswdModal} user={currUser}/>
+            <NewUserModal isOpen={isModalOpen} onRequestClose={closeModal}/>
             <ToastContainer/>
             <Footer />
         </div>
