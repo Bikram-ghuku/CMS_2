@@ -3,11 +3,11 @@ import SideNav from '../components/SideNav'
 import TopNav from '../components/TopNav'
 import { BACKEND_URL } from '../constants'
 import { ToastContainer, toast } from 'react-toastify';
-import { Link } from 'react-router-dom';
 import "../styles/Complaint.scss"
 import { Plus } from 'lucide-react';
-import Modal from 'react-modal'
 import Footer from '../components/Footer';
+import AddCompModal from '../components/AddCompModal';
+import CloseCompModal from '../components/CloseCompModal';
 
 type complaint = {
     comp_id:string,
@@ -18,16 +18,14 @@ type complaint = {
     comp_date:string
 }
 
-
+const empty:complaint = {comp_id: "", comp_nos: "", comp_loc: "", comp_des: "", comp_stat: "", comp_date: ""}
 function Complaint() {
     const [comps, setComps] = useState<complaint[]>([])
     const [filteredComps, setFilteredComps] = useState<complaint[]>([]);
     const [searchInput, setSearchInput] = useState<string>('');
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const [newCompNos, setNewCompNos] = useState<string>('');
-    const [newLoc, setNewLoc] = useState<string>('');
-    const [newDesc, setNewDesc] = useState<string>('');
-
+    const [isCloseModalOpen, setIsCloseModalOpen] = useState<boolean>(false);
+    const [currComp, setCurrComp] = useState<complaint>(empty)
     useEffect(() => {
         fetch(BACKEND_URL+'/comp/all', {
             method:"GET",
@@ -69,42 +67,15 @@ function Complaint() {
         setIsModalOpen(false);
     };
 
-    const handleCompNosChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setNewCompNos(event.target.value);
+    const openCloseModal = (comp: complaint) => {
+        setCurrComp(comp)
+        setIsCloseModalOpen(true);
     };
 
-    const handleLocChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setNewLoc(event.target.value);
+    const closeCloseModal = () => {
+        setIsCloseModalOpen(false);
     };
 
-    const handleDescChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setNewDesc(event.target.value);
-    };
-
-
-    const handleRegister = () => {
-        const dateTime = new Date()
-        console.log(dateTime.toUTCString())
-        fetch(BACKEND_URL+"/comp/add", {
-            method:"POST",
-            credentials:"include",
-            body:JSON.stringify({comp_nos: newCompNos, comp_loc: newLoc, comp_des: newDesc, comp_date: dateTime.toISOString()})
-        }).then((data) => {
-            setIsModalOpen(false)
-            setNewCompNos('')
-            setNewLoc('')
-            setNewDesc('')
-            if(data.ok){
-                toast.success("New Complaint added successfully", {
-                    position: "bottom-center"
-                })
-            }else{
-                toast.error("Error adding new complaint", {
-                    position: "bottom-center"
-                })
-            }
-        })
-    };
 
     return (
         <div>
@@ -152,7 +123,7 @@ function Complaint() {
                                             <td>{dateTime.toLocaleDateString()}</td>
                                             <td>{dateTime.toLocaleTimeString()}</td>
                                             <td>
-                                                <Link to={"./forgot_pswd/"+item.comp_id}>View Details</Link>
+                                                <div onClick={() => openCloseModal(item)}>Close</div>
                                             </td>
                                         </tr>
                                     )
@@ -162,34 +133,8 @@ function Complaint() {
                     </table>
                 </div>
             </div>
-            <Modal
-                isOpen={isModalOpen}
-                onRequestClose={closeModal}
-                contentLabel="New Complaint Modal"
-                className="modal"
-                overlayClassName="overlay"
-            >
-                <h2>New Complaint</h2>
-                <form>
-                    <label>Complaint Number:</label>
-                    <input
-                        type="text"
-                        value={newCompNos}
-                        onChange={handleCompNosChange}
-                        placeholder='Enter complaint Number'
-                    />
-                    <label>Complaint Location:</label>
-                    <input
-                        type="text"
-                        value={newLoc}
-                        onChange={handleLocChange}
-                        placeholder='Enter Complaint Location'
-                    />
-                    <label>Complaint Description:</label>
-                    <textarea value={newDesc} onChange={handleDescChange} placeholder='Enter Complaint Description'></textarea>
-                    <button type="button" onClick={handleRegister}>Add Complaint</button>
-                </form>
-            </Modal>
+            <CloseCompModal isOpen={isCloseModalOpen} onRequestClose={closeCloseModal} comp={currComp}/>
+            <AddCompModal isOpen={isModalOpen} onRequestClose={closeModal}/>
             <ToastContainer/>
             <Footer />
         </div>
