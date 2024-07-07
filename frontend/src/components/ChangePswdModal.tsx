@@ -42,7 +42,7 @@ const ChangePswdModal: React.FC<AddUserModalProps> = ({
         fetch(BACKEND_URL+"/user/chngpswd", {
             method:"POST",
             credentials:"include",
-            body:JSON.stringify({uname: newUsername, pswd: newPassword})
+            body:JSON.stringify({uname: newUsername, user_pswd: newPassword, user_id: user.user_id})
         }).then((data) => {
             onRequestClose()
             setNewPassword('')
