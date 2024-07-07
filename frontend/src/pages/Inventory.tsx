@@ -3,11 +3,11 @@ import SideNav from '../components/SideNav'
 import TopNav from '../components/TopNav'
 import { BACKEND_URL } from '../constants'
 import { ToastContainer, toast } from 'react-toastify';
-import { Link } from 'react-router-dom';
 import "../styles/Inventory.scss"
 import { Plus } from 'lucide-react';
 import Footer from '../components/Footer';
 import AddInventoryModal from '../components/AddInventoryModal';
+import InventoryDetailsModal from '../components/InventoryDetailsModal';
 
 type item = {
     item_name:string,
@@ -17,13 +17,15 @@ type item = {
     item_id:string
 }
 
+const empty:item = {item_name:"", item_desc:"", item_price: 0, item_qty:0, item_id:""}
 
 function Inventory() {
     const [comps, setComps] = useState<item[]>([])
     const [filteredComps, setFilteredComps] = useState<item[]>([]);
     const [searchInput, setSearchInput] = useState<string>('');
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
+    const [isDetModalOpen, setIsDetModalOpen] = useState<boolean>(false)
+    const [detItem, setDetItem] = useState<item>(empty)
 
     useEffect(() => {
         fetch(BACKEND_URL+'/inven/all', {
@@ -64,6 +66,16 @@ function Inventory() {
     const closeModal = () => {
         setIsModalOpen(false);
     };
+
+    const openDetModal = (itemdata: item) => {
+        setDetItem(itemdata);
+        setIsDetModalOpen(true);
+    };
+
+    const closeDetModal = () => {
+        setIsDetModalOpen(false);
+    };
+
 
     return (
         <div>
@@ -106,7 +118,7 @@ function Inventory() {
                                             <td>{'₹'+item.item_price}</td>
                                             <td>{item.item_qty}</td>
                                             <td>
-                                                <Link to={"./forgot_pswd/"+item.item_id}>View Details</Link>
+                                                <div onClick={() => openDetModal(item)}>View Details</div>
                                             </td>
                                         </tr>
                                     )
@@ -117,6 +129,7 @@ function Inventory() {
                 </div>
             </div>
             <AddInventoryModal isOpen={isModalOpen} onRequestClose={closeModal}/>
+            <InventoryDetailsModal isOpen={isDetModalOpen} onRequestClose={closeDetModal} item={detItem}/>
             <ToastContainer/>
             <Footer />
         </div>
