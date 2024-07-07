@@ -21,8 +21,9 @@ type User struct {
 }
 
 type LoginJwtFields struct {
-	Uname string `json:"uname"`
-	Role  string `json:"role"`
+	Uname   string `json:"uname"`
+	Role    string `json:"role"`
+	User_id string `json:"user_id"`
 }
 
 type LoginJwtClaims struct {

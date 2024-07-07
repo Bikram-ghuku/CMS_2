@@ -102,7 +102,7 @@ func Login(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	expiryTime := issueTime.AddDate(0, 0, 90)
 
 	claims := &models.LoginJwtClaims{
-		LoginJwtFields: models.LoginJwtFields{Uname: DB_user.Username, Role: string(DB_user.Role)},
+		LoginJwtFields: models.LoginJwtFields{Uname: DB_user.Username, Role: string(DB_user.Role), User_id: DB_user.UserID.String()},
 		RegisteredClaims: jwt.RegisteredClaims{
 			IssuedAt:  jwt.NewNumericDate(issueTime),
 			ExpiresAt: jwt.NewNumericDate(expiryTime),

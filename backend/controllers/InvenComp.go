@@ -38,7 +38,7 @@ func InvenToComp(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	}
 
 	claims := middleware.GetClaims(req)
-	query := fmt.Sprintf("INSERT INTO inven_used(user_id, comp_id, item_id, item_used) VALUES ('%s', '%s', '%s', %f)", claims.Uname, InvenBody.CompId, InvenBody.ItemId, InvenBody.ItemQty)
+	query := fmt.Sprintf("INSERT INTO inven_used(user_id, comp_id, item_id, item_used) VALUES ('%s', '%s', '%s', %f)", claims.User_id, InvenBody.CompId, InvenBody.ItemId, InvenBody.ItemQty)
 
 	_, err := db.Exec(query)
 	if err != nil {
