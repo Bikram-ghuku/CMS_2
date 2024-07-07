@@ -20,7 +20,8 @@ const AddInventoryModal: React.FC<AddInventoryModalProps> = ({
     const [newDesc, setNewDesc] = useState<string>('');
 
 
-    const handleRegister = () => {
+    const handleRegister = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        event.preventDefault()
         const dateTime = new Date()
         console.log(dateTime.toUTCString())
         fetch(BACKEND_URL+"/inven/addItem", {
