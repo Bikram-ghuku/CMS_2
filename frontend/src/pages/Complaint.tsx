@@ -8,6 +8,7 @@ import { Plus } from 'lucide-react';
 import Footer from '../components/Footer';
 import AddCompModal from '../components/AddCompModal';
 import CloseCompModal from '../components/CloseCompModal';
+import CompDetailsModal from '../components/UpdateCompModal';
 
 type complaint = {
     comp_id:string,
@@ -26,6 +27,8 @@ function Complaint() {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isCloseModalOpen, setIsCloseModalOpen] = useState<boolean>(false);
     const [currComp, setCurrComp] = useState<complaint>(empty)
+    const [isUpdateModalOpen, setIsUpdateModalOpen] = useState<boolean>(false)
+
     useEffect(() => {
         fetch(BACKEND_URL+'/comp/all', {
             method:"GET",
@@ -76,6 +79,15 @@ function Complaint() {
         setIsCloseModalOpen(false);
     };
 
+    const openUpdateModal = (comp: complaint) => {
+        setCurrComp(comp)
+        setIsUpdateModalOpen(true);
+    };
+
+    const closeUpdateModal = () => {
+        setIsUpdateModalOpen(false);
+    };
+
 
     return (
         <div>
@@ -124,6 +136,7 @@ function Complaint() {
                                             <td>{dateTime.toLocaleTimeString()}</td>
                                             <td>
                                                 <div onClick={() => openCloseModal(item)}>Close</div>
+                                                <div onClick={() => openUpdateModal(item)}>Update</div>
                                             </td>
                                         </tr>
                                     )
@@ -135,6 +148,7 @@ function Complaint() {
             </div>
             <CloseCompModal isOpen={isCloseModalOpen} onRequestClose={closeCloseModal} comp={currComp}/>
             <AddCompModal isOpen={isModalOpen} onRequestClose={closeModal}/>
+            <CompDetailsModal isOpen={isUpdateModalOpen} onRequestClose={closeUpdateModal} comp={currComp}/>
             <ToastContainer/>
             <Footer />
         </div>
