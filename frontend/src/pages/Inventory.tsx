@@ -53,8 +53,9 @@ function Inventory() {
     };
 
     const filterComps = (searchText: string) => {
-        const filtered = comps.filter((comp) =>
-            comp.item_desc.toLowerCase().includes(searchText.toLowerCase())
+        const filtered = comps.filter((comp) => 
+            comp.item_desc.toLowerCase().includes(searchText.toLowerCase()) ||
+            comp.item_name.toLowerCase().includes(searchText.toLowerCase())
         );
         setFilteredComps(filtered);
     };
