@@ -131,7 +131,7 @@ const CompDetailsModal: React.FC<InventoryDetailsModalProps> = ({
             className="modal"
             overlayClassName="overlay"
         >
-            <h2>Inventory Details</h2>
+            <h2>Complain Details</h2>
             {comp && (
                 <form>
                 <label>Complaint Number:</label>

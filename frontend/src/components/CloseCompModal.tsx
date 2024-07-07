@@ -59,7 +59,7 @@ const CloseCompModal: React.FC<AddInventoryModalProps> = ({
             className="modal"
             overlayClassName="overlay"
         >
-            <h2>New Complaint</h2>
+            <h2>Close Complaint</h2>
                 <form>
                     <label>Complaint Number:</label>
                     <input
