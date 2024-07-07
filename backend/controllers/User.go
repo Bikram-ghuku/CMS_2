@@ -37,6 +37,12 @@ type UserListItem struct {
 	Role   string `db:"role" json:"role"`
 }
 
+var UserChngPswd struct {
+	Uname  string `db:"username" json:"uname"`
+	UserId string `db:"user_id" json:"user_id"`
+	Pswd   string `db:"pswd" json:"user_pswd"`
+}
+
 func Register(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	if err := json.NewDecoder(req.Body).Decode(&user); err != nil {
 		log.Println(err.Error())
@@ -180,6 +186,42 @@ func RegisterByRole(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 		return
 	}
 	_, err = db.Exec(fmt.Sprintf("INSERT INTO users(username, pswd, role) VALUES('%s', '%s', '%s')", userRole.Uname, hashPswd, userRole.Role))
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+	http.Header.Add(res.Header(), "content-type", "application/json")
+	resStruct.Msg = "User Register Success"
+
+	if err = json.NewEncoder(res).Encode(&resStruct); err != nil {
+		log.Println(err.Error())
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+}
+
+func ResetPswd(res http.ResponseWriter, req *http.Request, db *sql.DB) {
+	claims := middleware.GetClaims(req)
+	if claims.Role != "admin" {
+		http.Error(res, "User Unauthorised", http.StatusUnauthorized)
+		return
+	}
+
+	if err := json.NewDecoder(req.Body).Decode(&UserChngPswd); err != nil {
+		log.Println(err.Error())
+		http.Error(res, "Bad Request", http.StatusBadRequest)
+		return
+	}
+
+	hashPswd, err := services.HashPassword(UserChngPswd.Pswd)
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+	_, err = db.Exec(fmt.Sprintf("UPDATE users SET pswd = '%s', username='%s' WHERE user_id = '%s'", UserChngPswd.Pswd, hashPswd, UserChngPswd.UserId))
 	if err != nil {
 		log.Println(err.Error())
 		http.Error(res, "Internal Server Error", http.StatusInternalServerError)

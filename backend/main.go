@@ -83,6 +83,11 @@ func main() {
 	http.Handle("POST /user/rolereg", middleware.JWTMiddleware(regRoleUser))
 	log.Println("Loaded Route: POST /user/rolereg")
 
+	rstPswdHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		controllers.ResetPswd(w, r, db)
+	})
+	http.Handle("POST /user/chngpswd", middleware.JWTMiddleware(rstPswdHandler))
+	log.Println("Loaded Route: POST /user/chngpswd")
 	// Inventory Routes
 	addItemHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		controllers.AddProducts(w, r, db)
