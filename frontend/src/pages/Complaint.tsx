@@ -135,8 +135,8 @@ function Complaint() {
                                             <td>{dateTime.toLocaleDateString()}</td>
                                             <td>{dateTime.toLocaleTimeString()}</td>
                                             <td>
-                                                <div onClick={() => openCloseModal(item)}>Close</div>
-                                                <div onClick={() => openUpdateModal(item)}>Update</div>
+                                                <div onClick={() => openCloseModal(item)} className='btn-opt'>Close</div>
+                                                <div onClick={() => openUpdateModal(item)} className='btn-opt'>Update</div>
                                             </td>
                                         </tr>
                                     )

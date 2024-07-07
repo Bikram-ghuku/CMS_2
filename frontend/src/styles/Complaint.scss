@@ -7,6 +7,12 @@ $table-border-radius: 8px;
 $table-padding: 1rem;
 $table-font-size: 1rem;
 $table-text-color: #ffffff;
+
+$table-option-bg: #373d48;
+$table-option-hover-bg: #474d58;
+$table-option-text-color: #ffffff;
+$table-option-border-color: #4d5360; 
+
 $modal-bg-color: #212121;
 $modal-text-color: #f1f1f1;
 $modal-border-radius: 8px;
@@ -89,9 +95,17 @@ $modal-padding: 20px;
                     }
                     td {
                         padding: $table-padding;
-                        a{
-                            color: #ffffff;
-                            text-decoration: none;
+                        .btn-opt{
+                            margin-right: 0.25rem;
+                            cursor: pointer;
+                            display: inline;
+                            padding: 0.5rem;
+                            color: $table-option-text-color;
+                            background-color: $table-option-bg;
+                            border: 2px solid $table-option-border-color;
+                            &:hover{
+                                background-color: $table-option-hover-bg;
+                            }
                         }
                     }
                 }
