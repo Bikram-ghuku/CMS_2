@@ -54,7 +54,9 @@ function Complaint() {
 
     const filterComps = (searchText: string) => {
         const filtered = comps.filter((comp) =>
-            comp.comp_des.toLowerCase().includes(searchText.toLowerCase())
+            comp.comp_des.toLowerCase().includes(searchText.toLowerCase()) ||
+            comp.comp_loc.toLowerCase().includes(searchText.toLowerCase()) ||
+            comp.comp_nos.toLowerCase().includes(searchText.toLowerCase())
         );
         setFilteredComps(filtered);
     };
@@ -93,11 +95,11 @@ function Complaint() {
             setNewLoc('')
             setNewDesc('')
             if(data.ok){
-                toast.success("New Item added successfully", {
+                toast.success("New Complaint added successfully", {
                     position: "bottom-center"
                 })
             }else{
-                toast.error("Error adding new item", {
+                toast.error("Error adding new complaint", {
                     position: "bottom-center"
                 })
             }
@@ -113,7 +115,7 @@ function Complaint() {
                 <div className="user-actions">
                     <div className="user-search">
                         <input
-                            placeholder='Enter desc to search'
+                            placeholder='Enter text to search'
                             value={searchInput}
                             onChange={handleSearchInputChange}
                         />
