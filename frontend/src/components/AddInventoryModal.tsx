@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import Modal from 'react-modal';
 import { toast } from 'react-toastify';
 import { BACKEND_URL } from '../constants'
+import "../styles/AddInventoryModal.scss"
 
 
 interface AddInventoryModalProps {
