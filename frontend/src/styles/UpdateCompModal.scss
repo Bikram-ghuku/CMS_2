@@ -1,0 +1,12 @@
+.item-add{
+    display: flex;
+    .item-add-item{
+        flex: 1;
+        select{
+            margin-top: 0.5rem;
+        }
+        input{
+            margin-top: 0.5rem;
+        } 
+    }
+}

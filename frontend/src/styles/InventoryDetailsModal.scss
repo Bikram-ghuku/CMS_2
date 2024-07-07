@@ -74,6 +74,12 @@ $modal-padding: 20px;
                 background-color: #e82222;
             }
         }
+        .btn-add{
+            background-color: #2ecc71;
+            &:hover {
+                background-color: #00a65a;
+            }
+        }
     }
 }
 
