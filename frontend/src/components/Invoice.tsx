@@ -1,6 +1,7 @@
 import React from 'react';
 import "../styles/Invoice.scss";
 import logo from '../assets/logo.png'
+import { sampleData } from '../pages/InvoicePage';
 
 type InvenUsed = {
     id: string;
@@ -24,6 +25,7 @@ type InvenUsed = {
 type InvoiceProps = {
     selectedItems: InvenUsed[];
 };
+
 
 const Invoice = React.forwardRef<HTMLDivElement, InvoiceProps>(({ selectedItems }, ref) => {
     const calculateTotal = () => {
@@ -49,8 +51,8 @@ const Invoice = React.forwardRef<HTMLDivElement, InvoiceProps>(({ selectedItems 
                     </tr>
                 </thead>
                 <tbody>
-                    {selectedItems.map((item) => (
-                        <tr key={item.id}>
+                    {sampleData.map((item, idx) => (
+                        <tr key={idx}>
                             <td>{item.item_name}</td>
                             <td>{item.item_desc}</td>
                             <td>{item.item_used}</td>
