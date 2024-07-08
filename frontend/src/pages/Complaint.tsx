@@ -9,6 +9,17 @@ import Footer from '../components/Footer';
 import AddCompModal from '../components/AddCompModal';
 import CloseCompModal from '../components/CloseCompModal';
 import CompDetailsModal from '../components/UpdateCompModal';
+import CloseCompInfo from '../components/CloseCompInfo';
+
+interface FinDatetime {
+    Time: string;
+    Valid: boolean;
+}
+
+interface FinText {
+    String: string;
+    Valid: boolean;
+}
 
 type complaint = {
     comp_id:string,
@@ -16,10 +27,12 @@ type complaint = {
     comp_loc:string,
     comp_des:string,
     comp_stat:string,
-    comp_date:string
+    comp_date:string,
+    fin_datetime: FinDatetime,
+    fin_text: FinText
 }
 
-const empty:complaint = {comp_id: "", comp_nos: "", comp_loc: "", comp_des: "", comp_stat: "", comp_date: ""}
+const empty:complaint = {comp_id: "", comp_nos: "", comp_loc: "", comp_des: "", comp_stat: "", comp_date: "", fin_datetime : {Time: "", Valid: false}, fin_text:{String:"", Valid:false}}
 function Complaint() {
     const [comps, setComps] = useState<complaint[]>([])
     const [filteredComps, setFilteredComps] = useState<complaint[]>([]);
@@ -28,6 +41,7 @@ function Complaint() {
     const [isCloseModalOpen, setIsCloseModalOpen] = useState<boolean>(false);
     const [currComp, setCurrComp] = useState<complaint>(empty)
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState<boolean>(false)
+    const [isClInfoModalOpen, setClInfoModalOpen] = useState<boolean>(false);
 
     useEffect(() => {
         fetch(BACKEND_URL+'/comp/all', {
@@ -88,6 +102,15 @@ function Complaint() {
         setIsUpdateModalOpen(false);
     };
 
+    const openClInfoModal = (comp: complaint) => {
+        setCurrComp(comp)
+        setClInfoModalOpen(true);
+    };
+
+    const closeClInfoModal = () => {
+        setClInfoModalOpen(false);
+    };
+
 
     return (
         <div>
@@ -136,7 +159,7 @@ function Complaint() {
                                             <td>{dateTime.toLocaleTimeString()}</td>
                                             <td>
                                                 <div onClick={() => openUpdateModal(item)} className='btn-opt'>Update</div>
-                                                {item.comp_stat === "open" && <div onClick={() => openCloseModal(item)} className='btn-opt'>Close</div>}
+                                                {item.comp_stat === "open" ? <div onClick={() => openCloseModal(item)} className='btn-opt'>Close</div> : <div onClick={() => openClInfoModal(item)} className='btn-opt'>Info</div>}
                                             </td>
                                         </tr>
                                     )
@@ -146,6 +169,7 @@ function Complaint() {
                     </table>
                 </div>
             </div>
+            <CloseCompInfo isOpen={isClInfoModalOpen} onRequestClose={closeClInfoModal} comp={currComp} />
             <CloseCompModal isOpen={isCloseModalOpen} onRequestClose={closeCloseModal} comp={currComp}/>
             <AddCompModal isOpen={isModalOpen} onRequestClose={closeModal}/>
             <CompDetailsModal isOpen={isUpdateModalOpen} onRequestClose={closeUpdateModal} comp={currComp}/>
