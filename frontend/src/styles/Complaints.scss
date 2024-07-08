@@ -6,6 +6,17 @@ $border-radius: 8px;
 $danger-color: #dc3545;
 $success-color: #28a745;
 
+$table-option-bg: #373d48;
+$table-option-hover-bg: #474d58;
+$table-option-text-color: #ffffff;
+$table-option-border-color: #4d5360; 
+
+#root{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
 .comp-main{
     background-color: $form-bg;
     padding: 40px;
@@ -93,5 +104,40 @@ $success-color: #28a745;
 .sm-hide{
     @media screen and (max-width: 600px) {
         display: none;
+    }
+}
+
+.btn-opt {
+    display: flex;
+    justify-content: space-around;
+    gap: 5px;
+
+    div {
+        cursor: pointer;
+        padding: 3px 6px;
+        border-radius: $border-radius;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+            background-color: darken($table-option-bg, 10%);
+        }
+    }
+
+    div:first-child {
+        background-color: $table-option-bg;
+        color: $table-option-text-color;
+
+        &:hover {
+            background-color: darken($table-option-bg, 15%);
+        }
+    }
+
+    div:last-child {
+        background-color: $danger-color;
+        color: $text-color;
+
+        &:hover {
+            background-color: darken($danger-color, 10%);
+        }
     }
 }

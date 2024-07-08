@@ -1,18 +1,39 @@
 import { useEffect, useState } from 'react'
 import '../styles/Complaints.scss'
 import { BACKEND_URL } from '../constants';
+import CloseCompModal from '../components/CloseCompModal';
+import CompDetailsModal from '../components/UpdateCompModal';
+
+interface FinDatetime {
+    Time: string;
+    Valid: boolean;
+}
+
+interface FinText {
+    String: string;
+    Valid: boolean;
+}
 
 type complaint = {
-    comp_id: string,
+    comp_id:string,
     comp_nos:string,
     comp_loc:string,
+    comp_des:string,
     comp_stat:string,
     comp_date:string,
-    comp_des:string
+    fin_datetime: FinDatetime,
+    fin_text: FinText
 }
+
+const empty:complaint = {comp_id: "", comp_nos: "", comp_loc: "", comp_des: "", comp_stat: "", comp_date: "", fin_datetime : {Time: "", Valid: false}, fin_text:{String:"", Valid:false}}
+
 function Complaints() {
     const [complaints, setComplaints] = useState<complaint[]>([])
     const [isLoad, setLoad] = useState(false);
+    const [isUpdateModalOpen, setIsUpdateModalOpen] = useState<boolean>(false);
+    const [isCloseModalOpen, setIsCloseModalOpen] = useState<boolean>(false);
+    const [currComp, setCurrComp] = useState<complaint>(empty)
+
     useEffect(() => {
         setLoad(true)
         fetch(BACKEND_URL+"/comp/all", {
@@ -25,6 +46,25 @@ function Complaints() {
             }
         })
     }, [])
+
+    const openUpdateModal = (comp: complaint) => {
+        setCurrComp(comp)
+        setIsUpdateModalOpen(true);
+    };
+
+    const closeUpdateModal = () => {
+        setIsUpdateModalOpen(false);
+    };
+
+    const openCloseModal = (comp: complaint) => {
+        setCurrComp(comp)
+        setIsCloseModalOpen(true);
+    };
+
+    const closeCloseModal = () => {
+        setIsCloseModalOpen(false);
+    };
+
     return (
         <div className='comp-main'>
             <div className="comp-title">
@@ -54,7 +94,10 @@ function Complaints() {
                                         <td className='sm-hide'>{time.toLocaleDateString()}</td>
                                         <td className='sm-hide'>{time.toLocaleTimeString()}</td>
                                         <td className='sm-hide tb-desc'>{item.comp_des}</td>
-                                        <td><a href={"./compActions/"+item.comp_id}>View</a></td>
+                                        <td className='btn-opt'>
+                                            <div onClick={() => openUpdateModal(item)}>View</div>
+                                            <div onClick={() => openCloseModal(item)}>Close</div>
+                                        </td>
                                     </tr>
                                 )
                             })
@@ -62,6 +105,8 @@ function Complaints() {
                     </tbody>
                 </table>
             </div>
+            <CloseCompModal isOpen={isCloseModalOpen} onRequestClose={closeCloseModal} comp={currComp} />
+            <CompDetailsModal isOpen={isUpdateModalOpen} onRequestClose={closeUpdateModal} comp={currComp}/>
         </div>
     )
 }
