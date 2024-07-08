@@ -1,55 +1,55 @@
 .invoice-main {
-    background-color: #ffffff; /* Background color */
-    color: #333333; /* Text color */
-    border-radius: 10px; /* Border radius for smooth edges */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    padding: 20px; /* Padding inside the container */
-    max-width: 800px; /* Maximum width for the invoice container */
-    margin: 20px auto; /* Center the container with auto margin */
+    background-color: #ffffff; 
+    color: #333333;
+    border-radius: 10px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 800px;
+    margin: 20px auto; 
   
     h2 {
-      font-size: 1.5rem; /* Font size for the main heading */
-      text-align: center; /* Center-align the heading */
-      margin-bottom: 20px; /* Space below the heading */
-      color: #333333;
+        font-size: 1.5rem;
+        text-align: center; 
+        margin-bottom: 20px;
+        color: #333333;
     }
   
     table {
-      width: 100%; /* Full width table */
-      border-collapse: collapse; /* Remove spacing between table cells */
-      margin-bottom: 20px; /* Space below the table */
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
   
-      thead {
-        background-color: #f5f5f5; /* Light grey background for the header */
-        tr {
-          th {
-            font-weight: bold; /* Bold font for headers */
-            padding: 10px; /* Padding inside header cells */
-            text-align: left; /* Align text to the left */
-            border-bottom: 2px solid #dddddd; /* Bottom border for header cells */
-          }
+        thead {
+            background-color: #f5f5f5;
+            tr {
+                th {
+                    font-weight: bold;
+                    padding: 10px;
+                    text-align: left;
+                    border-bottom: 2px solid #dddddd;
+                }
+            }
         }
-      }
   
-      tbody {
-        tr {
-          &:nth-child(even) {
-            background-color: #fafafa; /* Alternating row colors */
-          }
-  
-          td {
-            padding: 10px; /* Padding inside table cells */
-            border-bottom: 1px solid #eeeeee; /* Bottom border for table cells */
-            vertical-align: top; /* Align text to the top */
-          }
+        tbody {
+            tr {
+                &:nth-child(even) {
+                    background-color: #fafafa;
+                }
+    
+                td {
+                    padding: 10px;
+                    border-bottom: 1px solid #eeeeee;
+                    vertical-align: top;
+                }
+            }
         }
-      }
     }
   
     h3 {
-      text-align: right; /* Align the total amount to the right */
-      margin-top: 20px; /* Space above the total amount */
-      font-size: 1.2rem; /* Font size for the total amount */
+        text-align: right;
+        margin-top: 20px;
+        font-size: 1.2rem;
     }
-  }
+}
   
