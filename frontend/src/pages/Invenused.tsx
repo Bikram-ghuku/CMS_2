@@ -88,6 +88,17 @@ function Invenused() {
         content: () => componentRef.current,
     });
 
+    const handleAllSel = () => {
+        if (selectedItemsId.length === filteredComps.length) {
+            setSelectedItemsId([]);
+            setSelectedItem([]);
+        } else {
+            const allIds = filteredComps.map(item => item.id);
+            setSelectedItemsId(allIds);
+            setSelectedItem(filteredComps);
+        }
+    }
+
     return (
         <div>
             <SideNav />
@@ -107,7 +118,12 @@ function Invenused() {
                     <table>
                         <thead>
                             <tr>
-                                <th>Select</th>
+                                <th>
+                                    <input 
+                                        type='checkbox'
+                                        onChange={() => handleAllSel()}
+                                    />
+                                </th>
                                 <th>Item Name</th>
                                 <th>Item Description</th>
                                 <th>Quantity Used</th>
