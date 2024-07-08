@@ -42,8 +42,10 @@ function Invenused() {
         }).then((data) => {
             if(data.ok){
                 data.json().then((dataJson:InvenUsed[]) => {
-                    setComps(dataJson)
-                    setFilteredComps(dataJson)
+                    if(dataJson != null){
+                        setComps(dataJson)
+                        setFilteredComps(dataJson)
+                    }
                 })
             }
         })
