@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Footer from '../components/Footer'
 import SideNav from '../components/SideNav'
 import TopNav from '../components/TopNav'
 import "../styles/Invenused.scss"
 import { BACKEND_URL } from '../constants'
-
+import Invoice from '../components/Invoice'
+import { useReactToPrint } from 'react-to-print';
 
 type InvenUsed = {
     id: string;
@@ -31,7 +32,8 @@ function Invenused() {
     const [searchInput, setSearchInput] = useState<string>('');
     const [isGenBillVisible, setGenBillVisible] = useState<boolean>(false)
     const [selectedItemsId, setSelectedItemsId] = useState<string[]>([]);
-    const [selectedItem, setSelectedItem] = useState<InvenUsed[]>([])
+    const [selectedItem, setSelectedItem] = useState<InvenUsed[]>([]);
+    const componentRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         fetch(BACKEND_URL+"/inven/useall", {
@@ -82,6 +84,10 @@ function Invenused() {
         });
     };
 
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+    });
+
     return (
         <div>
             <SideNav />
@@ -108,7 +114,7 @@ function Invenused() {
                                 <th>Complaint Number</th>
                                 <th>Complaint Location</th>
                                 <th>Used By</th>
-                                <th>Action</th>
+                                <th>Price Total</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -129,7 +135,7 @@ function Invenused() {
                                             <td>{item.comp_nos}</td>
                                             <td>{item.comp_loc}</td>
                                             <td>{item.username}</td>
-                                            <td>{item.item_qty}</td>
+                                            <td>{'₹'+item.item_used * item.item_price}</td>
                                         </tr>
                                     )
                                 })
@@ -139,7 +145,10 @@ function Invenused() {
                 </div>
 
                 <div className="user-genbill" hidden={!isGenBillVisible}>
-                    <button hidden={!isGenBillVisible}>Generate Bill</button>
+                    <button hidden={!isGenBillVisible} onClick={handlePrint}>Generate Bill</button>
+                </div>
+                <div style={{ display: 'none' }}>
+                    <Invoice ref={componentRef} selectedItems={selectedItem} />
                 </div>
             </div>
             <Footer />
