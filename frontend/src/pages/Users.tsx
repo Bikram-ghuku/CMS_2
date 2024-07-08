@@ -112,7 +112,7 @@ function Users() {
                                             <td>{item.uname}</td>
                                             <td>{item.role}</td>
                                             <td>
-                                                <div onClick={() => openPswdModal(item)} className='btn-opt'>Forgot Password</div>
+                                                <div onClick={() => openPswdModal(item)} className='btn-opt'>Change Password</div>
                                             </td>
                                         </tr>
                                     )
