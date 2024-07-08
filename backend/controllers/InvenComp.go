@@ -85,8 +85,10 @@ func InvenToComp(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 func GetInvUsed(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	claims := middleware.GetClaims(req)
 	if claims.Role != "admin" {
-		http.Error(res, "User Unauthorised", http.StatusUnauthorized)
+		http.Error(res, "User Unauthorized", http.StatusUnauthorized)
+		return
 	}
+
 	query := `
     SELECT 
         iu.id,
@@ -117,7 +119,8 @@ func GetInvUsed(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 
 	rows, err := db.Query(query)
 	if err != nil {
-		http.Error(res, err.Error(), http.StatusInternalServerError)
+		log.Println("Error executing query:", err)
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
 	defer rows.Close()
@@ -145,7 +148,8 @@ func GetInvUsed(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 			&invenUsed.CompDate,
 		)
 		if err != nil {
-			http.Error(res, err.Error(), http.StatusInternalServerError)
+			log.Println("Error scanning rows:", err)
+			http.Error(res, "Internal Server Error", http.StatusInternalServerError)
 			return
 		}
 		invenUsedList = append(invenUsedList, invenUsed)
@@ -153,6 +157,8 @@ func GetInvUsed(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 
 	res.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(res).Encode(invenUsedList); err != nil {
-		http.Error(res, err.Error(), http.StatusInternalServerError)
+		log.Println("Error encoding JSON:", err)
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		return
 	}
 }
