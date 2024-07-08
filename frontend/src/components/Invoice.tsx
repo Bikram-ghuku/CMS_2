@@ -1,5 +1,6 @@
 import React from 'react';
-import "../styles/Invoice.scss"
+import "../styles/Invoice.scss";
+import logo from '../assets/logo.png'
 
 type InvenUsed = {
     id: string;
@@ -31,6 +32,10 @@ const Invoice = React.forwardRef<HTMLDivElement, InvoiceProps>(({ selectedItems 
 
     return (
         <div ref={ref} className='invoice-main'>
+            <div className="invoice-header">
+                <img src={logo} alt="Logo" className="invoice-logo" />
+                <h1>Sanitary Section, IIT Kharagpur</h1>
+            </div>
             <h2>Invoice</h2>
             <table>
                 <thead>
@@ -38,6 +43,7 @@ const Invoice = React.forwardRef<HTMLDivElement, InvoiceProps>(({ selectedItems 
                         <th>Item Name</th>
                         <th>Item Description</th>
                         <th>Quantity Used</th>
+                        <th>Complaint Number</th>
                         <th>Price per Item</th>
                         <th>Total Price</th>
                     </tr>
@@ -48,6 +54,7 @@ const Invoice = React.forwardRef<HTMLDivElement, InvoiceProps>(({ selectedItems 
                             <td>{item.item_name}</td>
                             <td>{item.item_desc}</td>
                             <td>{item.item_used}</td>
+                            <td>{item.comp_loc}</td>
                             <td>{'₹' + item.item_price}</td>
                             <td>{'₹' + item.item_used * item.item_price}</td>
                         </tr>
