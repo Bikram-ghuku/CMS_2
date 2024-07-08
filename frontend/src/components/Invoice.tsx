@@ -1,6 +1,6 @@
 import React from 'react';
-import "../styles/Invoice.scss";
-import logo from '../assets/logo.png'
+import '../styles/Invoice.scss';
+import logo from '../assets/logo.png';
 
 type InvenUsed = {
     id: string;
@@ -25,14 +25,13 @@ type InvoiceProps = {
     selectedItems: InvenUsed[];
 };
 
-
 const Invoice = React.forwardRef<HTMLDivElement, InvoiceProps>(({ selectedItems }, ref) => {
     const calculateTotal = () => {
         return selectedItems.reduce((acc, item) => acc + item.item_used * item.item_price, 0);
     };
 
     return (
-        <div ref={ref} className='invoice-main'>
+        <div ref={ref} className="invoice-main">
             <div className="invoice-header">
                 <img src={logo} alt="Logo" className="invoice-logo" />
                 <h1>Sanitary Section, IIT Kharagpur</h1>
@@ -44,7 +43,7 @@ const Invoice = React.forwardRef<HTMLDivElement, InvoiceProps>(({ selectedItems 
                         <th>Item Name</th>
                         <th>Item Description</th>
                         <th>Quantity Used</th>
-                        <th>Complaint Number</th>
+                        <th>Complaint Location</th>
                         <th>Price per Item</th>
                         <th>Total Price</th>
                     </tr>
@@ -56,13 +55,13 @@ const Invoice = React.forwardRef<HTMLDivElement, InvoiceProps>(({ selectedItems 
                             <td>{item.item_desc}</td>
                             <td>{item.item_used}</td>
                             <td>{item.comp_loc}</td>
-                            <td>{'₹' + item.item_price}</td>
-                            <td>{'₹' + item.item_used * item.item_price}</td>
+                            <td>{`₹${item.item_price.toFixed(2)}`}</td>
+                            <td>{`₹${(item.item_used * item.item_price).toFixed(2)}`}</td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-            <h3>Total: {'₹' + calculateTotal()}</h3>
+            <h3>Total: {`₹${calculateTotal().toFixed(2)}`}</h3>
         </div>
     );
 });

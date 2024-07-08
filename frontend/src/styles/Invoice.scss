@@ -1,7 +1,6 @@
 body{
     display: block;
-    height: 100vh;
-    margin: 0;
+    height: fit-content;
 }
 
 .invoice-main {
@@ -14,6 +13,13 @@ body{
     margin: 20px auto; 
     display: flex;
     flex-direction: column;
+    justify-content: center; 
+
+    @media print {
+        .invoice-main {
+            page-break-inside: avoid;
+        }
+    }
     
     .invoice-header {
         height: 50px;
@@ -62,6 +68,7 @@ body{
   
         tbody {
             tr {
+                page-break-inside: avoid;
                 &:nth-child(even) {
                     background-color: #fafafa;
                 }
