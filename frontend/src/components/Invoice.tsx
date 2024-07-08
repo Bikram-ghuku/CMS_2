@@ -1,4 +1,5 @@
-import { forwardRef } from 'react';
+import React from 'react';
+import "../styles/Invoice.scss"
 
 type InvenUsed = {
     id: string;
@@ -23,35 +24,39 @@ type InvoiceProps = {
     selectedItems: InvenUsed[];
 };
 
-const Invoice = forwardRef<HTMLDivElement, InvoiceProps>(({ selectedItems }, ref) => (
-    <div ref={ref}>
-        <h1>Invoice</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>Item Name</th>
-                    <th>Item Description</th>
-                    <th>Quantity Used</th>
-                    <th>Item Price</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                {selectedItems.map((item) => (
-                    <tr key={item.id}>
-                        <td>{item.item_name}</td>
-                        <td>{item.item_desc}</td>
-                        <td>{item.item_used}</td>
-                        <td>{item.item_price}</td>
-                        <td>{item.item_used * item.item_price}</td>
+const Invoice = React.forwardRef<HTMLDivElement, InvoiceProps>(({ selectedItems }, ref) => {
+    const calculateTotal = () => {
+        return selectedItems.reduce((acc, item) => acc + item.item_used * item.item_price, 0);
+    };
+
+    return (
+        <div ref={ref} className='invoice-main'>
+            <h2>Invoice</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Item Description</th>
+                        <th>Quantity Used</th>
+                        <th>Price per Item</th>
+                        <th>Total Price</th>
                     </tr>
-                ))}
-            </tbody>
-        </table>
-        <h2>
-            Total: {selectedItems.reduce((total, item) => total + item.item_used * item.item_price, 0)}
-        </h2>
-    </div>
-));
+                </thead>
+                <tbody>
+                    {selectedItems.map((item) => (
+                        <tr key={item.id}>
+                            <td>{item.item_name}</td>
+                            <td>{item.item_desc}</td>
+                            <td>{item.item_used}</td>
+                            <td>{'₹' + item.item_price}</td>
+                            <td>{'₹' + item.item_used * item.item_price}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            <h3>Total: {'₹' + calculateTotal()}</h3>
+        </div>
+    );
+});
 
 export default Invoice;
