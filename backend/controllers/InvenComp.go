@@ -21,24 +21,22 @@ var CurrQty struct {
 }
 
 type InvenUsed struct {
-	ID          string  `json:"id"`
-	ItemUsed    float64 `json:"item_used"`
-	UserID      string  `json:"user_id"`
-	Username    string  `json:"username"`
-	Role        string  `json:"role"`
-	ItemID      string  `json:"item_id"`
-	ItemName    string  `json:"item_name"`
-	ItemQty     float64 `json:"item_qty"`
-	ItemPrice   float64 `json:"item_price"`
-	ItemDesc    string  `json:"item_desc"`
-	CompID      string  `json:"comp_id"`
-	CompNos     string  `json:"comp_nos"`
-	CompLoc     string  `json:"comp_loc"`
-	CompDes     string  `json:"comp_des"`
-	CompStat    string  `json:"comp_stat"`
-	CompDate    string  `json:"comp_date"`
-	FinDatetime string  `json:"fin_datetime"`
-	FinText     string  `json:"fin_text"`
+	ID        string  `json:"id"`
+	ItemUsed  float64 `json:"item_used"`
+	UserID    string  `json:"user_id"`
+	Username  string  `json:"username"`
+	Role      string  `json:"role"`
+	ItemID    string  `json:"item_id"`
+	ItemName  string  `json:"item_name"`
+	ItemQty   float64 `json:"item_qty"`
+	ItemPrice float64 `json:"item_price"`
+	ItemDesc  string  `json:"item_desc"`
+	CompID    string  `json:"comp_id"`
+	CompNos   string  `json:"comp_nos"`
+	CompLoc   string  `json:"comp_loc"`
+	CompDes   string  `json:"comp_des"`
+	CompStat  string  `json:"comp_stat"`
+	CompDate  string  `json:"comp_date"`
 }
 
 func InvenToComp(res http.ResponseWriter, req *http.Request, db *sql.DB) {
@@ -106,9 +104,7 @@ func GetInvUsed(res http.ResponseWriter, req *http.Request, db *sql.DB) {
         c.comp_loc,
         c.comp_des,
         c.comp_stat,
-        c.comp_date,
-        c.fin_datetime,
-        c.fin_text
+        c.comp_date
     FROM 
         inven_used iu
     JOIN 
@@ -147,8 +143,6 @@ func GetInvUsed(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 			&invenUsed.CompDes,
 			&invenUsed.CompStat,
 			&invenUsed.CompDate,
-			&invenUsed.FinDatetime,
-			&invenUsed.FinText,
 		)
 		if err != nil {
 			http.Error(res, err.Error(), http.StatusInternalServerError)
