@@ -29,6 +29,9 @@ function Invenused() {
     const [comps, setComps] = useState<InvenUsed[]>([])
     const [filteredComps, setFilteredComps] = useState<InvenUsed[]>([]);
     const [searchInput, setSearchInput] = useState<string>('');
+    const [isGenBillVisible, setGenBillVisible] = useState<boolean>(false)
+    const [selectedItemsId, setSelectedItemsId] = useState<string[]>([]);
+    const [selectedItem, setSelectedItem] = useState<InvenUsed[]>([])
 
     useEffect(() => {
         fetch(BACKEND_URL+"/inven/useall", {
@@ -44,6 +47,10 @@ function Invenused() {
         })
     }, [])
 
+    useEffect(() => {
+        setGenBillVisible(selectedItemsId.length != 0)
+    }, [selectedItemsId])
+
     const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = event.target.value;
         setSearchInput(inputValue);
@@ -56,6 +63,23 @@ function Invenused() {
             comp.item_name.toLowerCase().includes(searchText.toLowerCase())
         );
         setFilteredComps(filtered);
+    };
+
+    const handleCheckboxChange = (itemId: string) => {
+        setSelectedItemsId((prevSelected) =>
+            prevSelected.includes(itemId)
+                ? prevSelected.filter((id) => id !== itemId)
+                : [...prevSelected, itemId]
+        );
+
+        setSelectedItem((prev) => {
+            if (prev.some(item => item.id === itemId)) {
+                return prev.filter(item => item.id !== itemId);
+            } else {
+                const newItem: InvenUsed = comps.find(item => item.id === itemId)!;
+                return [...prev, newItem];
+            }
+        });
     };
 
     return (
@@ -77,6 +101,7 @@ function Invenused() {
                     <table>
                         <thead>
                             <tr>
+                                <th>Select</th>
                                 <th>Item Name</th>
                                 <th>Item Description</th>
                                 <th>Quantity Used</th>
@@ -91,6 +116,13 @@ function Invenused() {
                                 filteredComps.map((item, idx) => {
                                     return (
                                         <tr key={idx}>
+                                             <td>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedItemsId.includes(item.id)}
+                                                    onChange={() => handleCheckboxChange(item.id)}
+                                                />
+                                            </td>
                                             <td>{item.item_name}</td>
                                             <td>{item.item_desc}</td>
                                             <td>{item.item_used}</td>
@@ -104,6 +136,10 @@ function Invenused() {
                             }
                         </tbody>
                     </table>
+                </div>
+
+                <div className="user-genbill" hidden={!isGenBillVisible}>
+                    <button hidden={!isGenBillVisible}>Generate Bill</button>
                 </div>
             </div>
             <Footer />

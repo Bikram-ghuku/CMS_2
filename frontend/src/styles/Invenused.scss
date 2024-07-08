@@ -54,11 +54,12 @@ $table-text-color: #ffffff;
     }
 
     .user-table{
-        height: calc(100vh - 235px);
+        height: calc(100vh - 340px);
         width: 100%;
         display: flex;
         justify-content: center;
         align-items: start;
+        overflow-y: scroll;
         table {
             width: 90%;
             border-collapse: separate;
@@ -94,6 +95,15 @@ $table-text-color: #ffffff;
                 }
             }
         }
+    }
+
+    .user-genbill{
+        padding-right: 25px;
+        height: 50px;
+        width: calc(100% - 25px);
+        display: flex;
+        justify-content: end;
+        align-items: center;
     }
 }
 
