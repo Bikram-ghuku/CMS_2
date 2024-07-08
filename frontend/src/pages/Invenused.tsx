@@ -93,7 +93,7 @@ function Invenused() {
                                         <tr key={idx}>
                                             <td>{item.item_name}</td>
                                             <td>{item.item_desc}</td>
-                                            <td>{item.item_qty}</td>
+                                            <td>{item.item_used}</td>
                                             <td>{item.comp_nos}</td>
                                             <td>{item.comp_loc}</td>
                                             <td>{item.username}</td>
