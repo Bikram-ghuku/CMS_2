@@ -38,8 +38,6 @@ services:
       cims-internal:
         aliases:
           - cims-backend
-    ports:
-      - ${PORT}:${PORT}
 
   cims-frontend:
     build: ./frontend
@@ -49,7 +47,7 @@ services:
         aliases:
           - cims-frontend
     ports:
-      - 80:80
+      - 4173:80
 
 networks:
   cims-internal:
