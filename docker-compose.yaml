@@ -16,5 +16,28 @@ services:
       interval: 5s
       timeout: 3s
       retries: 20
-    ports:
-      - ${DB_PORT}:${DB_PORT}
+    networks:
+      cims-internal:
+        aliases:
+          - cims-database
+
+  backend:
+    image: bikramghuku05/cims-backend:latest
+    build: ./backend
+    restart: unless-stopped
+    environment:
+      - DB_UNAME=${DB_UNAME}
+      - DB_PSWD=${DB_PSWD}
+      - DB_NAME=${DB_NAME}
+      - DB_HOST=cims-database
+      - DB_PORT=${DB_PORT}
+      - PORT=${PORT}
+      - JWT_SECRET=${JWT_SECRET}
+      - FRONTEND_URL=${FRONTEND_URL}
+    networks:
+      cims-internal:
+        aliases:
+          - cims-backend
+
+networks:
+  cims-internal:
