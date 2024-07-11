@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import SideNav from '../components/SideNav'
 import TopNav from '../components/TopNav'
 import { BACKEND_URL } from '../constants'
@@ -10,6 +10,8 @@ import AddCompModal from '../components/AddCompModal';
 import CloseCompModal from '../components/CloseCompModal';
 import CompDetailsModal from '../components/UpdateCompModal';
 import CloseCompInfo from '../components/CloseCompInfo';
+import InvoiceComp from '../components/InvoiceComp';
+import { useReactToPrint } from 'react-to-print';
 
 interface FinDatetime {
     Time: string;
@@ -42,6 +44,9 @@ function Complaint() {
     const [currComp, setCurrComp] = useState<complaint>(empty)
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState<boolean>(false)
     const [isClInfoModalOpen, setClInfoModalOpen] = useState<boolean>(false);
+    const componentRef = useRef<HTMLDivElement>(null);
+    const [isGenBillVisible, setGenBillVisible] = useState<boolean>(false)
+    const [selectedItemId, setSelectedItemId] = useState<string>('');
 
     useEffect(() => {
         fetch(BACKEND_URL+'/comp/all', {
@@ -60,6 +65,10 @@ function Complaint() {
             }
         })
     }, [])
+
+    useEffect(() => {
+        setGenBillVisible(selectedItemId !== "")
+    }, [selectedItemId])
 
     const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = event.target.value;
@@ -111,7 +120,14 @@ function Complaint() {
         setClInfoModalOpen(false);
     };
 
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+    });
 
+    const handleSel = (id: string) => {
+        if(selectedItemId === id) setSelectedItemId('')
+        else setSelectedItemId(id)
+    }
     return (
         <div>
             <SideNav />
@@ -136,6 +152,7 @@ function Complaint() {
                     <table>
                         <thead>
                             <tr>
+                                <th>Select</th>
                                 <th>Number</th>
                                 <th>Location</th>
                                 <th>Description</th>
@@ -151,6 +168,7 @@ function Complaint() {
                                     const dateTime = new Date(item.comp_date);
                                     return (
                                         <tr key={idx}>
+                                            <td><input type='checkbox' onChange={() => handleSel(item.comp_id)} checked={selectedItemId === item.comp_id}/></td>
                                             <td>{item.comp_nos}</td>
                                             <td>{item.comp_loc}</td>
                                             <td>{item.comp_des}</td>
@@ -167,6 +185,12 @@ function Complaint() {
                             }
                         </tbody>
                     </table>
+                </div>
+                <div className="user-genbill" hidden={!isGenBillVisible}>
+                    <button hidden={!isGenBillVisible} onClick={handlePrint}>Generate Bill</button>
+                </div>
+                <div style={{ display: 'none' }}>
+                    <InvoiceComp ref={componentRef} CompId={selectedItemId}/>
                 </div>
             </div>
             <CloseCompInfo isOpen={isClInfoModalOpen} onRequestClose={closeClInfoModal} comp={currComp} />
