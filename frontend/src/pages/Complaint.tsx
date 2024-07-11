@@ -46,7 +46,7 @@ function Complaint() {
     const [isClInfoModalOpen, setClInfoModalOpen] = useState<boolean>(false);
     const componentRef = useRef<HTMLDivElement>(null);
     const [isGenBillVisible, setGenBillVisible] = useState<boolean>(false)
-    const [selectedItemId, setSelectedItemId] = useState<string>('');
+    const [selectedItem, setSelectedItem] = useState<complaint>(empty);
 
     useEffect(() => {
         fetch(BACKEND_URL+'/comp/all', {
@@ -67,8 +67,8 @@ function Complaint() {
     }, [])
 
     useEffect(() => {
-        setGenBillVisible(selectedItemId !== "")
-    }, [selectedItemId])
+        setGenBillVisible(selectedItem.comp_id !== "")
+    }, [selectedItem])
 
     const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = event.target.value;
@@ -124,9 +124,9 @@ function Complaint() {
         content: () => componentRef.current,
     });
 
-    const handleSel = (id: string) => {
-        if(selectedItemId === id) setSelectedItemId('')
-        else setSelectedItemId(id)
+    const handleSel = (comp: complaint) => {
+        if(selectedItem.comp_id === comp.comp_id) setSelectedItem(empty)
+        else setSelectedItem(comp)
     }
     return (
         <div>
@@ -168,7 +168,7 @@ function Complaint() {
                                     const dateTime = new Date(item.comp_date);
                                     return (
                                         <tr key={idx}>
-                                            <td><input type='checkbox' onChange={() => handleSel(item.comp_id)} checked={selectedItemId === item.comp_id}/></td>
+                                            <td><input type='checkbox' onChange={() => handleSel(item)} checked={selectedItem.comp_id === item.comp_id}/></td>
                                             <td>{item.comp_nos}</td>
                                             <td>{item.comp_loc}</td>
                                             <td>{item.comp_des}</td>
@@ -190,7 +190,7 @@ function Complaint() {
                     <button hidden={!isGenBillVisible} onClick={handlePrint}>Generate Bill</button>
                 </div>
                 <div style={{ display: 'none' }}>
-                    <InvoiceComp ref={componentRef} CompId={selectedItemId}/>
+                    <InvoiceComp ref={componentRef} CompId={selectedItem.comp_id} compDesc={selectedItem.comp_des}/>
                 </div>
             </div>
             <CloseCompInfo isOpen={isClInfoModalOpen} onRequestClose={closeClInfoModal} comp={currComp} />

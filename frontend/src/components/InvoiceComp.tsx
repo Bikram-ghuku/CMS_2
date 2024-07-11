@@ -26,13 +26,13 @@ type InvenUsed = {
 };
 
 type InvoiceProps = {
-    CompId: string
+    CompId: string,
+    compDesc: string
 };
 
-const InvoiceComp = React.forwardRef<HTMLDivElement, InvoiceProps>(({ CompId }, ref) => {
+const InvoiceComp = React.forwardRef<HTMLDivElement, InvoiceProps>(({ CompId, compDesc}, ref) => {
 
     const [selectedItems, setSelectedItems] = useState<InvenUsed[]>([])
-    const [compDesc, setCompDesc] = useState<string>('')
     useEffect(() => {
         fetch(BACKEND_URL+'/inven/usecomp', {
             method:"POST",
@@ -40,13 +40,12 @@ const InvoiceComp = React.forwardRef<HTMLDivElement, InvoiceProps>(({ CompId }, 
             body: JSON.stringify({comp_id:CompId})
         }).then((data) => {
             if(data.ok){
-                data.json().then((datajson) => {
-                    setSelectedItems(datajson.items);
-                    setCompDesc(datajson.desc);
+                data.json().then((datajson:InvenUsed[]) => {
+                    setSelectedItems(datajson);
                 })
             }
         })
-    }, [])
+    }, [CompId])
 
     const calculateTotal = () => {
         return selectedItems.reduce((acc, item) => acc + item.item_used * item.item_price, 0);
