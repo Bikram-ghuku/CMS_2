@@ -18,7 +18,7 @@ const AddInventoryModal: React.FC<AddInventoryModalProps> = ({
     const [newPrice, setNewPrice] = useState<number>(0);
     const [newQty, setNewQTy] = useState<number>(0);
     const [newDesc, setNewDesc] = useState<string>('');
-
+    const [newUnit, setNewUnit] = useState<string>('');
 
     const handleRegister = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.preventDefault()
@@ -27,7 +27,7 @@ const AddInventoryModal: React.FC<AddInventoryModalProps> = ({
         fetch(BACKEND_URL+"/inven/addItem", {
             method:"POST",
             credentials:"include",
-            body:JSON.stringify({item_name: newItemName, item_qty: newQty, item_price: newPrice, item_desc: newDesc})
+            body:JSON.stringify({item_name: newItemName, item_qty: newQty, item_price: newPrice, item_desc: newDesc, item_unit: newUnit})
         }).then((data) => {
             setNewItemName('')
             setNewPrice(0)
@@ -61,6 +61,11 @@ const AddInventoryModal: React.FC<AddInventoryModalProps> = ({
     const handleDescChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setNewDesc(event.target.value);
     };
+
+    const handleItemUnitChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setNewUnit(event.target.value)
+    }
+
     return (
         <Modal
             isOpen={isOpen}
@@ -72,13 +77,26 @@ const AddInventoryModal: React.FC<AddInventoryModalProps> = ({
         >
             <h2>New Inventory</h2>
             <form>
-                <label>Item Name:</label>
-                <input
-                    type="text"
-                    value={newItemName}
-                    onChange={handleItemNameChange}
-                    placeholder='Enter Item name'
-                />
+                <div className="input-sm-line">
+                    <div className="input-grp">
+                        <label>Item Name:</label>
+                        <input
+                            type="text"
+                            value={newItemName}
+                            onChange={handleItemNameChange}
+                            placeholder='Enter Item name'
+                        />
+                    </div>
+                    <div className="input-grp">
+                        <label>Item Unit:</label>
+                        <input
+                            type="text"
+                            value={newUnit}
+                            onChange={handleItemUnitChange}
+                            placeholder='Enter Item Unit'
+                        />
+                    </div>
+                </div>
                 <div className="input-sm-line">
                     <div className="input-grp">
                         <label>Item Quantity:</label>

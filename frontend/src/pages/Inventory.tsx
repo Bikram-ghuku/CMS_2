@@ -14,10 +14,11 @@ type item = {
     item_desc:string,
     item_qty:number,
     item_price:number,
-    item_id:string
+    item_id:string,
+    item_unit:string
 }
 
-const empty:item = {item_name:"", item_desc:"", item_price: 0, item_qty:0, item_id:""}
+const empty:item = {item_name:"", item_desc:"", item_price: 0, item_qty:0, item_id:"", item_unit:""}
 
 function Inventory() {
     const [comps, setComps] = useState<item[]>([])
@@ -103,6 +104,7 @@ function Inventory() {
                             <tr>
                                 <th>Name</th>
                                 <th>Description</th>
+                                <th>Unit</th>
                                 <th>Cost</th>
                                 <th>Quantity</th>
                                 <th>Action</th>
@@ -115,6 +117,7 @@ function Inventory() {
                                         <tr key={idx}>
                                             <td>{item.item_name}</td>
                                             <td>{item.item_desc}</td>
+                                            <td>{item.item_unit}</td>
                                             <td>{'₹'+item.item_price}</td>
                                             <td>{item.item_qty}</td>
                                             <td>
