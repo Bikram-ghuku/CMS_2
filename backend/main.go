@@ -162,6 +162,12 @@ func main() {
 	})
 	http.Handle("GET /inven/useall", middleware.JWTMiddleware(getInvUseHandler))
 	log.Println("Loaded Route: GET /inven/useall")
+
+	invCompHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		controllers.GetInvUsedCompId(w, r, db)
+	})
+	http.Handle("POST /inven/usecomp", middleware.JWTMiddleware(invCompHandler))
+	log.Println("Loaded Route: POST /inven/usecomp")
 	// Data Routes
 	numHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		controllers.GetNumData(w, r, db)

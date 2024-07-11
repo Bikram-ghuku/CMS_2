@@ -20,6 +20,10 @@ var CurrQty struct {
 	Qty float64 `db:"item_qty"`
 }
 
+var CompIdBody struct {
+	CompId string `json:"comp_id"`
+}
+
 type InvenUsed struct {
 	ID        string  `json:"id"`
 	ItemUsed  float64 `json:"item_used"`
@@ -118,6 +122,97 @@ func GetInvUsed(res http.ResponseWriter, req *http.Request, db *sql.DB) {
     JOIN 
         complaints c ON iu.comp_id = c.comp_id;
     `
+
+	rows, err := db.Query(query)
+	if err != nil {
+		log.Println("Error executing query:", err)
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	var invenUsedList []InvenUsed
+
+	for rows.Next() {
+		var invenUsed InvenUsed
+		err := rows.Scan(
+			&invenUsed.ID,
+			&invenUsed.ItemUsed,
+			&invenUsed.UserID,
+			&invenUsed.Username,
+			&invenUsed.Role,
+			&invenUsed.ItemID,
+			&invenUsed.ItemName,
+			&invenUsed.ItemQty,
+			&invenUsed.ItemPrice,
+			&invenUsed.ItemDesc,
+			&invenUsed.ItemUnit,
+			&invenUsed.CompID,
+			&invenUsed.CompNos,
+			&invenUsed.CompLoc,
+			&invenUsed.CompDes,
+			&invenUsed.CompStat,
+			&invenUsed.CompDate,
+		)
+		if err != nil {
+			log.Println("Error scanning rows:", err)
+			http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+		invenUsedList = append(invenUsedList, invenUsed)
+	}
+
+	res.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(res).Encode(invenUsedList); err != nil {
+		log.Println("Error encoding JSON:", err)
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+}
+
+func GetInvUsedCompId(res http.ResponseWriter, req *http.Request, db *sql.DB) {
+	claims := middleware.GetClaims(req)
+	if claims.Role != "admin" {
+		http.Error(res, "User Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	if err := json.NewDecoder(req.Body).Decode(&CompIdBody); err != nil {
+		log.Println(err.Error())
+		http.Error(res, "Bad Request", http.StatusBadRequest)
+		return
+	}
+
+	query := fmt.Sprintf(`
+    SELECT 
+        iu.id,
+        iu.item_used,
+        u.user_id,
+        u.username,
+        u.role,
+        i.item_id,
+        i.item_name,
+        i.item_qty,
+        i.item_price,
+        i.item_desc,
+		i.item_unit,
+        c.comp_id,
+        c.comp_nos,
+        c.comp_loc,
+        c.comp_des,
+        c.comp_stat,
+        c.comp_date
+    FROM 
+        inven_used iu
+    JOIN 
+        users u ON iu.user_id = u.user_id
+    JOIN 
+        inventory i ON iu.item_id = i.item_id
+    JOIN 
+        complaints c ON iu.comp_id = c.comp_id
+	WHERE
+		iu.comp_id='%s';
+    `, CompIdBody.CompId)
 
 	rows, err := db.Query(query)
 	if err != nil {
