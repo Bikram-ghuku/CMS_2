@@ -1,7 +1,7 @@
 services:
   cims-database:
     image: postgres:latest
-    restart: always
+    restart: unless-stopped
     environment:
       - POSTGRES_USER=${DB_UNAME}
       - POSTGRES_PASSWORD=${DB_PSWD}
@@ -33,13 +33,23 @@ services:
       - DB_PORT=${DB_PORT}
       - PORT=${PORT}
       - JWT_SECRET=${JWT_SECRET}
-      - FRONTEND_URL=${FRONTEND_URL}
+      - FRONTEND_URL=http://localhost
     networks:
       cims-internal:
         aliases:
           - cims-backend
     ports:
       - ${PORT}:${PORT}
+
+  cims-frontend:
+    build: ./frontend
+    restart: unless-stopped
+    networks:
+      cims-internal:
+        aliases:
+          - cims-frontend
+    ports:
+      - 80:80
 
 networks:
   cims-internal:
