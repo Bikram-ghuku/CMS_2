@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import '../styles/Invoice.scss';
+import '../styles/InvoiceComp.scss';
 import logo from '../assets/logo.png';
 import { ToWords } from 'to-words';
 import { BACKEND_URL } from '../constants';
@@ -106,8 +106,11 @@ const InvoiceComp = React.forwardRef<HTMLDivElement, InvoiceProps>(({ CompId, co
                     ))}
                 </tbody>
             </table>
-            <h3>Total Rs.: {`₹${calculateTotal().toFixed(2)}`}</h3>
-            <h5>{toWords.convert(calculateTotal()) + " (Inclusive of all Taxes)"}</h5>
+            <div className="total-div">
+                <h3>Total Rs.: {`₹${calculateTotal().toFixed(2)}`}</h3>
+                <h3>Say Rs.: {`₹${Math.ceil(calculateTotal()).toFixed(2)}`}</h3>
+                <h5>{toWords.convert(Math.ceil(calculateTotal())) + " (Inclusive of all Taxes)"}</h5>
+            </div>
         </div>
     );
 });
