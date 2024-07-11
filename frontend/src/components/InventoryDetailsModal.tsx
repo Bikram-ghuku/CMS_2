@@ -10,7 +10,8 @@ type item = {
     item_desc:string,
     item_qty:number,
     item_price:number,
-    item_id:string
+    item_id:string,
+    item_unit:string
 }
 
 interface InventoryDetailsModalProps {
@@ -28,6 +29,7 @@ const InventoryDetailsModal: React.FC<InventoryDetailsModalProps> = ({
     const [newPrice, setNewPrice] = useState<number>(item.item_price);
     const [newQty, setNewQTy] = useState<number>(item.item_qty);
     const [newDesc, setNewDesc] = useState<string>(item.item_desc);
+    const [newUnit, setNewUnit] = useState<string>(item.item_unit);
 
     useEffect(() => {
         if (item) {
@@ -35,6 +37,7 @@ const InventoryDetailsModal: React.FC<InventoryDetailsModalProps> = ({
             setNewPrice(item.item_price);
             setNewQTy(item.item_qty);
             setNewDesc(item.item_desc);
+            setNewUnit(item.item_unit)
         }
     }, [item]);
 
@@ -54,13 +57,17 @@ const InventoryDetailsModal: React.FC<InventoryDetailsModalProps> = ({
         setNewDesc(event.target.value);
     };
 
+    const handleItemUnitChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setNewUnit(event.target.value)
+    }
+
 
     const handleUpdate = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.preventDefault()
         fetch(BACKEND_URL+"/inven/invUpdate", {
             method:"POST",
             credentials:'include',
-            body: JSON.stringify({item_id: item.item_id, item_name: newItemName, item_desc: newDesc, item_price: newPrice, item_qty: newQty})
+            body: JSON.stringify({item_id: item.item_id, item_name: newItemName, item_desc: newDesc, item_price: newPrice, item_qty: newQty, item_unit: newUnit})
         }).then((data) => {
             onRequestClose()
             if(data.ok){
@@ -106,13 +113,26 @@ const InventoryDetailsModal: React.FC<InventoryDetailsModalProps> = ({
             <h2>Inventory Details</h2>
             {item && (
                 <form >
-                <label>Item Name:</label>
-                <input
-                    type="text"
-                    value={newItemName}
-                    onChange={handleItemNameChange}
-                    placeholder='Enter Item name'
-                />
+                <div className="input-sm-line">
+                    <div className="input-grp">
+                        <label>Item Name:</label>
+                        <input
+                            type="text"
+                            value={newItemName}
+                            onChange={handleItemNameChange}
+                            placeholder='Enter Item name'
+                        />
+                    </div>
+                    <div className="input-grp">
+                        <label>Item Unit:</label>
+                        <input
+                            type="text"
+                            value={newUnit}
+                            onChange={handleItemUnitChange}
+                            placeholder='Enter Item Unit'
+                        />
+                    </div>
+                </div>
                 <div className="input-sm-line">
                     <div className="input-grp">
                         <label>Item Quantity:</label>
