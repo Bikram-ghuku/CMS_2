@@ -18,6 +18,7 @@ type InvenUsed = {
     item_qty: number;
     item_price: number;
     item_desc: string;
+    item_unit: string;
     comp_id: string;
     comp_nos: string;
     comp_loc: string;
