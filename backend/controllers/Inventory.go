@@ -15,6 +15,7 @@ var BodyInven struct {
 	ItemQty   float64 `json:"item_qty"`
 	ItemPrice float64 `json:"item_price"`
 	ItemDesc  string  `json:"item_desc"`
+	ItemUnit  string  `json:"item_unit"`
 }
 
 var RespItem struct {
@@ -22,6 +23,7 @@ var RespItem struct {
 	ItemQty   float64 `json:"item_qty"`
 	ItemPrice float64 `json:"item_price"`
 	ItemDesc  string  `json:"item_desc"`
+	ItemUnit  string  `json:"item_unit"`
 }
 
 var updatedItem struct {
@@ -30,6 +32,7 @@ var updatedItem struct {
 	ItemQty   float64 `json:"item_qty"`
 	ItemPrice float64 `json:"item_price"`
 	ItemDesc  string  `json:"item_desc"`
+	ItemUnit  string  `json:"item_unit"`
 }
 
 var bodyDec struct {
@@ -43,7 +46,7 @@ func AddProducts(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 		return
 	}
 
-	queryStr := fmt.Sprintf(`INSERT INTO inventory(item_name, item_qty, item_price, item_desc) VALUES ('%s', %f, %f, '%s')`, BodyInven.ItemName, BodyInven.ItemQty, BodyInven.ItemPrice, BodyInven.ItemDesc)
+	queryStr := fmt.Sprintf(`INSERT INTO inventory(item_name, item_qty, item_price, item_desc, item_unit) VALUES ('%s', %f, %f, '%s', '%s')`, BodyInven.ItemName, BodyInven.ItemQty, BodyInven.ItemPrice, BodyInven.ItemDesc, BodyInven.ItemUnit)
 
 	_, err := db.Exec(queryStr)
 	if err != nil {
@@ -64,10 +67,10 @@ func GetProductByID(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 		return
 	}
 
-	queryStr := `SELECT item_name, item_qty, item_price, item_desc FROM inventory WHERE item_id = $1`
+	queryStr := `SELECT item_name, item_qty, item_price, item_desc, item_unit FROM inventory WHERE item_id = $1`
 	row := db.QueryRow(queryStr, bodyDec.ItemId)
 
-	err := row.Scan(&RespItem.ItemName, &RespItem.ItemQty, &RespItem.ItemPrice, &RespItem.ItemDesc)
+	err := row.Scan(&RespItem.ItemName, &RespItem.ItemQty, &RespItem.ItemPrice, &RespItem.ItemDesc, &RespItem.ItemUnit)
 	if err == sql.ErrNoRows {
 		http.Error(res, "Not Found", http.StatusNotFound)
 		return
@@ -82,7 +85,7 @@ func GetProductByID(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 }
 
 func GetAllProducts(res http.ResponseWriter, req *http.Request, db *sql.DB) {
-	queryStr := `SELECT item_id, item_name, item_qty, item_price, item_desc FROM inventory`
+	queryStr := `SELECT item_id, item_name, item_qty, item_price, item_desc, item_unit FROM inventory`
 	rows, err := db.Query(queryStr)
 	if err != nil {
 		log.Println(err.Error())
@@ -95,7 +98,7 @@ func GetAllProducts(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 
 	for rows.Next() {
 		item := models.Inventory{}
-		if err := rows.Scan(&item.ItemID, &item.ItemName, &item.ItemQty, &item.ItemPrice, &item.ItemDesc); err != nil {
+		if err := rows.Scan(&item.ItemID, &item.ItemName, &item.ItemQty, &item.ItemPrice, &item.ItemDesc, &item.ItemUnit); err != nil {
 			log.Println(err.Error())
 			http.Error(res, "Internal Server Error", http.StatusInternalServerError)
 			return
@@ -114,7 +117,7 @@ func UpdateProduct(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 		return
 	}
 
-	queryStr := fmt.Sprintf(`UPDATE inventory SET item_name = '%s', item_qty = %f, item_price = %f, item_desc = '%s' WHERE item_id = '%s'`, updatedItem.ItemName, updatedItem.ItemQty, updatedItem.ItemPrice, updatedItem.ItemDesc, updatedItem.ItemId)
+	queryStr := fmt.Sprintf(`UPDATE inventory SET item_name = '%s', item_qty = %f, item_price = %f, item_desc = '%s', item_unit='%s' WHERE item_id = '%s'`, updatedItem.ItemName, updatedItem.ItemQty, updatedItem.ItemPrice, updatedItem.ItemDesc, updatedItem.ItemUnit, updatedItem.ItemId)
 	_, err := db.Exec(queryStr)
 	if err != nil {
 		log.Println(err.Error())

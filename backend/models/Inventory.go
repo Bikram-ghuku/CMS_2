@@ -8,4 +8,5 @@ type Inventory struct {
 	ItemQty   float64   `db:"item_qty" json:"item_qty"`
 	ItemPrice float64   `db:"item_price" json:"item_price"`
 	ItemDesc  string    `db:"item_desc" json:"item_desc"`
+	ItemUnit  string    `db:"item_unit" json:"item_unit"`
 }
