@@ -19,6 +19,7 @@ CREATE TABLE inventory
     item_qty   numeric NOT NULL,
     item_price numeric NOT NULL,
     item_desc  text NOT NULL,
+    item_unit  text NOT NULL,
     CONSTRAINT PK_inventory PRIMARY KEY (item_id)
 );
 
