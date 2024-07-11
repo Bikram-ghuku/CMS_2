@@ -1,5 +1,5 @@
 services:
-  database-dev:
+  cims-database:
     image: postgres:latest
     restart: always
     environment:
@@ -21,7 +21,7 @@ services:
         aliases:
           - cims-database
 
-  backend:
+  cims-backend:
     image: bikramghuku05/cims-backend:latest
     build: ./backend
     restart: unless-stopped
@@ -38,6 +38,8 @@ services:
       cims-internal:
         aliases:
           - cims-backend
+    ports:
+      - ${PORT}:${PORT}
 
 networks:
   cims-internal:
