@@ -34,6 +34,7 @@ const InvoiceComp = React.forwardRef<HTMLDivElement, InvoiceProps>(({ CompId, co
 
     const [selectedItems, setSelectedItems] = useState<InvenUsed[]>([])
     useEffect(() => {
+        if(CompId == "") return;
         fetch(BACKEND_URL+'/inven/usecomp', {
             method:"POST",
             credentials:"include",
