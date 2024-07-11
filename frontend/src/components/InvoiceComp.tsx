@@ -42,7 +42,7 @@ const InvoiceComp = React.forwardRef<HTMLDivElement, InvoiceProps>(({ CompId, co
         }).then((data) => {
             if(data.ok){
                 data.json().then((datajson:InvenUsed[]) => {
-                    setSelectedItems(datajson);
+                    if(datajson != null) setSelectedItems(datajson);
                 })
             }
         })
