@@ -33,13 +33,11 @@ services:
       - DB_PORT=${DB_PORT}
       - PORT=${PORT}
       - JWT_SECRET=${JWT_SECRET}
-      - FRONTEND_URL=http://localhost
+      - FRONTEND_URL=http://cims-frontend
     networks:
       cims-internal:
         aliases:
           - cims-backend
-    ports:
-      - ${PORT}:${PORT}
 
 networks:
   cims-internal:
