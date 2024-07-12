@@ -1,47 +1,77 @@
 $bg-color: #121212;
 $form-bg: #1a1a1a;
 $text-color: #ffffff;
-$accent-color: #ff5722;
+$accent-color: #4CAF50;
 $border-radius: 8px;
 
 .landing-page {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    height: 100vh;
     background-color: $bg-color;
     color: $text-color;
     text-align: center;
 
     .header {
-        max-width: 600px;
+        width: 100%;
+        padding: 2rem 1rem;
+        background-color: $bg-color;
+        text-align: center;
 
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
+        .hero-section {
+            max-width: 800px;
+            margin: 0 auto;
 
-        p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-        }
-
-        .cta-button {
-            background-color: $accent-color;
-            color: $text-color;
-            border: none;
-            border-radius: $border-radius;
-            padding: 0.75rem 1.5rem;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background-color 0.3s ease;
-            a{
-                color: white;
-                text-decoration: none;
+            .logo {
+                max-width: 150px;
+                margin-bottom: 1rem;
             }
 
-            &:hover {
-                background-color: darken($accent-color, 10%);
+            h1 {
+                font-size: 3rem;
+                margin-bottom: 1rem;
+            }
+
+            p {
+                font-size: 1.5rem;
+                margin-bottom: 2rem;
+            }
+
+            .cta-button {
+                background-color: $accent-color;
+                color: $text-color;
+                border: none;
+                border-radius: $border-radius;
+                padding: 0.75rem 1.5rem;
+                cursor: pointer;
+                font-size: 1rem;
+                transition: background-color 0.3s ease;
+
+                &:hover {
+                    background-color: darken($accent-color, 10%);
+                }
+            }
+        }
+    }
+
+    .description-section {
+        padding: 2rem 1rem;
+        background-color: lighten($bg-color, 5%);
+        width: 100%;
+        text-align: center;
+
+        .description-content {
+            max-width: 800px;
+            margin: 0 auto;
+
+            h2 {
+                font-size: 2rem;
+                margin-bottom: 1rem;
+            }
+
+            p {
+                font-size: 1.2rem;
+                line-height: 1.5;
             }
         }
     }
