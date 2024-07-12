@@ -45,6 +45,7 @@ services:
       - cims-database
 
   cims-frontend:
+    image: bikramghuku05/cims-frontend:latest
     build: ./frontend
     restart: unless-stopped
     networks:
