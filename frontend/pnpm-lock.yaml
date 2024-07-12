@@ -8,6 +8,12 @@ importers:
 
   .:
     dependencies:
+      '@sentry/react':
+        specifier: ^8.17.0
+        version: 8.17.0(react@18.3.1)
+      '@sentry/tracing':
+        specifier: ^7.114.0
+        version: 7.114.0
       '@types/react-modal':
         specifier: ^3.16.3
         version: 3.16.3
@@ -351,6 +357,64 @@ packages:
     resolution: {integrity: sha512-UOo5FdvOL0+eIVTgS4tIdbW+TtnBLWg1YBCcU2KWM7nuNwRz9bksDX1bekJJCpu25N1DVWaCwnT39dVQxzqS8g==}
     cpu: [x64]
     os: [win32]
+
+  '@sentry-internal/browser-utils@8.17.0':
+    resolution: {integrity: sha512-BEYBIDX1y8paKsDk8PmjYfAYFNS+KSeEhOwJTr/RWjvx/Fyb5ZF2q4u7qMjeNFLcxKnMkQTGYE9CYf/7XWs4bA==}
+    engines: {node: '>=14.18'}
+
+  '@sentry-internal/feedback@8.17.0':
+    resolution: {integrity: sha512-lFypwCqqcwgh++8sPZw9hAEKphXSgPIdSqoXakgwSKxGx2pCIBbzeyOWzUeBpGfBkTw813HiuRwNY+e0dF6b4Q==}
+    engines: {node: '>=14.18'}
+
+  '@sentry-internal/replay-canvas@8.17.0':
+    resolution: {integrity: sha512-2FAbd/65zjPzlUQK/cKBzNPIClBKSPrHzfuB1ZM102JwSpvS5sljzhLvxua17uwU9V1Z9pbOT1pu5KtkUyc7lQ==}
+    engines: {node: '>=14.18'}
+
+  '@sentry-internal/replay@8.17.0':
+    resolution: {integrity: sha512-SBNXBbXEd4WdCIIa/9mkcrwUjxJxSQtYakJ00Xvv/gwqR1rmRFOVqVjLXisryDXCucdD4Rp5MqRT9H+BcSNVtg==}
+    engines: {node: '>=14.18'}
+
+  '@sentry-internal/tracing@7.114.0':
+    resolution: {integrity: sha512-dOuvfJN7G+3YqLlUY4HIjyWHaRP8vbOgF+OsE5w2l7ZEn1rMAaUbPntAR8AF9GBA6j2zWNoSo8e7GjbJxVofSg==}
+    engines: {node: '>=8'}
+
+  '@sentry/browser@8.17.0':
+    resolution: {integrity: sha512-dPMvxyS+ogu7/3+AI83U2IKaLO7hZUt3J35mtgOQhAETcyNaLZtJP1VNUAcW/VhJa3TMCfmG5A1+dkBp8A6cdA==}
+    engines: {node: '>=14.18'}
+
+  '@sentry/core@7.114.0':
+    resolution: {integrity: sha512-YnanVlmulkjgZiVZ9BfY9k6I082n+C+LbZo52MTvx3FY6RE5iyiPMpaOh67oXEZRWcYQEGm+bKruRxLVP6RlbA==}
+    engines: {node: '>=8'}
+
+  '@sentry/core@8.17.0':
+    resolution: {integrity: sha512-s62O0Re6WcvaVbH1IEeAWmj/ca8UhaRoFaDnc5TR68reOycBrgnqCNq3qHxBsELOA6NJowoK+T29DDGs9QVXhQ==}
+    engines: {node: '>=14.18'}
+
+  '@sentry/react@8.17.0':
+    resolution: {integrity: sha512-KhRECfyhIZZQGuaIB4V7k7wmeyQcxvsKtZUrkj9bTjP3uTf9p+WHKGlyTnX1jdidEgGJAnmBYnKMqR5mUZDCyQ==}
+    engines: {node: '>=14.18'}
+    peerDependencies:
+      react: ^16.14.0 || 17.x || 18.x || 19.x
+
+  '@sentry/tracing@7.114.0':
+    resolution: {integrity: sha512-eldEYGADReZ4jWdN5u35yxLUSTOvjsiZAYd4KBEpf+Ii65n7g/kYOKAjNl7tHbrEG1EsMW4nDPWStUMk1w+tfg==}
+    engines: {node: '>=8'}
+
+  '@sentry/types@7.114.0':
+    resolution: {integrity: sha512-tsqkkyL3eJtptmPtT0m9W/bPLkU7ILY7nvwpi1hahA5jrM7ppoU0IMaQWAgTD+U3rzFH40IdXNBFb8Gnqcva4w==}
+    engines: {node: '>=8'}
+
+  '@sentry/types@8.17.0':
+    resolution: {integrity: sha512-v0nI0+ajiGTijhF1W/ryn2+zFVFr6VPn6lao3W4qKj9MlltIHa4/uuGzTaiCFwoPw7g5bZ1Q09SStpDXVMkz2A==}
+    engines: {node: '>=14.18'}
+
+  '@sentry/utils@7.114.0':
+    resolution: {integrity: sha512-319N90McVpupQ6vws4+tfCy/03AdtsU0MurIE4+W5cubHME08HtiEWlfacvAxX+yuKFhvdsO4K4BB/dj54ideg==}
+    engines: {node: '>=8'}
+
+  '@sentry/utils@8.17.0':
+    resolution: {integrity: sha512-HHtAPLOlvzhwgfYzxtuPnLUoGRMtMrFvopkii74zmx/1ZD4VN4PYPB2E5KFf3c18pTovw+kxF0ux6VrGiyAHsw==}
+    engines: {node: '>=14.18'}
 
   '@swc/core-darwin-arm64@1.6.7':
     resolution: {integrity: sha512-sNb+ghP2OhZyUjS7E5Mf3PqSvoXJ5gY6GBaH2qp8WQxx9VL7ozC4HVo6vkeFJBN5cmYqUCLnhrM3HU4W+7yMSA==}
@@ -739,6 +803,9 @@ packages:
   has-flag@4.0.0:
     resolution: {integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==}
     engines: {node: '>=8'}
+
+  hoist-non-react-statics@3.3.2:
+    resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
 
   ignore@5.3.1:
     resolution: {integrity: sha512-5Fytz/IraMjqpwfd34ke28PTVMjZjJG2MPn5t7OE4eUCUNf8BAa7b5WUS9/Qvr6mwOQS7Mk6vdsMno5he+T8Xw==}
@@ -1295,6 +1362,83 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.18.0':
     optional: true
 
+  '@sentry-internal/browser-utils@8.17.0':
+    dependencies:
+      '@sentry/core': 8.17.0
+      '@sentry/types': 8.17.0
+      '@sentry/utils': 8.17.0
+
+  '@sentry-internal/feedback@8.17.0':
+    dependencies:
+      '@sentry/core': 8.17.0
+      '@sentry/types': 8.17.0
+      '@sentry/utils': 8.17.0
+
+  '@sentry-internal/replay-canvas@8.17.0':
+    dependencies:
+      '@sentry-internal/replay': 8.17.0
+      '@sentry/core': 8.17.0
+      '@sentry/types': 8.17.0
+      '@sentry/utils': 8.17.0
+
+  '@sentry-internal/replay@8.17.0':
+    dependencies:
+      '@sentry-internal/browser-utils': 8.17.0
+      '@sentry/core': 8.17.0
+      '@sentry/types': 8.17.0
+      '@sentry/utils': 8.17.0
+
+  '@sentry-internal/tracing@7.114.0':
+    dependencies:
+      '@sentry/core': 7.114.0
+      '@sentry/types': 7.114.0
+      '@sentry/utils': 7.114.0
+
+  '@sentry/browser@8.17.0':
+    dependencies:
+      '@sentry-internal/browser-utils': 8.17.0
+      '@sentry-internal/feedback': 8.17.0
+      '@sentry-internal/replay': 8.17.0
+      '@sentry-internal/replay-canvas': 8.17.0
+      '@sentry/core': 8.17.0
+      '@sentry/types': 8.17.0
+      '@sentry/utils': 8.17.0
+
+  '@sentry/core@7.114.0':
+    dependencies:
+      '@sentry/types': 7.114.0
+      '@sentry/utils': 7.114.0
+
+  '@sentry/core@8.17.0':
+    dependencies:
+      '@sentry/types': 8.17.0
+      '@sentry/utils': 8.17.0
+
+  '@sentry/react@8.17.0(react@18.3.1)':
+    dependencies:
+      '@sentry/browser': 8.17.0
+      '@sentry/core': 8.17.0
+      '@sentry/types': 8.17.0
+      '@sentry/utils': 8.17.0
+      hoist-non-react-statics: 3.3.2
+      react: 18.3.1
+
+  '@sentry/tracing@7.114.0':
+    dependencies:
+      '@sentry-internal/tracing': 7.114.0
+
+  '@sentry/types@7.114.0': {}
+
+  '@sentry/types@8.17.0': {}
+
+  '@sentry/utils@7.114.0':
+    dependencies:
+      '@sentry/types': 7.114.0
+
+  '@sentry/utils@8.17.0':
+    dependencies:
+      '@sentry/types': 8.17.0
+
   '@swc/core-darwin-arm64@1.6.7':
     optional: true
 
@@ -1737,6 +1881,10 @@ snapshots:
   graphemer@1.4.0: {}
 
   has-flag@4.0.0: {}
+
+  hoist-non-react-statics@3.3.2:
+    dependencies:
+      react-is: 16.13.1
 
   ignore@5.3.1: {}
 
