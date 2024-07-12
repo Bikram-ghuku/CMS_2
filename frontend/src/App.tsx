@@ -11,7 +11,7 @@ import NotFound from "./pages/NotFound"
 import * as Sentry from "@sentry/react";
 
 Sentry.init({
-	dsn: "https://5653fec6874858b7db8111b3bb6af040@o1272929.ingest.us.sentry.io/4507589639929856",
+	dsn: "https://e9a51c4ebb5c8ece98f591f7f775c77c@o1272929.ingest.us.sentry.io/4507589866291200",
 	integrations: [
 	  Sentry.browserTracingIntegration(),
 	  Sentry.replayIntegration(),
@@ -23,7 +23,7 @@ Sentry.init({
 	// Session Replay
 	replaysSessionSampleRate: 0.1, // This sets the sample rate at 10%. You may want to change it to 100% while in development and then sample at a lower rate in production.
 	replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
-});
+  });
 
 function App() {
 	return (
