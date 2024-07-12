@@ -35,6 +35,10 @@ $border-radius: 8px;
             cursor: pointer;
             font-size: 1rem;
             transition: background-color 0.3s ease;
+            a{
+                color: white;
+                text-decoration: none;
+            }
 
             &:hover {
                 background-color: darken($accent-color, 10%);
