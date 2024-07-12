@@ -52,7 +52,7 @@ services:
         aliases:
           - cims-frontend
     ports:
-      - 4173:8443
+      - 8443:80
 
 networks:
   cims-internal:
