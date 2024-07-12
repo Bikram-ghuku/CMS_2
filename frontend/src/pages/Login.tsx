@@ -17,6 +17,7 @@ const Login = () => {
       		body: JSON.stringify({"uname": username, "pswd": password}),
       		credentials: "include"
     	}).then((data) => {
+			setLoad(false)
       		if(data.ok){
         		toast.success("Login successful", {
           			position: "bottom-center"
@@ -30,7 +31,12 @@ const Login = () => {
         		})
         		setLoad(false)
       		}
-    	})
+    	}).catch((err) => {
+			toast.error("Error: "+err, {
+				position: "bottom-center"
+			});
+			setLoad(false)
+		})
   	}
 
 	return (
