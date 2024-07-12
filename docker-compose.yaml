@@ -41,15 +41,5 @@ services:
     ports:
       - ${PORT}:${PORT}
 
-  cims-frontend:
-    build: ./frontend
-    restart: unless-stopped
-    networks:
-      cims-internal:
-        aliases:
-          - cims-frontend
-    ports:
-      - 80:80
-
 networks:
   cims-internal:
