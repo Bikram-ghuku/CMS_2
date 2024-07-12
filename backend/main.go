@@ -179,7 +179,7 @@ func main() {
 		AllowedOrigins:   []string{frontend_url},
 		AllowCredentials: true,
 	})
-
+	log.Printf("Listening for conn on %", frontend_url)
 	handler := c.Handler(http.DefaultServeMux)
 	log.Printf("Listening on port: %s", port)
 	if err := http.ListenAndServe(fmt.Sprintf("0.0.0.0:%s", port), handler); err != nil {

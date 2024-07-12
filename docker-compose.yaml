@@ -33,11 +33,32 @@ services:
       - DB_PORT=${DB_PORT}
       - PORT=${PORT}
       - JWT_SECRET=${JWT_SECRET}
-      - FRONTEND_URL=http://cims-frontend
+      - FRONTEND_URL=https://ss-cims.vercel.app
     networks:
       cims-internal:
         aliases:
           - cims-backend
+    ports:
+      - ${PORT}:${PORT}
+    
+    depends_on:
+      - cims-database
+
+  cims-nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "8443:8443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - /etc/ssl/private:/etc/ssl/private
+      - /etc/ssl/certs:/etc/ssl/certs
+    networks:
+      cims-internal:
+        aliases:
+          - cims-nginx
+    depends_on:
+      - cims-backend
 
 networks:
   cims-internal:
