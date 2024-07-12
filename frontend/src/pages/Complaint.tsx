@@ -63,6 +63,10 @@ function Complaint() {
                     position: "bottom-center"
               })
             }
+        }).catch((err) => {
+            toast.error("Error: "+err, {
+				position: "bottom-center"
+			});
         })
     }, [])
 
