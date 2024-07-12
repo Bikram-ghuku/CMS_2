@@ -33,7 +33,7 @@ services:
       - DB_PORT=${DB_PORT}
       - PORT=${PORT}
       - JWT_SECRET=${JWT_SECRET}
-      - FRONTEND_URL=https://ss-cims.vercel.app
+      - FRONTEND_URL=${FRONTEND_URL}
     networks:
       cims-internal:
         aliases:
