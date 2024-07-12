@@ -6,11 +6,14 @@ import Users from "./pages/Users"
 import Complaint from "./pages/Complaint"
 import Inventory from "./pages/Inventory"
 import Invenused from "./pages/Invenused"
+import LandingPage from "./pages/Landing"
+import NotFound from "./pages/NotFound"
 function App() {
 	return (
     	<>
     		<Router>
         		<Routes>
+					<Route path="/" Component={LandingPage} />
           			<Route path='/login' Component={Login}/>
           			<Route path='/dashboard' Component={Home} />
           			<Route path='/complaints' Component={Complaints} />
@@ -18,6 +21,7 @@ function App() {
           			<Route path='/complaint' Component={Complaint} />
           			<Route path='/inventory' Component={Inventory} />
           			<Route path='/invenused' Component={Invenused} />
+					<Route path="/*" Component={NotFound} />
         		</Routes>
       		</Router>
     	</>
