@@ -11,7 +11,7 @@ import NotFound from "./pages/NotFound"
 import * as Sentry from "@sentry/react";
 
 Sentry.init({
-	dsn: "https://e9a51c4ebb5c8ece98f591f7f775c77c@o1272929.ingest.us.sentry.io/4507589866291200",
+	dsn: "https://30428a0b46bc60919c1098371f691f61@o1272929.ingest.us.sentry.io/4507594667458560",
 	integrations: [
 		Sentry.browserTracingIntegration(),
 	  	Sentry.replayIntegration(),
