@@ -1,35 +1,35 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
+import Select from 'react-select';
 import { BACKEND_URL } from '../constants';
 import { toast } from 'react-toastify';
-import "../styles/InventoryDetailsModal.scss"
-import "../styles/UpdateCompModal.scss"
+import "../styles/InventoryDetailsModal.scss";
+import "../styles/UpdateCompModal.scss";
 
-type complaint = {
-    comp_id:string,
-    comp_nos:string,
-    comp_loc:string,
-    comp_des:string,
-    comp_stat:string,
-    comp_date:string
-}
+type Complaint = {
+    comp_id: string;
+    comp_nos: string;
+    comp_loc: string;
+    comp_des: string;
+    comp_stat: string;
+    comp_date: string;
+};
 
-type item = {
-    item_name:string,
-    item_desc:string,
-    item_qty:number,
-    item_price:number,
-    item_id:string
-}
-
+type Item = {
+    item_name: string;
+    item_desc: string;
+    item_qty: number;
+    item_price: number;
+    item_id: string;
+};
 
 interface InventoryDetailsModalProps {
     isOpen: boolean;
     onRequestClose: () => void;
-    comp: complaint;
+    comp: Complaint;
 }
 
-const empty:item = {item_name:"", item_desc:"", item_price: 0, item_qty:0, item_id:""}
+const emptyItem: Item = { item_name: "", item_desc: "", item_price: 0, item_qty: 0, item_id: "" };
 
 const CompDetailsModal: React.FC<InventoryDetailsModalProps> = ({
     isOpen,
@@ -39,30 +39,31 @@ const CompDetailsModal: React.FC<InventoryDetailsModalProps> = ({
     const [newCompNos, setNewCompNo] = useState<string>('');
     const [newLoc, setNewLoc] = useState<string>('');
     const [newDesc, setNewDesc] = useState<string>('');
-    const [invenItems, setInvenItem] = useState<item[]>([])
-    const [itemSel, setItemSel] = useState<item>(empty);
-    const [quant, setQuant] = useState<number>(0)
+    const [invenItems, setInvenItem] = useState<Item[]>([]);
+    const [itemSel, setItemSel] = useState<Item>(emptyItem);
+    const [quant, setQuant] = useState<number>(0);
+
     useEffect(() => {
-        fetchInvenItems()
+        fetchInvenItems();
         if (comp) {
-            setNewCompNo(comp.comp_loc);
-            setNewLoc(comp.comp_loc)
+            setNewCompNo(comp.comp_nos);
+            setNewLoc(comp.comp_loc);
             setNewDesc(comp.comp_des);
         }
     }, [comp]);
 
     const fetchInvenItems = () => {
-        fetch(BACKEND_URL+'/inven/all', {
-            method:"GET",
-            credentials:"include"
+        fetch(BACKEND_URL + '/inven/all', {
+            method: "GET",
+            credentials: "include",
         }).then((data) => {
-            if(data.ok){
-                data.json().then((dataJson:item[]) => {
-                    setInvenItem(dataJson)
-                })
+            if (data.ok) {
+                data.json().then((dataJson: Item[]) => {
+                    setInvenItem(dataJson);
+                });
             }
-        })
-    }
+        });
+    };
 
     const handleCompNosChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setNewCompNo(event.target.value);
@@ -77,50 +78,54 @@ const CompDetailsModal: React.FC<InventoryDetailsModalProps> = ({
     };
 
     const handleAddInven = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        event.preventDefault()
-        fetch(BACKEND_URL+"/inven/use", {
+        event.preventDefault();
+        fetch(BACKEND_URL + "/inven/use", {
             method: "POST",
             credentials: "include",
-            body: JSON.stringify({comp_id: comp.comp_id, item_id: itemSel.item_id, item_qty:quant})
+            body: JSON.stringify({ comp_id: comp.comp_id, item_id: itemSel.item_id, item_qty: quant }),
         }).then((data) => {
-            if(data.ok){
+            if (data.ok) {
                 toast.success("Inventory added to Complaint", {
-                    position: "bottom-center"
-                })
-            }else{
+                    position: "bottom-center",
+                });
+            } else {
                 toast.error("Error adding Inventory to complaint", {
-                    position: "bottom-center"
-                })
+                    position: "bottom-center",
+                });
             }
-        })
-    }
-
-    const onSelChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        var foundItem = invenItems.find(itemFind => itemFind.item_id === event.target.value)
-        setItemSel(foundItem!)
-    }
+        });
+    };
 
     const handleUpdate = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        event.preventDefault()
-        const time = new Date()
-        console.log({comp_id: comp.comp_id, comp_nos: newCompNos, comp_loc: newLoc, comp_des: newDesc, comp_date: time.toISOString()})
-        fetch(BACKEND_URL+"/comp/update", {
-            method:"POST",
-            credentials:'include',
-            body: JSON.stringify({comp_id: comp.comp_id, comp_nos: newCompNos, comp_loc: newLoc, comp_des: newDesc, comp_date: time.toISOString()})
+        event.preventDefault();
+        const time = new Date();
+        fetch(BACKEND_URL + "/comp/update", {
+            method: "POST",
+            credentials: 'include',
+            body: JSON.stringify({ comp_id: comp.comp_id, comp_nos: newCompNos, comp_loc: newLoc, comp_des: newDesc, comp_date: time.toISOString() }),
         }).then((data) => {
-            onRequestClose()
-            if(data.ok){
-                toast.success("New item added successfully", {
-                    position: "bottom-center"
-                })
-            }else{
-                toast.error("Error adding new item", {
-                    position: "bottom-center"
-                })
+            onRequestClose();
+            if (data.ok) {
+                toast.success("Complaint updated successfully", {
+                    position: "bottom-center",
+                });
+            } else {
+                toast.error("Error updating complaint", {
+                    position: "bottom-center",
+                });
             }
-        })
-    }
+        });
+    };
+
+    const handleSelectChange = (selectedOption: any) => {
+        const foundItem = invenItems.find(item => item.item_id === selectedOption.value);
+        setItemSel(foundItem!);
+    };
+
+    const selectOptions = invenItems.map((item) => ({
+        value: item.item_id,
+        label: item.item_name,
+    }));
 
     return (
         <Modal
@@ -134,42 +139,51 @@ const CompDetailsModal: React.FC<InventoryDetailsModalProps> = ({
             <h2>Complain Details</h2>
             {comp && (
                 <form>
-                <label>Complaint Number:</label>
-                <input
-                    type="text"
-                    value={newCompNos}
-                    onChange={handleCompNosChange}
-                    placeholder='Enter complaint Number'
-                />
-                <label>Complaint Location:</label>
-                <input
-                    type="text"
-                    value={newLoc}
-                    onChange={handleLocChange}
-                    placeholder='Enter Complaint Location'
-                />
-                <label>Comp Description:</label>
-                <textarea value={newDesc} onChange={handleDescChange} placeholder='Enter Item Description'></textarea>
-                <div className="item-add">
-                    <div className="item-add-item">
-                        <label>Select Inventory item</label>
-                        <select value={itemSel.item_id} onChange={onSelChange}>
-                            {invenItems.map((item, idx) => (
-                                <option key={idx} value={item.item_id}>{item.item_name}</option>
-                            ))}
-                        </select>
+                    <label>Complaint Number:</label>
+                    <input
+                        type="text"
+                        value={newCompNos}
+                        onChange={handleCompNosChange}
+                        placeholder="Enter complaint Number"
+                    />
+                    <label>Complaint Location:</label>
+                    <input
+                        type="text"
+                        value={newLoc}
+                        onChange={handleLocChange}
+                        placeholder="Enter Complaint Location"
+                    />
+                    <label>Complaint Description:</label>
+                    <textarea
+                        value={newDesc}
+                        onChange={handleDescChange}
+                        placeholder="Enter Complaint Description"
+                    ></textarea>
+                    <div className="item-add">
+                        <div className="item-add-item">
+                            <label>Select Inventory item</label>
+                            <Select
+                                options={selectOptions}
+                                onChange={handleSelectChange}
+                                placeholder="Select Inventory Item"
+                            />
+                        </div>
+                        <div className="item-add-item">
+                            <label>Select Quantity</label>
+                            <input
+                                type="number"
+                                placeholder="Enter quantity"
+                                onChange={(e) => setQuant(parseFloat(e.target.value))}
+                                value={quant}
+                            />
+                        </div>
                     </div>
-                    <div className="item-add-item">
-                        <label>Select Quantity</label>
-                        <input type='number' placeholder='Enter quantity' onChange={e => setQuant(parseFloat(e.target.value))} value={quant}/>
-                    </div>
-                </div>
-                <button onClick={handleAddInven} className='btn-updt'>Add Inventory Item</button>
-                <button onClick={handleUpdate} className='btn-add'>Update</button>
-            </form>
+                    <button onClick={handleAddInven} className="btn-updt">Add Inventory Item</button>
+                    <button onClick={handleUpdate} className="btn-add">Update</button>
+                </form>
             )}
         </Modal>
     );
-}
+};
 
 export default CompDetailsModal;
