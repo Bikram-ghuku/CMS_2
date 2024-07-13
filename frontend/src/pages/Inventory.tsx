@@ -120,7 +120,7 @@ function Inventory() {
                                     return (
                                         <tr key={idx}>
                                             <td>{item.item_name}</td>
-                                            <td>{item.item_desc}</td>
+                                            <td style={{width: "40%"}}>{item.item_desc}</td>
                                             <td>{item.item_unit}</td>
                                             <td>{'₹'+item.item_price}</td>
                                             <td>{item.item_qty}</td>
