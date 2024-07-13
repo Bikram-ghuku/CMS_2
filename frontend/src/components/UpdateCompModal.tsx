@@ -3,7 +3,6 @@ import Modal from 'react-modal';
 import Select from 'react-select';
 import { BACKEND_URL } from '../constants';
 import { toast } from 'react-toastify';
-import "../styles/InventoryDetailsModal.scss";
 import "../styles/UpdateCompModal.scss";
 
 type Complaint = {
@@ -124,7 +123,7 @@ const CompDetailsModal: React.FC<InventoryDetailsModalProps> = ({
 
     const selectOptions = invenItems.map((item) => ({
         value: item.item_id,
-        label: item.item_name,
+        label: item.item_desc,
     }));
 
     return (
@@ -160,16 +159,17 @@ const CompDetailsModal: React.FC<InventoryDetailsModalProps> = ({
                         placeholder="Enter Complaint Description"
                     ></textarea>
                     <div className="item-add">
-                        <div className="item-add-item">
+                        <div className="item-add-item item-1">
                             <label>Select Inventory item</label>
                             <Select
+                                className='item-add-sel'
                                 options={selectOptions}
                                 onChange={handleSelectChange}
-                                placeholder="Select Inventory Item"
+                                placeholder="Select Item"
                             />
                         </div>
-                        <div className="item-add-item">
-                            <label>Select Quantity</label>
+                        <div className="item-add-item item-2">
+                            <label>Quantity</label>
                             <input
                                 type="number"
                                 placeholder="Enter quantity"
