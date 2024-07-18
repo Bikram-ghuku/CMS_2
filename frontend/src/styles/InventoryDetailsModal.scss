@@ -3,6 +3,12 @@ $modal-text-color: #f1f1f1;
 $modal-border-radius: 8px;
 $modal-padding: 20px;
 
+$border-radius: 8px;
+$table-option-bg: #373d48;
+$table-option-hover-bg: #474d58;
+$table-option-text-color: #ffffff;
+$table-option-border-color: #4d5360; 
+
 .modal {
     position: absolute;
     top: 50%;
@@ -94,4 +100,30 @@ $modal-padding: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.btn-opt {
+    display: flex;
+    justify-content: space-around;
+    gap: 5px;
+
+    div {
+        cursor: pointer;
+        padding: 3px 6px;
+        border-radius: $border-radius;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+            background-color: darken($table-option-bg, 10%);
+        }
+    }
+
+    div:first-child {
+        background-color: $table-option-bg;
+        color: $table-option-text-color;
+
+        &:hover {
+            background-color: darken($table-option-bg, 15%);
+        }
+    }
 }

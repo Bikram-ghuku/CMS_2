@@ -113,7 +113,7 @@ const UpdateInventUse: React.FC<InventoryDetailsModalProps> = ({
                 </div>
 
                 <label>Item Description: </label>
-                <textarea value={inveUse.item_desc} readOnly></textarea>
+                <textarea value={inveUse.item_desc} readOnly className='btn-opt'></textarea>
                 <button onClick={handleUpdate} className='btn-updt'>Update</button>
                 <button onClick={handleDelete} className='btn-del'>Delete</button>
             </form>

@@ -171,7 +171,9 @@ function Invenused() {
                                             <td>{item.username}</td>
                                             <td>{'₹'+item.item_used * item.item_price}</td>
                                             <td>
-                                                <button onClick={() => handleOpen(item)}>Edit</button>
+                                                <div onClick={() => handleOpen(item)} className='btn-opt'>
+                                                    Edit
+                                                </div>
                                             </td>
                                         </tr>
                                     )
