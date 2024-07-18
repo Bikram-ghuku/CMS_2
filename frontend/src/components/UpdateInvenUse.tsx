@@ -7,6 +7,7 @@ import "../styles/InventoryDetailsModal.scss"
 
 type InvenUsed = {
     id: string;
+    item_id: string;
     item_name: string;
     item_used: number;
     item_desc: string;
@@ -42,15 +43,15 @@ const UpdateInventUse: React.FC<InventoryDetailsModalProps> = ({
         fetch(BACKEND_URL+"/inven/updtuse", {
             method:"POST",
             credentials:'include',
-            body: JSON.stringify({tem_qty: newQty, id: inveUse.id})
+            body: JSON.stringify({item_qty_diff: newQty - inveUse.item_used, id: inveUse.id, item_id: inveUse.item_id})
         }).then((data) => {
             onRequestClose()
             if(data.ok){
-                toast.success("New item added successfully", {
+                toast.success("Item Updated Successfully", {
                     position: "bottom-center"
                 })
             }else{
-                toast.error("Error adding new item", {
+                toast.error("Error updating Item", {
                     position: "bottom-center"
                 })
             }

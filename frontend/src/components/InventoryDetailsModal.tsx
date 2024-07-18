@@ -71,11 +71,11 @@ const InventoryDetailsModal: React.FC<InventoryDetailsModalProps> = ({
         }).then((data) => {
             onRequestClose()
             if(data.ok){
-                toast.success("New item added successfully", {
+                toast.success("Item Updated successfully", {
                     position: "bottom-center"
                 })
             }else{
-                toast.error("Error adding new item", {
+                toast.error("Error Updating item", {
                     position: "bottom-center"
                 })
             }

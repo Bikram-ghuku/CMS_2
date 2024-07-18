@@ -48,11 +48,11 @@ const ChangePswdModal: React.FC<AddUserModalProps> = ({
             setNewPassword('')
             setNewUsername('')
             if(data.ok){
-                toast.success("New User added successfully", {
+                toast.success("Password Changed successfully", {
                     position: "bottom-center"
                 })
             }else{
-                toast.error("Error adding new user", {
+                toast.error("Error Changing Password", {
                     position: "bottom-center"
                 })
             }
