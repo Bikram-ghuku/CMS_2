@@ -9,6 +9,7 @@ type InvenUsed = {
     id: string;
     item_name: string;
     item_used: number;
+    item_desc: string;
 };
 
 interface InventoryDetailsModalProps {
@@ -22,19 +23,14 @@ const UpdateInventUse: React.FC<InventoryDetailsModalProps> = ({
     onRequestClose,
     inveUse,
 }) => {
-    const [newItemName, setNewItemName] = useState<string>('');
     const [newQty, setNewQTy] = useState<number>(0);
 
     useEffect(() => {
         if (inveUse) {
-            setNewItemName(inveUse.item_name);
             setNewQTy(inveUse.item_used);
         }
     }, [inveUse]);
 
-    const handleItemNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setNewItemName(event.target.value);
-    };
 
     const handleQtyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setNewQTy(Number(event.target.value));
@@ -43,10 +39,10 @@ const UpdateInventUse: React.FC<InventoryDetailsModalProps> = ({
 
     const handleUpdate = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.preventDefault()
-        fetch(BACKEND_URL+"/inven/invUpdate", {
+        fetch(BACKEND_URL+"/inven/updtuse", {
             method:"POST",
             credentials:'include',
-            body: JSON.stringify({item_name: newItemName, item_qty: newQty})
+            body: JSON.stringify({tem_qty: newQty, id: inveUse.id})
         }).then((data) => {
             onRequestClose()
             if(data.ok){
@@ -97,8 +93,7 @@ const UpdateInventUse: React.FC<InventoryDetailsModalProps> = ({
                         <label>Item Name:</label>
                         <input
                             type="text"
-                            value={newItemName}
-                            onChange={handleItemNameChange}
+                            value={inveUse.item_name}
                             placeholder='Enter Item name'
                             readOnly
                         />
@@ -115,6 +110,9 @@ const UpdateInventUse: React.FC<InventoryDetailsModalProps> = ({
                         />
                     </div>
                 </div>
+
+                <label>Item Description: </label>
+                <textarea value={inveUse.item_desc} readOnly></textarea>
                 <button onClick={handleUpdate} className='btn-updt'>Update</button>
                 <button onClick={handleDelete} className='btn-del'>Delete</button>
             </form>
