@@ -8,7 +8,7 @@ import "../styles/InventoryDetailsModal.scss"
 type InvenUsed = {
     id: string;
     item_name: string;
-    item_qty: number;
+    item_used: number;
 };
 
 interface InventoryDetailsModalProps {
@@ -28,7 +28,7 @@ const UpdateInventUse: React.FC<InventoryDetailsModalProps> = ({
     useEffect(() => {
         if (inveUse) {
             setNewItemName(inveUse.item_name);
-            setNewQTy(inveUse.item_qty);
+            setNewQTy(inveUse.item_used);
         }
     }, [inveUse]);
 
@@ -106,7 +106,7 @@ const UpdateInventUse: React.FC<InventoryDetailsModalProps> = ({
                 </div>
                 <div className="input-sm-line">
                     <div className="input-grp">
-                        <label>Item Quantity:</label>
+                        <label>Quantity Used:</label>
                         <input
                             type="number"
                             value={newQty}

@@ -7,6 +7,7 @@ import { BACKEND_URL } from '../constants'
 import Invoice from '../components/Invoice'
 import { useReactToPrint } from 'react-to-print';
 import UpdateInventUse from '../components/UpdateInvenUse'
+import { ToastContainer } from 'react-toastify'
 
 type InvenUsed = {
     id: string;
@@ -189,6 +190,7 @@ function Invenused() {
             </div>
             <Footer />
             <UpdateInventUse onRequestClose={handleClose} inveUse={activeItem} isOpen={editeModalOpen}/>
+            <ToastContainer />
         </div>
     )
 }
