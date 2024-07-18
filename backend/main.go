@@ -167,23 +167,33 @@ func main() {
 	http.Handle("POST /inven/use", middleware.JWTMiddleware(invUseHandler))
 	log.Println("Loaded Route: POST /inven/use")
 
+	//------
 	getInvUseHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		controllers.GetInvUsed(w, r, db)
 	})
 	http.Handle("GET /inven/useall", middleware.JWTMiddleware(getInvUseHandler))
 	log.Println("Loaded Route: GET /inven/useall")
 
+	//----
 	invCompHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		controllers.GetInvUsedCompId(w, r, db)
 	})
 	http.Handle("POST /inven/usecomp", middleware.JWTMiddleware(invCompHandler))
 	log.Println("Loaded Route: POST /inven/usecomp")
 
+	// -----
 	invUseDelHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		controllers.DelInvenUsed(w, r, db)
 	})
 	http.Handle("POST /inven/deluse", middleware.JWTMiddleware(invUseDelHandler))
 	log.Println("Loaded Route: POST /inven/deluse")
+
+	// ----
+	invUpdtHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		controllers.UpdtInvenUse(w, r, db)
+	})
+	http.Handle("POST /inven/updtuse", middleware.JWTMiddleware(invUpdtHandler))
+	log.Println("Loaded Route: POST /inven/updtuse")
 
 	//
 	//

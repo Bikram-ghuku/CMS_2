@@ -48,6 +48,12 @@ var delInvenUse struct {
 	ID string `json:"id"`
 }
 
+var updtInvenUse struct {
+	ID      string  `json:"id"`
+	ItemQty float64 `json:"item_qty_diff"`
+	ItemId  string  `json:"item_id"`
+}
+
 func InvenToComp(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 
 	if err := json.NewDecoder(req.Body).Decode(&InvenBody); err != nil {
@@ -297,4 +303,31 @@ func DelInvenUsed(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	res.WriteHeader(http.StatusOK)
 	res.Header().Set("Content-Type", "text/plain")
 	res.Write([]byte("Item deleted from comp"))
+}
+
+func UpdtInvenUse(res http.ResponseWriter, req *http.Request, db *sql.DB) {
+	if err := json.NewDecoder(req.Body).Decode(&updtInvenUse); err != nil {
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		log.Println(err.Error())
+		return
+	}
+
+	query := fmt.Sprintf("UPDATE inven_used SET item_used = item_used + %f WHERE id = '%s'", updtInvenUse.ItemQty, updtInvenUse.ID)
+	if _, err := db.Exec(query); err != nil {
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		log.Println(err.Error())
+		return
+	}
+
+	query = fmt.Sprintf("UPDATE inventory SET item_qty = item_qty - %f WHERE item_id='%s'", updtInvenUse.ItemQty, updtInvenUse.ID)
+	if _, err := db.Exec(query); err != nil {
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		log.Println(err.Error())
+		return
+	}
+
+	res.WriteHeader(http.StatusOK)
+	res.Header().Set("Content-Type", "text/plain")
+	res.Write([]byte("Item Updated Successfully"))
+
 }
