@@ -44,6 +44,10 @@ type InvenUsed struct {
 	CompDate  string  `json:"comp_date"`
 }
 
+var delInvenUse struct {
+	ID string `json:"id"`
+}
+
 func InvenToComp(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 
 	if err := json.NewDecoder(req.Body).Decode(&InvenBody); err != nil {
@@ -259,4 +263,38 @@ func GetInvUsedCompId(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
+}
+
+func DelInvenUsed(res http.ResponseWriter, req *http.Request, db *sql.DB) {
+
+	if err := json.NewDecoder(req.Body).Decode(&delInvenUse); err != nil {
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		log.Println(err.Error())
+		return
+	}
+
+	query := fmt.Sprintf("SELECT item_id, item_used FROM inven_used WHERE id = '%s'", delInvenUse.ID)
+	row := db.QueryRow(query)
+
+	var invenUsed InvenUsed
+	row.Scan(&invenUsed.ItemID, &invenUsed.ItemUsed)
+
+	query = fmt.Sprintf("UPDATE inventory SET item_qty = item_qty + %f WHERE item_id = '%s'", invenUsed.ItemUsed, invenUsed.ItemID)
+
+	if _, err := db.Exec(query); err != nil {
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		log.Println(err.Error())
+		return
+	}
+
+	query = fmt.Sprintf("DELETE FROM inven_used WHERE id = '%s'", delInvenUse.ID)
+	if _, err := db.Exec(query); err != nil {
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		log.Println(err.Error())
+		return
+	}
+
+	res.WriteHeader(http.StatusOK)
+	res.Header().Set("Content-Type", "text/plain")
+	res.Write([]byte("Item deleted from comp"))
 }

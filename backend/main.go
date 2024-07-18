@@ -56,6 +56,8 @@ func main() {
 		log.Panic(err.Error())
 	}
 
+	//
+	//
 	// User Routes
 	http.HandleFunc("POST /user/login", func(w http.ResponseWriter, r *http.Request) {
 		controllers.Login(w, r, db)
@@ -88,6 +90,9 @@ func main() {
 	})
 	http.Handle("POST /user/chngpswd", middleware.JWTMiddleware(rstPswdHandler))
 	log.Println("Loaded Route: POST /user/chngpswd")
+
+	//
+	//
 	// Inventory Routes
 	addItemHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		controllers.AddProducts(w, r, db)
@@ -123,6 +128,8 @@ func main() {
 	http.Handle("POST /inven/delinv", middleware.JWTMiddleware(delItemHandler))
 	log.Println("Loaded Route: POST /inven/delinv")
 
+	//
+	//
 	//Complaints Routes
 	addCompHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		controllers.AddComplaint(w, r, db)
@@ -150,6 +157,9 @@ func main() {
 	})
 	http.Handle("POST /comp/update", middleware.JWTMiddleware(updtCompHandler))
 	log.Println("Loaded Route: POST /comp/update")
+
+	//
+	//
 	// Inventory Used
 	invUseHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		controllers.InvenToComp(w, r, db)
@@ -168,6 +178,15 @@ func main() {
 	})
 	http.Handle("POST /inven/usecomp", middleware.JWTMiddleware(invCompHandler))
 	log.Println("Loaded Route: POST /inven/usecomp")
+
+	invUseDelHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		controllers.DelInvenUsed(w, r, db)
+	})
+	http.Handle("POST /inven/deluse", middleware.JWTMiddleware(invUseDelHandler))
+	log.Println("Loaded Route: POST /inven/deluse")
+
+	//
+	//
 	// Data Routes
 	numHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		controllers.GetNumData(w, r, db)
