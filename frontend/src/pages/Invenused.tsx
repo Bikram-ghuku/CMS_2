@@ -6,6 +6,7 @@ import "../styles/Invenused.scss"
 import { BACKEND_URL } from '../constants'
 import Invoice from '../components/Invoice'
 import { useReactToPrint } from 'react-to-print';
+import UpdateInventUse from '../components/UpdateInvenUse'
 
 type InvenUsed = {
     id: string;
@@ -27,6 +28,7 @@ type InvenUsed = {
     comp_date: string;
 };
 
+const empty:InvenUsed = {id: "", item_used:0, user_id:"", username:"", role:"", item_id:"", item_name:"", item_qty: 0, item_price: 0, item_desc: "", item_unit:"", comp_id:"", comp_nos:"", comp_loc:"", comp_des:"", comp_stat:"", comp_date:""};
 function Invenused() {
     const [comps, setComps] = useState<InvenUsed[]>([])
     const [filteredComps, setFilteredComps] = useState<InvenUsed[]>([]);
@@ -35,6 +37,8 @@ function Invenused() {
     const [selectedItemsId, setSelectedItemsId] = useState<string[]>([]);
     const [selectedItem, setSelectedItem] = useState<InvenUsed[]>([]);
     const componentRef = useRef<HTMLDivElement>(null);
+    const [editeModalOpen, setEditModalOpen] = useState<boolean>(false);
+    const [activeItem, setActiveItem] = useState<InvenUsed>(empty);
 
     useEffect(() => {
         fetch(BACKEND_URL+"/inven/useall", {
@@ -102,6 +106,15 @@ function Invenused() {
         }
     }
 
+    const handleClose = () => {
+        setEditModalOpen(false)
+    }
+
+    const handleOpen = (item: InvenUsed) => {
+        setActiveItem(item)
+        setEditModalOpen(true)
+    }
+
     return (
         <div>
             <SideNav />
@@ -134,6 +147,7 @@ function Invenused() {
                                 <th>Complaint Location</th>
                                 <th>Used By</th>
                                 <th>Price Total</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -155,6 +169,9 @@ function Invenused() {
                                             <td>{item.comp_loc}</td>
                                             <td>{item.username}</td>
                                             <td>{'₹'+item.item_used * item.item_price}</td>
+                                            <td>
+                                                <button onClick={() => handleOpen(item)}>Edit</button>
+                                            </td>
                                         </tr>
                                     )
                                 })
@@ -171,6 +188,7 @@ function Invenused() {
                 </div>
             </div>
             <Footer />
+            <UpdateInventUse onRequestClose={handleClose} inveUse={activeItem} isOpen={editeModalOpen}/>
         </div>
     )
 }
