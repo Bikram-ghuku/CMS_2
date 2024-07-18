@@ -341,7 +341,6 @@ ALTER TABLE public.users OWNER TO postgres;
 --
 
 COPY public.complaints (comp_id, comp_nos, comp_loc, comp_des, comp_stat, comp_date, fin_datetime, fin_text) FROM stdin;
-aab33b98-5427-499c-ac69-ba2a7f239f7c	15216	888	8888	open	2024-07-13 06:00:02.6+00	\N	\N
 \.
 
 
