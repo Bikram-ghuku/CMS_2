@@ -109,7 +109,6 @@ function Inventory() {
                                 <th>Name</th>
                                 <th>Description</th>
                                 <th>Unit</th>
-                                <th>Cost</th>
                                 <th>Quantity</th>
                                 <th>Action</th>
                             </tr>
@@ -122,7 +121,6 @@ function Inventory() {
                                             <td>{item.item_name}</td>
                                             <td style={{width: "40%"}}>{item.item_desc}</td>
                                             <td>{item.item_unit}</td>
-                                            <td>{'₹'+item.item_price}</td>
                                             <td>{item.item_qty}</td>
                                             <td>
                                                 <div onClick={() => openDetModal(item)} className='btn-opt'>View Details</div>
