@@ -300,7 +300,10 @@ CREATE TABLE public.inven_used (
     user_id uuid NOT NULL,
     comp_id uuid NOT NULL,
     item_id uuid NOT NULL,
-    item_used numeric NOT NULL
+    item_used numeric NOT NULL,
+    item_l numeric NULL,
+    item_b numeric NULL,
+    item_h numeric NULL
 );
 
 
