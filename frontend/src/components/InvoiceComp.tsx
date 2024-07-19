@@ -15,6 +15,8 @@ type InvenUsed = {
     item_price: number;
     item_desc: string;
     item_unit: string;
+    upto_use: number;
+    upto_amt: number;
     comp_id: string;
     comp_nos: string;
     comp_loc: string;
@@ -85,12 +87,12 @@ const InvoiceComp = React.forwardRef<HTMLDivElement, InvoiceProps>(({ CompId, co
                             <td>{item.item_used}</td>
                             <td>{`₹${item.item_price.toFixed(2)}`}</td>
                             <td>{`₹${(item.item_used * item.item_price).toFixed(2)}`}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{item.upto_use}</td>
+                            <td>{item.item_used}</td>
+                            <td>{item.upto_use + item.item_used}</td>
+                            <td>{`₹${item.upto_amt}`}</td>
+                            <td>{`₹${(item.item_used * item.item_price).toFixed(2)}`}</td>
+                            <td>{`₹${(item.upto_amt + (item.item_used * item.item_price)).toFixed(2)}`}</td>
                         </tr>
                     ))}
                     <tr key="end">
