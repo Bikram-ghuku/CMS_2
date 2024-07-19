@@ -21,6 +21,9 @@ type InvenUsed = {
     item_price: number;
     item_desc: string;
     item_unit: string;
+    item_l: number;
+    item_b: number;
+    item_h: number;
     comp_id: string;
     comp_nos: string;
     comp_loc: string;
@@ -29,7 +32,12 @@ type InvenUsed = {
     comp_date: string;
 };
 
-const empty:InvenUsed = {id: "", item_used:0, user_id:"", username:"", role:"", item_id:"", item_name:"", item_qty: 0, item_price: 0, item_desc: "", item_unit:"", comp_id:"", comp_nos:"", comp_loc:"", comp_des:"", comp_stat:"", comp_date:""};
+const empty:InvenUsed = {
+        id: "", item_used:0, user_id:"", username:"", role:"", 
+        item_id:"", item_name:"", item_qty: 0, item_price: 0, item_desc: "", item_unit:"", 
+        item_l: 0, item_b: 0, item_h: 0,
+        comp_id:"", comp_nos:"", comp_loc:"", comp_des:"", comp_stat:"", comp_date:""
+    };
 function Invenused() {
     const [comps, setComps] = useState<InvenUsed[]>([])
     const [filteredComps, setFilteredComps] = useState<InvenUsed[]>([]);
@@ -141,11 +149,12 @@ function Invenused() {
                                         onChange={() => handleAllSel()}
                                     />
                                 </th>
-                                <th>Item Name</th>
                                 <th>Item Description</th>
                                 <th>Quantity Used</th>
+                                <th>Length</th>
+                                <th>Breadth</th>
+                                <td>Height</td>
                                 <th>Complaint Number</th>
-                                <th>Complaint Location</th>
                                 <th>Used By</th>
                                 <th>Price Total</th>
                                 <th>Actions</th>
@@ -163,11 +172,12 @@ function Invenused() {
                                                     onChange={() => handleCheckboxChange(item.id)}
                                                 />
                                             </td>
-                                            <td>{item.item_name}</td>
                                             <td>{item.item_desc}</td>
                                             <td>{item.item_used}</td>
+                                            <td>{item.item_l === 0 ? "nil" : item.item_l}</td>
+                                            <td>{item.item_b === 0 ? "nil" : item.item_b}</td>
+                                            <td>{item.item_h === 0 ? "nil" : item.item_h}</td>
                                             <td>{item.comp_nos}</td>
-                                            <td>{item.comp_loc}</td>
                                             <td>{item.username}</td>
                                             <td>{'₹'+item.item_used * item.item_price}</td>
                                             <td>

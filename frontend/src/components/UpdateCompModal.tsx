@@ -41,6 +41,9 @@ const CompDetailsModal: React.FC<InventoryDetailsModalProps> = ({
     const [invenItems, setInvenItem] = useState<Item[]>([]);
     const [itemSel, setItemSel] = useState<Item>(emptyItem);
     const [quant, setQuant] = useState<number>(0);
+    const [l, setL] = useState<number>(0);
+    const [b, setB] = useState<number>(0);
+    const [h, setH] = useState<number>(0);
 
     useEffect(() => {
         fetchInvenItems();
@@ -81,7 +84,7 @@ const CompDetailsModal: React.FC<InventoryDetailsModalProps> = ({
         fetch(BACKEND_URL + "/inven/use", {
             method: "POST",
             credentials: "include",
-            body: JSON.stringify({ comp_id: comp.comp_id, item_id: itemSel.item_id, item_qty: quant }),
+            body: JSON.stringify({ comp_id: comp.comp_id, item_id: itemSel.item_id, item_qty: quant, item_l: l, item_b: b, item_h: h }),
         }).then((data) => {
             if (data.ok) {
                 toast.success("Inventory added to Complaint", {
@@ -174,6 +177,35 @@ const CompDetailsModal: React.FC<InventoryDetailsModalProps> = ({
                                 type="number"
                                 placeholder="Enter quantity"
                                 onChange={(e) => setQuant(parseFloat(e.target.value))}
+                                value={quant}
+                            />
+                        </div>
+                    </div>
+                    <div className="item-add">
+                        <div className="item-add-itme">
+                            <label>Enter Length</label>
+                            <input
+                                type="number"
+                                placeholder="Enter quantity"
+                                onChange={(e) => setL(parseFloat(e.target.value))}
+                                value={quant}
+                            />
+                        </div>
+                        <div className="item-add-itme">
+                            <label>Enter Breadth</label>
+                            <input
+                                type="number"
+                                placeholder="Enter quantity"
+                                onChange={(e) => setB(parseFloat(e.target.value))}
+                                value={quant}
+                            />
+                        </div>
+                        <div className="item-add-itme">
+                            <label>Enter Height</label>
+                            <input
+                                type="number"
+                                placeholder="Enter quantity"
+                                onChange={(e) => setH(parseFloat(e.target.value))}
                                 value={quant}
                             />
                         </div>
