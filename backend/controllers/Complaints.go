@@ -77,7 +77,7 @@ func CloseComplaint(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 }
 
 func GetAllComp(res http.ResponseWriter, req *http.Request, db *sql.DB) {
-	queryStr := "SELECT * FROM complaints"
+	queryStr := "SELECT * FROM complaints ORDER BY comp_date ASC"
 	rows, err := db.Query(queryStr)
 	if err != nil {
 		log.Println(err.Error())
