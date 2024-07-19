@@ -306,7 +306,7 @@ func DelInvenUsed(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	var invenUsed InvenUsed
 	row.Scan(&invenUsed.ItemID, &invenUsed.ItemUsed, &invenUsed.ItemL, &invenUsed.ItemB, &invenUsed.ItemH)
 
-	query = fmt.Sprintf("UPDATE inventory SET item_qty = item_qty + %f, item_l = item_l + %f, item_b = item_b + %f, item_h = item_h + %f WHERE item_id = '%s'", invenUsed.ItemUsed, invenUsed.ItemL, invenUsed.ItemB, invenUsed.ItemH, invenUsed.ItemID)
+	query = fmt.Sprintf("UPDATE inventory SET item_qty = item_qty + %f WHERE item_id = '%s'", invenUsed.ItemUsed, invenUsed.ItemID)
 
 	if _, err := db.Exec(query); err != nil {
 		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
@@ -340,7 +340,7 @@ func UpdtInvenUse(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 		return
 	}
 
-	query = fmt.Sprintf("UPDATE inventory SET item_qty = item_qty - %f WHERE item_id='%s'", updtInvenUse.ItemQty, updtInvenUse.ID)
+	query = fmt.Sprintf("UPDATE inventory SET item_qty = item_qty - %f WHERE item_id='%s'", updtInvenUse.ItemQty, updtInvenUse.ItemId)
 	if _, err := db.Exec(query); err != nil {
 		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
 		log.Println(err.Error())
