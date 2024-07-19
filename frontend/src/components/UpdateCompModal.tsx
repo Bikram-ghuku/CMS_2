@@ -138,6 +138,13 @@ const CompDetailsModal: React.FC<InventoryDetailsModalProps> = ({
         label: item.item_desc,
     }));
 
+    const HandleQuantChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setQuant(parseFloat(e.target.value));
+        setL(0);
+        setB(0);
+        setH(0);
+    }
+
     return (
         <Modal
             isOpen={isOpen}
@@ -185,7 +192,7 @@ const CompDetailsModal: React.FC<InventoryDetailsModalProps> = ({
                             <input
                                 type="number"
                                 placeholder="Enter quantity"
-                                onChange={(e) => setQuant(parseFloat(e.target.value))}
+                                onChange={HandleQuantChange}
                                 value={quant}
                             />
                         </div>

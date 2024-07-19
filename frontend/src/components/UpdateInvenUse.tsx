@@ -44,6 +44,9 @@ const UpdateInventUse: React.FC<InventoryDetailsModalProps> = ({
 
     const handleQtyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setNewQTy(Number(event.target.value));
+        setL(0);
+        setB(0);
+        setH(0);
     };
 
 
