@@ -14,6 +14,9 @@ var InvenBody struct {
 	CompId  string  `json:"comp_id"`
 	ItemId  string  `json:"item_id"`
 	ItemQty float64 `json:"item_qty"`
+	ItemL   float64 `json:"item_l"`
+	ItemB   float64 `json:"item_b"`
+	ItemH   float64 `json:"item_h"`
 }
 
 var CurrQty struct {
@@ -33,6 +36,9 @@ type InvenUsed struct {
 	ItemID    string  `json:"item_id"`
 	ItemName  string  `json:"item_name"`
 	ItemQty   float64 `json:"item_qty"`
+	ItemL     float64 `json:"item_l"`
+	ItemB     float64 `json:"item_b"`
+	ItemH     float64 `json:"item_h"`
 	ItemPrice float64 `json:"item_price"`
 	ItemDesc  string  `json:"item_desc"`
 	ItemUnit  string  `json:"item_unit"`
@@ -51,6 +57,9 @@ var delInvenUse struct {
 var updtInvenUse struct {
 	ID      string  `json:"id"`
 	ItemQty float64 `json:"item_qty_diff"`
+	ItemL   float64 `json:"item_l_diff"`
+	ItemB   float64 `json:"item_b_diff"`
+	ItemH   float64 `json:"item_h_diff"`
 	ItemId  string  `json:"item_id"`
 }
 
@@ -73,7 +82,7 @@ func InvenToComp(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	}
 
 	claims := middleware.GetClaims(req)
-	query := fmt.Sprintf("INSERT INTO inven_used(user_id, comp_id, item_id, item_used) VALUES ('%s', '%s', '%s', %f)", claims.User_id, InvenBody.CompId, InvenBody.ItemId, InvenBody.ItemQty)
+	query := fmt.Sprintf("INSERT INTO inven_used(user_id, comp_id, item_id, item_used, item_l, item_b, item_h) VALUES ('%s', '%s', '%s', %f, %f, %f, %f)", claims.User_id, InvenBody.CompId, InvenBody.ItemId, InvenBody.ItemQty, InvenBody.ItemL, InvenBody.ItemB, InvenBody.ItemH)
 
 	_, err := db.Exec(query)
 	if err != nil {
@@ -117,6 +126,9 @@ func GetInvUsed(res http.ResponseWriter, req *http.Request, db *sql.DB) {
         i.item_price,
         i.item_desc,
 		i.item_unit,
+		i.item_l,
+		i.item_b,
+		i.item_h,
         c.comp_id,
         c.comp_nos,
         c.comp_loc,
@@ -157,6 +169,9 @@ func GetInvUsed(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 			&invenUsed.ItemPrice,
 			&invenUsed.ItemDesc,
 			&invenUsed.ItemUnit,
+			&invenUsed.ItemL,
+			&invenUsed.ItemB,
+			&invenUsed.ItemH,
 			&invenUsed.CompID,
 			&invenUsed.CompNos,
 			&invenUsed.CompLoc,
@@ -206,6 +221,9 @@ func GetInvUsedCompId(res http.ResponseWriter, req *http.Request, db *sql.DB) {
         i.item_price,
         i.item_desc,
 		i.item_unit,
+		i.item_l,
+		i.item_b,
+		i.item_h,
         c.comp_id,
         c.comp_nos,
         c.comp_loc,
@@ -248,6 +266,9 @@ func GetInvUsedCompId(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 			&invenUsed.ItemPrice,
 			&invenUsed.ItemDesc,
 			&invenUsed.ItemUnit,
+			&invenUsed.ItemL,
+			&invenUsed.ItemB,
+			&invenUsed.ItemH,
 			&invenUsed.CompID,
 			&invenUsed.CompNos,
 			&invenUsed.CompLoc,
@@ -279,13 +300,13 @@ func DelInvenUsed(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 		return
 	}
 
-	query := fmt.Sprintf("SELECT item_id, item_used FROM inven_used WHERE id = '%s'", delInvenUse.ID)
+	query := fmt.Sprintf("SELECT item_id, item_used, item_l, item_b, item_h FROM inven_used WHERE id = '%s'", delInvenUse.ID)
 	row := db.QueryRow(query)
 
 	var invenUsed InvenUsed
-	row.Scan(&invenUsed.ItemID, &invenUsed.ItemUsed)
+	row.Scan(&invenUsed.ItemID, &invenUsed.ItemUsed, &invenUsed.ItemL, &invenUsed.ItemB, &invenUsed.ItemH)
 
-	query = fmt.Sprintf("UPDATE inventory SET item_qty = item_qty + %f WHERE item_id = '%s'", invenUsed.ItemUsed, invenUsed.ItemID)
+	query = fmt.Sprintf("UPDATE inventory SET item_qty = item_qty + %f, item_l = item_l + %f, item_b = item_b + %f, item_h = item_h + %f WHERE item_id = '%s'", invenUsed.ItemUsed, invenUsed.ItemL, invenUsed.ItemB, invenUsed.ItemH, invenUsed.ItemID)
 
 	if _, err := db.Exec(query); err != nil {
 		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
@@ -312,7 +333,7 @@ func UpdtInvenUse(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 		return
 	}
 
-	query := fmt.Sprintf("UPDATE inven_used SET item_used = item_used + %f WHERE id = '%s'", updtInvenUse.ItemQty, updtInvenUse.ID)
+	query := fmt.Sprintf("UPDATE inven_used SET item_used = item_used + %f, item_l = item_l + %f, item_b = item_b + %f, item_h = item_h + %f WHERE id = '%s'", updtInvenUse.ItemQty, updtInvenUse.ItemL, updtInvenUse.ItemB, updtInvenUse.ItemH, updtInvenUse.ID)
 	if _, err := db.Exec(query); err != nil {
 		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
 		log.Println(err.Error())
