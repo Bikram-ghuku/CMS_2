@@ -38,14 +38,16 @@ CREATE TABLE complaints
 
 CREATE TABLE inven_used
 (
-    id        uuid DEFAULT uuid_generate_v4() NOT NULL,
-    user_id   uuid NOT NULL,
-    comp_id   uuid NOT NULL,
-    item_id   uuid NOT NULL,
-    item_used numeric NOT NULL,
-    item_l    numeric NULL,
-    item_b    numeric NULL,
-    item_h    numeric NULL,
+    id            uuid DEFAULT uuid_generate_v4() NOT NULL,
+    user_id       uuid NOT NULL,
+    comp_id       uuid NOT NULL,
+    item_id       uuid NOT NULL,
+    item_used     numeric NOT NULL,
+    item_l        numeric NULL,
+    item_b        numeric NULL,
+    item_h        numeric NULL,
+    total_qty     numeric DEFAULT 0 NOT NULL,
+    total_amount  numeric DEFAULT 0 NOT NULL,
     CONSTRAINT PK_inven_used PRIMARY KEY (id),
     CONSTRAINT FK_user FOREIGN KEY (user_id) REFERENCES users (user_id),
     CONSTRAINT FK_complaints FOREIGN KEY (comp_id) REFERENCES complaints (comp_id),
@@ -55,3 +57,28 @@ CREATE TABLE inven_used
 CREATE INDEX IDX_item_id ON inven_used (item_id);
 CREATE INDEX IDX_comp_id ON inven_used (comp_id);
 CREATE INDEX IDX_user_id ON inven_used (user_id);
+
+
+CREATE OR REPLACE FUNCTION update_inven_used_totals()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.total_qty := (SELECT COALESCE(SUM(iu.item_used), 0)
+                      FROM inven_used iu
+                      JOIN complaints c ON iu.comp_id = c.comp_id
+                      WHERE iu.item_id = NEW.item_id AND c.comp_date < (SELECT comp_date FROM complaints WHERE comp_id = NEW.comp_id));
+
+    NEW.total_amount := (SELECT COALESCE(SUM(iu.item_used * inv.item_price), 0)
+                         FROM inven_used iu
+                         JOIN inventory inv ON iu.item_id = inv.item_id
+                         JOIN complaints c ON iu.comp_id = c.comp_id
+                         WHERE iu.item_id = NEW.item_id AND c.comp_date < (SELECT comp_date FROM complaints WHERE comp_id = NEW.comp_id));
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER trg_update_inven_used_totals
+BEFORE INSERT OR UPDATE ON inven_used
+FOR EACH ROW
+EXECUTE FUNCTION update_inven_used_totals();
