@@ -97,6 +97,15 @@ const CompDetailsModal: React.FC<InventoryDetailsModalProps> = ({
             }
         });
     };
+    
+    useEffect(() => {
+        var x:number = 0;
+        if(l != 0 || b != 0 || h != 0) x = 1;
+        if(l != 0) x*=l;
+        if(b != 0) x*=b;
+        if(h != 0) x*=h;
+        setQuant(x)
+    }, [l, b, h])
 
     const handleUpdate = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.preventDefault();
@@ -182,31 +191,31 @@ const CompDetailsModal: React.FC<InventoryDetailsModalProps> = ({
                         </div>
                     </div>
                     <div className="item-add">
-                        <div className="item-add-itme">
+                        <div className="item-add-item">
                             <label>Enter Length</label>
                             <input
                                 type="number"
-                                placeholder="Enter quantity"
+                                placeholder="Enter Length"
                                 onChange={(e) => setL(parseFloat(e.target.value))}
-                                value={quant}
+                                value={l}
                             />
                         </div>
-                        <div className="item-add-itme">
+                        <div className="item-add-item">
                             <label>Enter Breadth</label>
                             <input
                                 type="number"
-                                placeholder="Enter quantity"
+                                placeholder="Enter Breadth"
                                 onChange={(e) => setB(parseFloat(e.target.value))}
-                                value={quant}
+                                value={b}
                             />
                         </div>
-                        <div className="item-add-itme">
+                        <div className="item-add-item">
                             <label>Enter Height</label>
                             <input
                                 type="number"
-                                placeholder="Enter quantity"
+                                placeholder="Enter Height"
                                 onChange={(e) => setH(parseFloat(e.target.value))}
-                                value={quant}
+                                value={h}
                             />
                         </div>
                     </div>

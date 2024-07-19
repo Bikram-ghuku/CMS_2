@@ -11,6 +11,9 @@ type InvenUsed = {
     item_name: string;
     item_used: number;
     item_desc: string;
+    item_l: number;
+    item_b: number;
+    item_h: number;
 };
 
 interface InventoryDetailsModalProps {
@@ -25,10 +28,16 @@ const UpdateInventUse: React.FC<InventoryDetailsModalProps> = ({
     inveUse,
 }) => {
     const [newQty, setNewQTy] = useState<number>(0);
+    const [l, setL] = useState<number>(0);
+    const [b, setB] = useState<number>(0);
+    const [h, setH] = useState<number>(0);
 
     useEffect(() => {
         if (inveUse) {
             setNewQTy(inveUse.item_used);
+            setL(inveUse.item_l);
+            setB(inveUse.item_b);
+            setH(inveUse.item_h)
         }
     }, [inveUse]);
 
@@ -43,7 +52,7 @@ const UpdateInventUse: React.FC<InventoryDetailsModalProps> = ({
         fetch(BACKEND_URL+"/inven/updtuse", {
             method:"POST",
             credentials:'include',
-            body: JSON.stringify({item_qty_diff: newQty - inveUse.item_used, id: inveUse.id, item_id: inveUse.item_id})
+            body: JSON.stringify({item_qty_diff: newQty - inveUse.item_used, id: inveUse.id, item_id: inveUse.item_id, item_l_diff: l - inveUse.item_l, item_b_diff: b - inveUse.item_b, item_h_diff: h - inveUse.item_h})
         }).then((data) => {
             onRequestClose()
             if(data.ok){
@@ -77,6 +86,17 @@ const UpdateInventUse: React.FC<InventoryDetailsModalProps> = ({
             }
         })
     }
+
+    useEffect(() => {
+        var x:number = 0;
+        if(l != 0 || b != 0 || h != 0) x = 1;
+        if(l != 0) x*=l;
+        if(b != 0) x*=b;
+        if(h != 0) x*=h;
+        setNewQTy(x)
+    }, [l, b, h])
+
+
     return (
         <Modal
             isOpen={isOpen}
@@ -107,6 +127,35 @@ const UpdateInventUse: React.FC<InventoryDetailsModalProps> = ({
                             type="number"
                             value={newQty}
                             onChange={handleQtyChange}
+                            placeholder='Enter Item Quantity'
+                        />
+                    </div>
+                </div>
+                <div className="input-sm-line">
+                    <div className="input-grp">
+                        <label>Length Used:</label>
+                        <input
+                            type="number"
+                            value={l}
+                            onChange={(e) => setL(parseFloat(e.target.value))}
+                            placeholder='Enter Item Quantity'
+                        />
+                    </div>
+                    <div className="input-grp">
+                        <label>Breadth Used:</label>
+                        <input
+                            type="number"
+                            value={b}
+                            onChange={(e) => setB(parseFloat(e.target.value))}
+                            placeholder='Enter Item Quantity'
+                        />
+                    </div>
+                    <div className="input-grp">
+                        <label>Height Used:</label>
+                        <input
+                            type="number"
+                            value={h}
+                            onChange={(e) => setH(parseFloat(e.target.value))}
                             placeholder='Enter Item Quantity'
                         />
                     </div>
