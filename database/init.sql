@@ -20,8 +20,6 @@ CREATE TABLE inventory
     item_price numeric NOT NULL,
     item_desc  text NOT NULL,
     item_unit  text NOT NULL,
-    upto_use   numeric DEFAULT 0 NOT NULL,
-    upto_cost  numeric DEFAULT 0 NOT NULL,
     CONSTRAINT PK_inventory PRIMARY KEY (item_id)
 );
 
