@@ -94,7 +94,7 @@ const InvoiceComp = React.forwardRef<HTMLDivElement, InvoiceProps>(({ CompId, co
                         </tr>
                     ))}
                     <tr key="end">
-                        <td style={{borderRight: "none"}}></td>
+                        <td style={{borderRight: "none", fontWeight: "800"}}></td>
                         <td style={{borderLeft: "none", borderRight: "none"}}>Total Rs.:</td>
                         <td style={{borderLeft: "none", borderRight: "none"}}></td>
                         <td style={{borderLeft: "none", borderRight: "none"}}></td>
