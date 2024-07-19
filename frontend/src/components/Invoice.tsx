@@ -1,7 +1,6 @@
 import React from 'react';
 import '../styles/Invoice.scss';
 import logo from '../assets/logo.png';
-import { ToWords } from 'to-words';
 
 
 type InvenUsed = {
@@ -33,26 +32,6 @@ const Invoice = React.forwardRef<HTMLDivElement, InvoiceProps>(({ selectedItems 
         return selectedItems.reduce((acc, item) => acc + item.item_used * item.item_price, 0);
     };
 
-    const toWords = new ToWords({
-        localeCode: 'en-IN',
-        converterOptions: {
-            currency: true,
-            ignoreDecimal: false,
-            ignoreZeroCurrency: false,
-            doNotAddOnly: false,
-            currencyOptions: {
-                name: 'Rupee',
-                plural: 'Rupees',
-                symbol: '₹',
-                fractionalUnit: {
-                    name: 'Paisa',
-                    plural: 'Paise',
-                    symbol: '',
-                },
-            },
-        },
-    });
-
     return (
         <div ref={ref} className="invoice-main">
             <div className="invoice-header">
@@ -63,7 +42,6 @@ const Invoice = React.forwardRef<HTMLDivElement, InvoiceProps>(({ selectedItems 
                 <thead>
                     <tr>
                         <th>Sl. No</th>
-                        <th>Name of Item</th>
                         <th>Description of Item</th>
                         <th>Unit</th>
                         <th>Quantity</th>
@@ -75,7 +53,6 @@ const Invoice = React.forwardRef<HTMLDivElement, InvoiceProps>(({ selectedItems 
                     {selectedItems.map((item, idx) => (
                         <tr key={idx}>
                             <td>{idx + 1}</td>
-                            <td>{item.item_name}</td>
                             <td>{item.item_desc}</td>
                             <td>{item.item_unit}</td>
                             <td>{item.item_used}</td>
@@ -86,7 +63,6 @@ const Invoice = React.forwardRef<HTMLDivElement, InvoiceProps>(({ selectedItems 
                 </tbody>
             </table>
             <h3>Total Rs.: {`₹${calculateTotal().toFixed(2)}`}</h3>
-            <h5>{toWords.convert(calculateTotal()) + " (Inclusive of all Taxes)"}</h5>
         </div>
     );
 });
