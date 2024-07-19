@@ -61,24 +61,62 @@ CREATE INDEX IDX_user_id ON inven_used (user_id);
 
 CREATE OR REPLACE FUNCTION update_inven_used_totals()
 RETURNS TRIGGER AS $$
+DECLARE
+    curr_comp_date timestamp(6) with time zone;
 BEGIN
+    SELECT comp_date INTO curr_comp_date FROM complaints WHERE comp_id = NEW.comp_id;
+
     NEW.total_qty := (SELECT COALESCE(SUM(iu.item_used), 0)
                       FROM inven_used iu
                       JOIN complaints c ON iu.comp_id = c.comp_id
-                      WHERE iu.item_id = NEW.item_id AND c.comp_date < (SELECT comp_date FROM complaints WHERE comp_id = NEW.comp_id));
+                      WHERE iu.item_id = NEW.item_id AND c.comp_date < curr_comp_date);
 
     NEW.total_amount := (SELECT COALESCE(SUM(iu.item_used * inv.item_price), 0)
                          FROM inven_used iu
                          JOIN inventory inv ON iu.item_id = inv.item_id
                          JOIN complaints c ON iu.comp_id = c.comp_id
-                         WHERE iu.item_id = NEW.item_id AND c.comp_date < (SELECT comp_date FROM complaints WHERE comp_id = NEW.comp_id));
-    
+                         WHERE iu.item_id = NEW.item_id AND c.comp_date < curr_comp_date);
+
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
 
-CREATE TRIGGER trg_update_inven_used_totals
-BEFORE INSERT OR UPDATE ON inven_used
+CREATE OR REPLACE FUNCTION adjust_totals_after_delete()
+RETURNS TRIGGER AS $$
+DECLARE
+    curr_comp_date timestamp(6) with time zone;
+BEGIN
+    SELECT comp_date INTO curr_comp_date FROM complaints WHERE comp_id = OLD.comp_id;
+
+    UPDATE inven_used
+    SET total_qty = (SELECT COALESCE(SUM(item_used), 0)
+                     FROM inven_used iu
+                     JOIN complaints c ON iu.comp_id = c.comp_id
+                     WHERE iu.item_id = OLD.item_id AND c.comp_date < curr_comp_date),
+        total_amount = (SELECT COALESCE(SUM(item_used * inv.item_price), 0)
+                        FROM inven_used iu
+                        JOIN inventory inv ON iu.item_id = inv.item_id
+                        JOIN complaints c ON iu.comp_id = c.comp_id
+                        WHERE iu.item_id = OLD.item_id AND c.comp_date < curr_comp_date)
+    WHERE item_id = OLD.item_id AND comp_id != OLD.comp_id;
+
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_update_inven_used_totals_before_insert
+BEFORE INSERT ON inven_used
 FOR EACH ROW
 EXECUTE FUNCTION update_inven_used_totals();
+
+CREATE TRIGGER trg_update_inven_used_totals_before_update
+AFTER UPDATE ON inven_used
+FOR EACH ROW
+WHEN (OLD.item_used IS DISTINCT FROM NEW.item_used)
+EXECUTE FUNCTION update_inven_used_totals();
+
+CREATE TRIGGER trg_adjust_totals_after_delete
+AFTER DELETE ON inven_used
+FOR EACH ROW
+EXECUTE FUNCTION adjust_totals_after_delete();
