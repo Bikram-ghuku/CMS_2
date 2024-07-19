@@ -42,6 +42,8 @@ type InvenUsed struct {
 	ItemPrice float64 `json:"item_price"`
 	ItemDesc  string  `json:"item_desc"`
 	ItemUnit  string  `json:"item_unit"`
+	UptoUse   float64 `json:"upto_use"`
+	UptoAmt   float64 `json:"upto_amt"`
 	CompID    string  `json:"comp_id"`
 	CompNos   string  `json:"comp_nos"`
 	CompLoc   string  `json:"comp_loc"`
@@ -221,6 +223,8 @@ func GetInvUsedCompId(res http.ResponseWriter, req *http.Request, db *sql.DB) {
         i.item_price,
         i.item_desc,
 		i.item_unit,
+		i.upto_use,
+		i.upto_cost,
 		iu.item_l,
 		iu.item_b,
 		iu.item_h,
@@ -266,6 +270,8 @@ func GetInvUsedCompId(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 			&invenUsed.ItemPrice,
 			&invenUsed.ItemDesc,
 			&invenUsed.ItemUnit,
+			&invenUsed.UptoUse,
+			&invenUsed.UptoUse,
 			&invenUsed.ItemL,
 			&invenUsed.ItemB,
 			&invenUsed.ItemH,
