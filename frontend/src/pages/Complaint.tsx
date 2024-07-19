@@ -12,6 +12,9 @@ import CompDetailsModal from '../components/UpdateCompModal';
 import CloseCompInfo from '../components/CloseCompInfo';
 import InvoiceComp from '../components/InvoiceComp';
 import { useReactToPrint } from 'react-to-print';
+import InvoiceCompTable from '../components/InvoiceCompTable';
+import { useDownloadExcel } from 'react-export-table-to-excel';
+
 
 interface FinDatetime {
     Time: string;
@@ -45,6 +48,7 @@ function Complaint() {
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState<boolean>(false)
     const [isClInfoModalOpen, setClInfoModalOpen] = useState<boolean>(false);
     const componentRef = useRef<HTMLDivElement>(null);
+    const tableRef = useRef<HTMLTableElement>(null);
     const [isGenBillVisible, setGenBillVisible] = useState<boolean>(false)
     const [selectedItem, setSelectedItem] = useState<complaint>(empty);
 
@@ -128,6 +132,12 @@ function Complaint() {
         content: () => componentRef.current,
     });
 
+    const { onDownload } = useDownloadExcel({
+        currentTableRef: tableRef.current,
+        filename: 'bill_table',
+        sheet: 'bill'
+    })
+
     const handleSel = (comp: complaint) => {
         if(selectedItem.comp_id === comp.comp_id) setSelectedItem(empty)
         else setSelectedItem(comp)
@@ -191,10 +201,12 @@ function Complaint() {
                     </table>
                 </div>
                 <div className="user-genbill" hidden={!isGenBillVisible}>
-                    <button hidden={!isGenBillVisible} onClick={handlePrint}>Generate Bill</button>
+                    <button hidden={!isGenBillVisible} onClick={handlePrint}>Generate Bill .pdf</button>
+                    <button hidden={!isGenBillVisible} onClick={onDownload}>Generate Bill .xlsx</button>
                 </div>
                 <div style={{ display: 'none' }}>
-                    <InvoiceComp ref={componentRef} CompId={selectedItem.comp_id} compDesc={selectedItem.comp_des}/>
+                    <InvoiceComp ref={componentRef} CompId={selectedItem.comp_id} compDesc={selectedItem.comp_des} />
+                    <InvoiceCompTable ref={tableRef} CompId={selectedItem.comp_id} compDesc={selectedItem.comp_des} />
                 </div>
             </div>
             <CloseCompInfo isOpen={isClInfoModalOpen} onRequestClose={closeClInfoModal} comp={currComp} />
