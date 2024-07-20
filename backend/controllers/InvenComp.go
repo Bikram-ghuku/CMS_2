@@ -223,8 +223,6 @@ func GetInvUsedCompId(res http.ResponseWriter, req *http.Request, db *sql.DB) {
         i.item_price,
         i.item_desc,
 		i.item_unit,
-		iu.total_qty,
-		iu.total_amount,
 		iu.item_l,
 		iu.item_b,
 		iu.item_h,
@@ -270,8 +268,6 @@ func GetInvUsedCompId(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 			&invenUsed.ItemPrice,
 			&invenUsed.ItemDesc,
 			&invenUsed.ItemUnit,
-			&invenUsed.UptoUse,
-			&invenUsed.UptoAmt,
 			&invenUsed.ItemL,
 			&invenUsed.ItemB,
 			&invenUsed.ItemH,
@@ -287,6 +283,33 @@ func GetInvUsedCompId(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 			http.Error(res, "Internal Server Error", http.StatusInternalServerError)
 			return
 		}
+
+		query2 := fmt.Sprintf(`
+			SELECT 
+				COALESCE(SUM(iu.item_used), 0), 
+				COALESCE(SUM(iu.item_used * i.item_price), 0)
+			FROM 
+				inven_used iu 
+			JOIN 
+        		inventory i ON iu.item_id = i.item_id
+    		JOIN 
+        		complaints c ON iu.comp_id = c.comp_id
+			WHERE
+				c.comp_date < '%s'
+			AND
+				iu.item_id = '%s'`,
+			invenUsed.CompDate, invenUsed.ItemID)
+
+		row := db.QueryRow(query2)
+
+		err = row.Scan(&invenUsed.UptoUse, &invenUsed.UptoAmt)
+
+		if err != nil {
+			log.Println("Error scanning rows:", err)
+			http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+
 		invenUsedList = append(invenUsedList, invenUsed)
 	}
 
