@@ -204,6 +204,31 @@ func main() {
 	http.Handle("GET /stat/num", middleware.JWTMiddleware(numHandler))
 	log.Println("Loaded Route: GET /stat/num")
 
+	//
+	//
+	// Bill Routes
+
+	// Make bill
+	billMakeHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		controllers.MakeBill(w, r, db)
+	})
+	http.Handle("GET /bill/make", middleware.JWTMiddleware(billMakeHandler))
+	log.Println("Loaded Route: GET /bill/make")
+
+	// Get all Bills
+	allBillGetHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		controllers.GetAllBills(w, r, db)
+	})
+	http.Handle("GET /bill/all", middleware.JWTMiddleware(allBillGetHandler))
+	log.Println("Loaded Route: GET /bill/all")
+
+	// Get Bill by id
+	billGetHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		controllers.GetBill(w, r, db)
+	})
+	http.Handle("POST /bill/get", middleware.JWTMiddleware(billGetHandler))
+	log.Println("Loaded Route: POST /bill/get")
+
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{frontend_url},
 		AllowCredentials: true,
