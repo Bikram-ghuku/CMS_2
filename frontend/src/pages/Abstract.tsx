@@ -14,9 +14,10 @@ import "../styles/AddInventoryModal.scss"
 type bill = {
     bill_id: string;
     bill_dt: string;
+    bill_wn: string;
 }
 
-const empty: bill = {bill_dt: "", bill_id: ""}
+const empty: bill = {bill_dt: "", bill_id: "", bill_wn: ""}
 
 function Abstract() {
     const [bills, setBills] = useState<bill[]>([]);
@@ -115,6 +116,7 @@ function Abstract() {
                                 <th>Select</th>
                                 <th>Generation Date</th>
                                 <th>Generation Time</th>
+                                <th>Work Name</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -126,6 +128,7 @@ function Abstract() {
                                             <td><input type='checkbox' onChange={() => handleSel(item)} checked={actBill.bill_id === item.bill_id}/></td>
                                             <td>{dateTime.toLocaleDateString()}</td>
                                             <td>{dateTime.toLocaleTimeString()}</td>
+                                            <td>{item.bill_wn}</td>
                                         </tr>
                                     )
                                 })
@@ -137,7 +140,7 @@ function Abstract() {
                         <button hidden={!isGenBillVisible} onClick={handlePrint}>Generate Bill .pdf</button>
                     </div>
                 <div style={{ display: 'none' }}>
-                    <AbsComp ref={componentRef} CompId={actBill.bill_id} compDesc={actBill.bill_dt} />
+                    <AbsComp ref={componentRef} CompId={actBill.bill_id} compDesc={actBill.bill_wn} />
                 </div>
             </div>
             <Footer />
