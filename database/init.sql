@@ -42,6 +42,7 @@ CREATE TABLE bills
 (
     id          uuid DEFAULT uuid_generate_v4() NOT NULL,
     dateTime    timestamp(6) with time zone NOT NULL,
+    workName    text NOT NULL,
     CONSTRAINT PK_bills PRIMARY KEY (id)
 );
 

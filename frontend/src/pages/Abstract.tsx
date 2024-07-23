@@ -8,6 +8,8 @@ import "../styles/Complaint.scss"
 import { BACKEND_URL } from '../constants'
 import AbsComp from '../components/Abstract'
 import { useReactToPrint } from 'react-to-print'
+import Modal from 'react-modal';
+import "../styles/AddInventoryModal.scss"
 
 type bill = {
     bill_id: string;
@@ -19,6 +21,8 @@ const empty: bill = {bill_dt: "", bill_id: ""}
 function Abstract() {
     const [bills, setBills] = useState<bill[]>([]);
     const [actBill, setActBill] = useState<bill>(empty);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [workName, setWorkName] = useState<string>('');
     const toastId = useRef<Id>();
     const componentRef = useRef<HTMLDivElement>(null);
     const [isGenBillVisible, setGenBillVisible] = useState<boolean>(false);
@@ -47,11 +51,13 @@ function Abstract() {
         })
     }, [])
 
-    const openModal = () => {
+    const createBill = () => {
         toastId.current = toast.info("Making bill. Please Wait....", { autoClose: false, closeOnClick: false, })
         fetch(BACKEND_URL + '/bill/make', {
             method: "GET",
-            credentials: "include"
+            credentials: "include",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ work_name: workName })
         }).then((data) => {
             if(data.ok){
                 toast.update(toastId.current!, {
@@ -80,6 +86,14 @@ function Abstract() {
         content: () => componentRef.current,
     });
 
+    const openModal = () => {
+        setWorkName('');
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
     
     return (
         <div>
@@ -128,6 +142,21 @@ function Abstract() {
             </div>
             <Footer />
             <ToastContainer />
+            <Modal
+                isOpen={isModalOpen}
+                onRequestClose={closeModal}
+                contentLabel="Inventory Details Modal"
+                ariaHideApp={false}
+                className="modal"
+                overlayClassName="overlay"
+            >
+                <h2>Create New Bill</h2>
+                <form>
+                    <label>Description: </label>
+                    <textarea value={workName} onChange={(e) => setWorkName(e.target.value)} placeholder='Enter Complaint Description'></textarea>
+                    <button type="button" onClick={createBill}>Add Complaint</button>
+                </form>
+            </Modal>
         </div>
     )
 }

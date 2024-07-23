@@ -32,11 +32,21 @@ type RetBill struct {
 	DateTime string `json:"bill_dt"`
 }
 
+var MakeBody struct {
+	MakeName string `json:"work_name"`
+}
+
 func MakeBill(res http.ResponseWriter, req *http.Request, db *sql.DB) {
+
+	if err := json.NewDecoder(req.Body).Decode((&MakeBody)); err != nil {
+		log.Println(err.Error())
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
 
 	currentTime := time.Now()
 	var id string
-	query := fmt.Sprintf("INSERT INTO bills(dateTime) VALUES('%s') RETURNING id", currentTime.Format(time.RFC3339Nano))
+	query := fmt.Sprintf("INSERT INTO bills(dateTime, workName) VALUES('%s', '%s') RETURNING id", currentTime.Format(time.RFC3339Nano), MakeBody.MakeName)
 	rows, err := db.Query(query)
 	if err != nil {
 		log.Println(err.Error())
