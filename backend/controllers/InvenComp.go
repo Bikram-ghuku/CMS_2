@@ -50,6 +50,7 @@ type InvenUsed struct {
 	CompDes   string  `json:"comp_des"`
 	CompStat  string  `json:"comp_stat"`
 	CompDate  string  `json:"comp_date"`
+	BillNo    string  `json:"bill_no"`
 }
 
 var delInvenUse struct {
@@ -131,6 +132,7 @@ func GetInvUsed(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 		iu.item_l,
 		iu.item_b,
 		iu.item_h,
+		iu.bill_id,
         c.comp_id,
         c.comp_nos,
         c.comp_loc,
@@ -174,6 +176,7 @@ func GetInvUsed(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 			&invenUsed.ItemL,
 			&invenUsed.ItemB,
 			&invenUsed.ItemH,
+			&invenUsed.BillNo,
 			&invenUsed.CompID,
 			&invenUsed.CompNos,
 			&invenUsed.CompLoc,

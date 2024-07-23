@@ -30,12 +30,13 @@ type InvenUsed = {
     comp_des: string;
     comp_stat: string;
     comp_date: string;
+    bill_no:string
 };
 
 const empty:InvenUsed = {
         id: "", item_used:0, user_id:"", username:"", role:"", 
         item_id:"", item_name:"", item_qty: 0, item_price: 0, item_desc: "", item_unit:"", 
-        item_l: 0, item_b: 0, item_h: 0,
+        item_l: 0, item_b: 0, item_h: 0, bill_no:"",
         comp_id:"", comp_nos:"", comp_loc:"", comp_des:"", comp_stat:"", comp_date:""
     };
 function Invenused() {
@@ -149,12 +150,12 @@ function Invenused() {
                                         onChange={() => handleAllSel()}
                                     />
                                 </th>
-                                <th>Item Description</th>
+                                <th>Item Desc</th>
                                 <th>Quantity Used</th>
                                 <th>Length</th>
                                 <th>Breadth</th>
                                 <td>Height</td>
-                                <th>Complaint Number</th>
+                                <th>Complaint No</th>
                                 <th>Used By</th>
                                 <th>Price Total</th>
                                 <th>Actions</th>
