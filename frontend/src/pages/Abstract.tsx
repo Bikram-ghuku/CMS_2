@@ -36,7 +36,7 @@ function Abstract() {
                         render: "Loaded Data", 
                         autoClose: 2000
                     })
-                    setBills(datajson)
+                    if(datajson != null) setBills(datajson)
                 })
             }else{
                 toast.update(toastId.current!, {
