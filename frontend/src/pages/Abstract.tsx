@@ -5,30 +5,23 @@ import { Id, ToastContainer, toast } from 'react-toastify'
 import { useEffect, useRef, useState } from 'react'
 import { Plus } from 'lucide-react';
 import "../styles/Complaint.scss"
-import { useDownloadExcel } from 'react-export-table-to-excel';
 import { BACKEND_URL } from '../constants'
-
-type billItem = {
-    item_id:string;
-    item_des:string;
-    item_unit:string;
-    item_used: number;
-    item_price: number;
-    upto_use: number;
-    upto_amt: number;
-}
+import AbsComp from '../components/Abstract'
+import { useReactToPrint } from 'react-to-print'
 
 type bill = {
     bill_id: string;
     bill_dt: string;
 }
 
-const empty: billItem = {item_id:"", item_des:"", item_unit: "", item_used: 0, item_price: 0, upto_amt: 0, upto_use: 0}
+const empty: bill = {bill_dt: "", bill_id: ""}
 
 function Abstract() {
-    const [bIems, setBItems] = useState<billItem[]>([]);
     const [bills, setBills] = useState<bill[]>([]);
+    const [actBill, setActBill] = useState<bill>(empty);
     const toastId = useRef<Id>();
+    const componentRef = useRef<HTMLDivElement>(null);
+    const [isGenBillVisible, setGenBillVisible] = useState<boolean>(false);
 
 
     useEffect(() => {
@@ -74,6 +67,20 @@ function Abstract() {
         })
     }
 
+    useEffect(() => {
+        setGenBillVisible(actBill.bill_id !== "")
+    }, [actBill])
+
+    const handleSel = (comp: bill) => {
+        if(actBill.bill_id === comp.bill_id) setActBill(empty)
+        else setActBill(comp)
+    }
+
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+    });
+
+    
     return (
         <div>
             <TopNav />
@@ -83,7 +90,7 @@ function Abstract() {
                 <div className="user-actions">
                     <div className="user-add">
                         <button className='user-add-btn' onClick={() => openModal()}>
-                            <Plus /> New Bill
+                            <Plus /> New Abstract
                         </button>
                     </div>
                 </div>
@@ -91,10 +98,9 @@ function Abstract() {
                     <table>
                         <thead>
                             <tr>
-                                <th>Sl. No.</th>
+                                <th>Select</th>
                                 <th>Generation Date</th>
                                 <th>Generation Time</th>
-                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -103,18 +109,21 @@ function Abstract() {
                                     const dateTime = new Date(item.bill_dt);
                                     return (
                                         <tr key={idx}>
-                                            <td>{idx + 1}</td>
+                                            <td><input type='checkbox' onChange={() => handleSel(item)} checked={actBill.bill_id === item.bill_id}/></td>
                                             <td>{dateTime.toLocaleDateString()}</td>
                                             <td>{dateTime.toLocaleTimeString()}</td>
-                                            <td>
-                                                <div className='btn-opt'>Download Bill</div>
-                                            </td>
                                         </tr>
                                     )
                                 })
                             }
                         </tbody>
                     </table>
+                </div>
+                <div className="user-genbill" hidden={!isGenBillVisible}>
+                        <button hidden={!isGenBillVisible} onClick={handlePrint}>Generate Bill .pdf</button>
+                    </div>
+                <div style={{ display: 'none' }}>
+                    <AbsComp ref={componentRef} CompId={actBill.bill_id} compDesc={actBill.bill_dt} />
                 </div>
             </div>
             <Footer />
