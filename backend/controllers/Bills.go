@@ -35,10 +35,21 @@ type RetBill struct {
 func MakeBill(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 
 	currentTime := time.Now()
-
-	query := fmt.Sprintf("INSERT INTO bills(dateTime) VALUES('%s')", currentTime.Format(time.RFC3339Nano))
-	_, err := db.Query(query)
+	var id string
+	query := fmt.Sprintf("INSERT INTO bills(dateTime) VALUES('%s') RETURNING id", currentTime.Format(time.RFC3339Nano))
+	rows, err := db.Query(query)
 	if err != nil {
+		log.Println(err.Error())
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+	for rows.Next() {
+		rows.Scan(&id)
+	}
+	query = fmt.Sprintf("UPDATE inven_used SET bill_id = '%s' WHERE bill_id IS NULL", id)
+
+	if _, err = db.Exec(query); err != nil {
 		log.Println(err.Error())
 		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
 		return
