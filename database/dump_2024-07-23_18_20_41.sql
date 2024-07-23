@@ -279,7 +279,8 @@ SET default_table_access_method = heap;
 
 CREATE TABLE public.bills (
     id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-    datetime timestamp(6) with time zone NOT NULL
+    datetime timestamp(6) with time zone NOT NULL,
+    workName text NOT NULL
 );
 
 
