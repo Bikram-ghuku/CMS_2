@@ -30,6 +30,7 @@ type NewInvenItem struct {
 type RetBill struct {
 	Id       string `json:"bill_id"`
 	DateTime string `json:"bill_dt"`
+	WorkName string `json:"bill_wn"`
 }
 
 var MakeBody struct {
@@ -84,7 +85,7 @@ func GetAllBills(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	for rows.Next() {
 		var billItem RetBill
 
-		err := rows.Scan(&billItem.Id, &billItem.DateTime)
+		err := rows.Scan(&billItem.Id, &billItem.DateTime, &billItem.WorkName)
 		if err != nil {
 			log.Println(err.Error())
 			http.Error(res, "Internal Server Error", http.StatusInternalServerError)
