@@ -9,6 +9,7 @@ import Invenused from "./pages/Invenused"
 import LandingPage from "./pages/Landing"
 import NotFound from "./pages/NotFound"
 import * as Sentry from "@sentry/react";
+import Abstract from "./pages/Abstract"
 
 Sentry.init({
 	dsn: "https://30428a0b46bc60919c1098371f691f61@o1272929.ingest.us.sentry.io/4507594667458560",
@@ -36,6 +37,7 @@ function App() {
           			<Route path='/inventory' Component={Inventory} />
           			<Route path='/invenused' Component={Invenused} />
 					<Route path="/*" Component={NotFound} />
+					<Route path="/abstract" Component={Abstract} />
         		</Routes>
       		</Router>
     	</>

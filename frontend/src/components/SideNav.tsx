@@ -1,4 +1,4 @@
-import { Home, User, LogOut, Megaphone, Package, PackageOpen } from 'lucide-react';
+import { Home, User, LogOut, Megaphone, Package, PackageOpen, ScrollText } from 'lucide-react';
 import '../styles/SideNav.scss';
 import { Link } from 'react-router-dom';
 import logo from '../assets/IIT_Kharagpur_Logo.png'
@@ -44,6 +44,12 @@ const SideNav = () => {
 						<li>
 							<PackageOpen />
 							<span>Inventory Used</span>
+						</li>
+					</Link>
+					<Link to="/abstract">
+						<li>
+							<ScrollText />
+							<span>Abstract</span>
 						</li>
 					</Link>
 					<Link to="/login">
