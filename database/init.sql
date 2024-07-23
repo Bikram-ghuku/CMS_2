@@ -36,6 +36,15 @@ CREATE TABLE complaints
     CONSTRAINT PK_complaints PRIMARY KEY (comp_id)
 );
 
+
+
+CREATE TABLE bills
+(
+    id          uuid DEFAULT uuid_generate_v4() NOT NULL,
+    dateTime    timestamp(6) with time zone NOT NULL,
+    CONSTRAINT PK_bills PRIMARY KEY (id)
+);
+
 CREATE TABLE inven_used
 (
     id            uuid DEFAULT uuid_generate_v4() NOT NULL,
@@ -53,13 +62,6 @@ CREATE TABLE inven_used
     CONSTRAINT FK_inventory FOREIGN KEY (item_id) REFERENCES inventory (item_id),
     CONSTRAINT FK_bills FOREIGN KEY (bill_id) REFERENCES bills (id)
 );
-
-CREATE TABLE bills
-{
-    id          uuid DEFAULT uuid_generate_v4() NOT NULL,
-    dateTime    timestamp(6) with time zone NOT NULL,
-    CONSTRAINT PK_bills PRIMARY KEY (id)
-}
 
 CREATE INDEX IDX_item_id ON inven_used (item_id);
 CREATE INDEX IDX_comp_id ON inven_used (comp_id);
