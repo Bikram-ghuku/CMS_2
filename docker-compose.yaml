@@ -1,5 +1,5 @@
 services:
-  cims-database:
+  database:
     image: postgres:latest
     restart: unless-stopped
     environment:
@@ -21,7 +21,7 @@ services:
         aliases:
           - cims-database
 
-  cims-backend:
+  backend:
     image: bikramghuku05/cims-backend:latest
     build: ./backend
     restart: unless-stopped
@@ -44,7 +44,7 @@ services:
     depends_on:
       - cims-database
 
-  cims-frontend:
+  frontend:
     image: bikramghuku05/cims-frontend:latest
     restart: unless-stopped
     networks:
@@ -53,6 +53,8 @@ services:
           - cims-frontend
     ports:
       - 8443:80
+    depends_on:
+      - backend
 
 networks:
   cims-internal:
