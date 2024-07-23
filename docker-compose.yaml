@@ -42,7 +42,7 @@ services:
       - ${PORT}:${PORT}
     
     depends_on:
-      - cims-database
+      - database
 
   frontend:
     image: bikramghuku05/cims-frontend:latest
