@@ -2,7 +2,7 @@
 
 apk add --no-cache postgresql-client curl
 
-pg_dump -h ${DB_HOST} -p ${DB_PORT} -U ${DB_UNAME} ${DB_NAME} > /backups/dump_`date +%Y-%m-%d"_"%H_%M_%S`.sql
+pg_dump -h ${DB_HOST} -p ${DB_PORT} -U ${DB_UNAME} ${DB_NAME} > /backups/db_backup.sql
 
 curl -X POST https://content.dropboxapi.com/2/files/upload \
   --header "Authorization: Bearer ${DROPBOX_ACCESS_TOKEN}" \
