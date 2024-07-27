@@ -132,7 +132,7 @@ func GetInvUsed(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 		iu.item_l,
 		iu.item_b,
 		iu.item_h,
-		COALESCE(iu.bill_id, '') as bill_id,
+		COALESCE(CAST(iu.bill_id AS TEXT), '') AS bill_id,
         c.comp_id,
         c.comp_nos,
         c.comp_loc,
