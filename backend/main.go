@@ -212,8 +212,8 @@ func main() {
 	billMakeHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		controllers.MakeBill(w, r, db)
 	})
-	http.Handle("GET /bill/make", middleware.JWTMiddleware(billMakeHandler))
-	log.Println("Loaded Route: GET /bill/make")
+	http.Handle("POST /bill/make", middleware.JWTMiddleware(billMakeHandler))
+	log.Println("Loaded Route: POST /bill/make")
 
 	// Get all Bills
 	allBillGetHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
