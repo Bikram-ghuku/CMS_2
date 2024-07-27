@@ -53,9 +53,9 @@ function Abstract() {
     }, [])
 
     const createBill = () => {
-        toastId.current = toast.info("Making bill. Please Wait....", { autoClose: false, closeOnClick: false, })
+        toastId.current = toast.info("Making bill. Please Wait....", { autoClose: false, closeOnClick: false, });
         fetch(BACKEND_URL + '/bill/make', {
-            method: "GET",
+            method: "POST",
             credentials: "include",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ work_name: workName })
@@ -71,6 +71,8 @@ function Abstract() {
                     autoClose: 3000
                 })
             }
+
+            closeModal()
         })
     }
 
@@ -157,7 +159,7 @@ function Abstract() {
                 <form>
                     <label>Description: </label>
                     <textarea value={workName} onChange={(e) => setWorkName(e.target.value)} placeholder='Enter Complaint Description'></textarea>
-                    <button type="button" onClick={createBill}>Add Complaint</button>
+                    <button type="button" onClick={createBill}>New Bill</button>
                 </form>
             </Modal>
         </div>
