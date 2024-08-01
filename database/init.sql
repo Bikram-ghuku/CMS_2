@@ -50,7 +50,7 @@ CREATE TABLE inven_used
     CONSTRAINT PK_inven_used PRIMARY KEY (id),
     CONSTRAINT FK_user FOREIGN KEY (user_id) REFERENCES users (user_id),
     CONSTRAINT FK_complaints FOREIGN KEY (comp_id) REFERENCES complaints (comp_id),
-    CONSTRAINT FK_inventory FOREIGN KEY (item_id) REFERENCES inventory (item_id),
+    CONSTRAINT FK_inventory FOREIGN KEY (item_id) REFERENCES inventory (item_id)
 );
 
 CREATE INDEX IDX_item_id ON inven_used (item_id);
