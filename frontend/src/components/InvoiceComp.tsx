@@ -65,13 +65,13 @@ const InvoiceComp = React.forwardRef<HTMLDivElement, InvoiceProps>(({ CompId, co
                 <thead>
                     <tr>
                         <th style={{maxWidth: '10px'}}>Sl. No</th>
-                        <th style={{maxWidth: '80px'}}>Description of Item</th>
+                        <th style={{maxWidth: '65px'}}>Description of Item</th>
                         <th style={{maxWidth: '10px'}}>Unit</th>
-                        <th style={{maxWidth: '10px'}}>Quantity</th>
+                        <th style={{maxWidth: 'fit-content'}}>Quantity</th>
                         <th style={{maxWidth: '10px'}}>Rate</th>
-                        <th style={{maxWidth: '10px'}}>Amount (Rs.)</th>
+                        <th style={{maxWidth: 'fit-content'}}>Amount (Rs.)</th>
                         <th style={{maxWidth: '25px'}}>Total upto date Qty</th>
-                        <th style={{maxWidth: '15px'}}>Total upto date Amount</th>
+                        <th style={{maxWidth: 'fit-content'}}>Total upto date Amount</th>
                     </tr>
                 </thead>
                 <tbody>
