@@ -1,5 +1,5 @@
 services:
-  database:
+  database-dev:
     image: postgres:latest
     restart: unless-stopped
     environment:
