@@ -189,6 +189,10 @@ func GetInvUsed(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 			http.Error(res, "Internal Server Error", http.StatusInternalServerError)
 			return
 		}
+
+		query = "SELECT SUM(iu.item_used), SUM(item_used * i.item_price) FROM inven_used iu JOIN inventory i ON iu.item_id == i.item_id"
+		row := db.QueryRow(query)
+		row.Scan(&invenUsed.UptoUse, &invenUsed.UptoAmt)
 		invenUsedList = append(invenUsedList, invenUsed)
 	}
 
