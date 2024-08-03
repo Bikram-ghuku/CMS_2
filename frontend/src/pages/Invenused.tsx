@@ -30,15 +30,28 @@ type InvenUsed = {
     comp_des: string;
     comp_stat: string;
     comp_date: string;
-    bill_no:string
+    bill_no:string;
+    upto_use: number;
+    upto_amt: number;
 };
 
 const empty:InvenUsed = {
-        id: "", item_used:0, user_id:"", username:"", role:"", 
-        item_id:"", item_name:"", item_qty: 0, item_price: 0, item_desc: "", item_unit:"", 
-        item_l: 0, item_b: 0, item_h: 0, bill_no:"",
-        comp_id:"", comp_nos:"", comp_loc:"", comp_des:"", comp_stat:"", comp_date:""
-    };
+    id: "", item_used:0, user_id:"", username:"", role:"", 
+    item_id:"", item_name:"", item_qty: 0, item_price: 0, item_desc: "", item_unit:"", 
+    item_l: 0, item_b: 0, item_h: 0, bill_no:"",
+    comp_id:"", comp_nos:"", comp_loc:"", comp_des:"", comp_stat:"", comp_date:"",
+    upto_use: 0, upto_amt: 0
+};
+
+type item = {
+    item_name:string;
+    item_desc:string;
+    item_qty:number;
+    item_price:number;
+    item_id:string;
+    item_unit:string
+}
+
 function Invenused() {
     const [comps, setComps] = useState<InvenUsed[]>([])
     const [filteredComps, setFilteredComps] = useState<InvenUsed[]>([]);
@@ -49,6 +62,20 @@ function Invenused() {
     const componentRef = useRef<HTMLDivElement>(null);
     const [editeModalOpen, setEditModalOpen] = useState<boolean>(false);
     const [activeItem, setActiveItem] = useState<InvenUsed>(empty);
+    const [allItem, setAllItem] = useState<item[]>([]);
+
+    useEffect(() => {
+        fetch(BACKEND_URL + "/inven/all", {
+            method: "GET",
+            credentials: "include"
+        }).then((data) => {
+            if(data.ok){
+                data.json().then((dataJson: item[]) => {
+                    if(dataJson != null) setAllItem(dataJson)
+                })
+            }
+        })
+    }, [])
 
     useEffect(() => {
         fetch(BACKEND_URL+"/inven/useall", {
@@ -164,6 +191,7 @@ function Invenused() {
                         <tbody>
                             {
                                 filteredComps.map((item, idx) => {
+                                    if(item.item_used === 0) return
                                     return (
                                         <tr key={idx}>
                                              <td>
@@ -198,7 +226,7 @@ function Invenused() {
                     <button hidden={!isGenBillVisible} onClick={handlePrint}>Generate Bill</button>
                 </div>
                 <div style={{ display: 'none' }}>
-                    <Invoice ref={componentRef} selectedItems={selectedItem} />
+                    <Invoice ref={componentRef} selectedItems={selectedItem} allItems={allItem}/>
                 </div>
             </div>
             <Footer />
