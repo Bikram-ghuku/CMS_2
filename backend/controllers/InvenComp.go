@@ -66,6 +66,17 @@ var updtInvenUse struct {
 	ItemId  string  `json:"item_id"`
 }
 
+var UsePdtId struct {
+	CompId string `json:"comp_id"`
+}
+
+type UsePdtIdRes struct {
+	Uname   string  `json:"username"`
+	CompNos string  `json:"comp_nos"`
+	CompLoc string  `json:"comp_loc"`
+	QtyUsed float64 `json:"qty_used"`
+}
+
 func InvenToComp(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 
 	if err := json.NewDecoder(req.Body).Decode(&InvenBody); err != nil {
@@ -387,4 +398,50 @@ func UpdtInvenUse(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	res.Header().Set("Content-Type", "text/plain")
 	res.Write([]byte("Item Updated Successfully"))
 
+}
+
+func GetUseByPdtId(res http.ResponseWriter, req *http.Request, db *sql.DB) {
+	if err := json.NewDecoder(req.Body).Decode(&UsePdtId); err != nil {
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		log.Println(err.Error())
+		return
+	}
+
+	query := fmt.Sprintf(
+		`SELECT 
+			iu.item_used,
+			u.username,
+			c.comp_nos,
+			c.comp_loc
+		FROM
+			inven_used iu
+		JOIN
+			users u ON iu.user_id = u.user_id
+		JOIN
+			complaints c ON iu.comp_id = c.comp_id
+		WHERE
+			iu.item_id = '%s'`, UsePdtId.CompId)
+
+	rows, err := db.Query(query)
+
+	var rowScan UsePdtIdRes
+	var resp []UsePdtIdRes
+
+	if err != nil {
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		log.Println(err.Error())
+		return
+	}
+
+	for rows.Next() {
+		rows.Scan(&rowScan.QtyUsed, &rowScan.Uname, &rowScan.CompNos, &rowScan.CompLoc)
+		resp = append(resp, rowScan)
+	}
+
+	res.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(res).Encode(resp); err != nil {
+		log.Println("Error encoding JSON:", err)
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
 }

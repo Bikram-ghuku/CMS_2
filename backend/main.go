@@ -181,6 +181,13 @@ func main() {
 	http.Handle("POST /inven/usecomp", middleware.JWTMiddleware(invCompHandler))
 	log.Println("Loaded Route: POST /inven/usecomp")
 
+	//------
+	invPdtHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		controllers.GetUseByPdtId(w, r, db)
+	})
+	http.Handle("POST /inven/usepdtid", middleware.JWTMiddleware(invPdtHandler))
+	log.Println("Loaded Route: POST /inven/usepdtid")
+
 	// -----
 	invUseDelHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		controllers.DelInvenUsed(w, r, db)
