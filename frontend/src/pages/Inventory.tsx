@@ -8,6 +8,7 @@ import { Plus } from 'lucide-react';
 import Footer from '../components/Footer';
 import AddInventoryModal from '../components/AddInventoryModal';
 import InventoryDetailsModal from '../components/InventoryDetailsModal';
+import InvUseDesc from '../components/InvUseDesc';
 
 type item = {
     item_name:string,
@@ -25,8 +26,11 @@ function Inventory() {
     const [filteredComps, setFilteredComps] = useState<item[]>([]);
     const [searchInput, setSearchInput] = useState<string>('');
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const [isDetModalOpen, setIsDetModalOpen] = useState<boolean>(false)
-    const [detItem, setDetItem] = useState<item>(empty)
+    const [isDetModalOpen, setIsDetModalOpen] = useState<boolean>(false);
+    const [detItem, setDetItem] = useState<item>(empty);
+    const [isLocModalOpen, setIsLocModalOpen] = useState<boolean>(false);
+    const [lDesc, setLDesc] = useState<string>('');
+    const [compI, setCompI] = useState<string>('');
 
     useEffect(() => {
         fetch(BACKEND_URL+'/inven/all', {
@@ -81,6 +85,16 @@ function Inventory() {
         setIsDetModalOpen(false);
     };
 
+    const openLocModal = (itemdata: item) => {
+        setLDesc(itemdata.item_desc);
+        setCompI(itemdata.item_id);
+        setIsLocModalOpen(true);
+    };
+
+    const closeLocModal = () => {
+        setIsLocModalOpen(false);
+    };
+
 
     return (
         <div>
@@ -123,7 +137,8 @@ function Inventory() {
                                             <td>{item.item_unit}</td>
                                             <td>{item.item_qty}</td>
                                             <td>
-                                                <div onClick={() => openDetModal(item)} className='btn-opt'>View Details</div>
+                                                <div onClick={() => openDetModal(item)} className='btn-opt'>Details</div>
+                                                <div onClick={() => openLocModal(item)} className='btn-opt'>Usage</div>
                                             </td>
                                         </tr>
                                     )
@@ -135,6 +150,7 @@ function Inventory() {
             </div>
             <AddInventoryModal isOpen={isModalOpen} onRequestClose={closeModal}/>
             <InventoryDetailsModal isOpen={isDetModalOpen} onRequestClose={closeDetModal} item={detItem}/>
+            <InvUseDesc isOpen={isLocModalOpen} onRequestClose={closeLocModal} desc={lDesc} compId={compI}/>
             <ToastContainer/>
             <Footer />
         </div>
