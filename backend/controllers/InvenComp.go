@@ -190,7 +190,7 @@ func GetInvUsed(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 			return
 		}
 
-		query = "SELECT SUM(iu.item_used), SUM(item_used * i.item_price) FROM inven_used iu JOIN inventory i ON iu.item_id == i.item_id"
+		query = fmt.Sprintf("SELECT SUM(iu.item_used), SUM(iu.item_used * i.item_price) FROM inven_used iu JOIN inventory i ON iu.item_id = i.item_id WHERE iu.item_id = '%s'", invenUsed.ItemID)
 		row := db.QueryRow(query)
 		row.Scan(&invenUsed.UptoUse, &invenUsed.UptoAmt)
 		invenUsedList = append(invenUsedList, invenUsed)
