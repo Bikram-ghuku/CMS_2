@@ -111,8 +111,8 @@ const Invoice = React.forwardRef<HTMLDivElement, InvoiceProps>(({ selectedItems,
                             <td>{item.item_used}</td>
                             <td>{`₹${item.item_price.toFixed(2)}`}</td>
                             <td>{`₹${(item.item_used * item.item_price).toFixed(2)}`}</td>
-                            <td>{item.upto_use + item.item_used}</td>
-                            <td>{`₹${(item.upto_amt + (item.item_used * item.item_price)).toFixed(2)}`}</td>
+                            <td>{item.upto_use}</td>
+                            <td>{`₹${(item.upto_amt).toFixed(2)}`}</td>
                         </tr>
                     ))}
                     <tr key="end">
