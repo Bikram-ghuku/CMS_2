@@ -11,15 +11,16 @@ import InventoryDetailsModal from '../components/InventoryDetailsModal';
 import InvUseDesc from '../components/InvUseDesc';
 
 type item = {
-    item_name:string,
-    item_desc:string,
-    item_qty:number,
-    item_price:number,
-    item_id:string,
-    item_unit:string
+    item_nos:number;
+    item_name:string;
+    item_desc:string;
+    item_qty:number;
+    item_price:number;
+    item_id:string;
+    item_unit:string;
 }
 
-const empty:item = {item_name:"", item_desc:"", item_price: 0, item_qty:0, item_id:"", item_unit:""}
+const empty:item = {item_name:"", item_desc:"", item_price: 0, item_qty:0, item_id:"", item_unit:"", item_nos: 0}
 
 function Inventory() {
     const [comps, setComps] = useState<item[]>([])
@@ -120,6 +121,7 @@ function Inventory() {
                     <table>
                         <thead>
                             <tr>
+                                <th>Sl No.</th>
                                 <th>Name</th>
                                 <th>Description</th>
                                 <th>Unit</th>
@@ -132,13 +134,14 @@ function Inventory() {
                                 filteredComps.map((item, idx) => {
                                     return (
                                         <tr key={idx}>
+                                            <td>{item.item_nos}</td>
                                             <td>{item.item_name}</td>
                                             <td style={{width: "50%"}}>{item.item_desc}</td>
                                             <td>{item.item_unit}</td>
                                             <td>{item.item_qty}</td>
                                             <td>
                                                 <div onClick={() => openDetModal(item)} className='btn-opt'>Details</div>
-                                                <div onClick={() => openLocModal(item)} className='btn-opt'>Usage</div>
+                                                <div onClick={() => openLocModal(item)} className='btn-opt'style={{display: "none"}}>Usage</div>
                                             </td>
                                         </tr>
                                     )
