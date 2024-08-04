@@ -19,6 +19,7 @@ var BodyInven struct {
 }
 
 var RespItem struct {
+	ItemNo    float64 `json:"item_nos"`
 	ItemName  string  `json:"item_name"`
 	ItemQty   float64 `json:"item_qty"`
 	ItemPrice float64 `json:"item_price"`
@@ -95,7 +96,7 @@ func GetAllProducts(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	defer rows.Close()
 
 	items := []models.Inventory{}
-
+	var idx float32 = 1
 	for rows.Next() {
 		item := models.Inventory{}
 		if err := rows.Scan(&item.ItemID, &item.ItemName, &item.ItemQty, &item.ItemPrice, &item.ItemDesc, &item.ItemUnit); err != nil {
@@ -103,6 +104,8 @@ func GetAllProducts(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 			http.Error(res, "Internal Server Error", http.StatusInternalServerError)
 			return
 		}
+		item.ItemNo = float64(idx)
+		idx++
 		items = append(items, item)
 	}
 
