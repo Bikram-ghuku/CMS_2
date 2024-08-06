@@ -219,7 +219,7 @@ function Invenused() {
                                             <td>{item.item_b === 0 ? "nil" : item.item_b}</td>
                                             <td>{item.item_h === 0 ? "nil" : item.item_h}</td>
                                             <td>{item.comp_nos}</td>
-                                            <td>{'₹'+item.item_used * item.item_price}</td>
+                                            <td>{'₹'+(item.item_used * item.item_price).toFixed(2)}</td>
                                             <td style={{width: "10px"}}>
                                                 <div onClick={() => handleOpen(item)} className='btn-opt'>
                                                     Edit
