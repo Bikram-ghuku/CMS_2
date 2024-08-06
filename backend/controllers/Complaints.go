@@ -83,7 +83,7 @@ func OpenComplaint(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 		return
 	}
 
-	query := fmt.Sprintf("UPDATE complaints SET fin_text = '', fin_datetime = '', comp_stat = '%s' WHERE comp_nos = '%s' AND comp_id = '%s'", models.CompOpen, CloseCompBody.CompNos, CloseCompBody.CompId)
+	query := fmt.Sprintf("UPDATE complaints SET fin_text = '', fin_datetime = '%s', comp_stat = '%s' WHERE comp_nos = '%s' AND comp_id = '%s'", CloseCompBody.FinTime.Format(time.RFC3339Nano), models.CompOpen, CloseCompBody.CompNos, CloseCompBody.CompId)
 
 	_, err := db.Exec(query)
 	if err != nil {
