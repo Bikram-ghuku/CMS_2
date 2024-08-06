@@ -1,5 +1,7 @@
 import React from 'react'
 import Modal from 'react-modal';
+import { BACKEND_URL } from '../constants';
+import { toast } from 'react-toastify';
 
 
 interface FinDatetime {
@@ -34,7 +36,28 @@ const CloseCompInfo:React.FC<AddInventoryModalProps> = ({
     onRequestClose,
     comp
 }) => {
-    const dateTime = new Date(comp.fin_datetime.Time)
+    const dateTime = new Date(comp.fin_datetime.Time);
+    const reOpen = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault()
+        const dateTime = new Date()
+        console.log(dateTime.toUTCString())
+        fetch(BACKEND_URL+"/comp/open", {
+            method:"POST",
+            credentials:"include",
+            body:JSON.stringify({comp_nos: comp.comp_nos, comp_id: comp.comp_id , fin_text: '', fin_datetime: dateTime.toISOString()})
+        }).then((data) => {
+            onRequestClose()
+            if(data.ok){
+                toast.success("Complaint ReOpened successfully", {
+                    position: "bottom-center"
+                })
+            }else{
+                toast.error("Error ReOpening complaint", {
+                    position: "bottom-center"
+                })
+            }
+        })
+    }
     return (
         <Modal
         isOpen={isOpen}
@@ -61,6 +84,7 @@ const CloseCompInfo:React.FC<AddInventoryModalProps> = ({
                 />
                 <label>Closing Text: </label>
                 <textarea value={comp.fin_text.String}placeholder='Enter Closing Message' disabled></textarea>
+                <button onClick={reOpen}>Reopen</button>
             </form>
     </Modal>
     )
