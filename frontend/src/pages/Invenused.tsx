@@ -189,13 +189,13 @@ function Invenused() {
                                     />
                                 </th>
                                 <th>Sl No.</th>
-                                <th>Item Desc</th>
+                                <th>Description</th>
                                 <th>Qty</th>
                                 <th>Length</th>
                                 <th>Breadth</th>
                                 <td>Height</td>
                                 <th>Comp No</th>
-                                <th>Price Total</th>
+                                <th>Total</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
