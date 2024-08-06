@@ -154,23 +154,23 @@ function Complaint() {
         <div>
             <SideNav />
             <TopNav />
-            <div className="comp-main">
-                <div className="comp-title">Registered Complaints</div>
-                <div className="comp-actions">
-                    <div className="comp-search">
+            <div className="user-main">
+                <div className="user-title">Registered Complaints</div>
+                <div className="user-actions">
+                    <div className="user-search">
                         <input
                             placeholder='Enter text to search'
                             value={searchInput}
                             onChange={handleSearchInputChange}
                         />
                     </div>
-                    <div className="comp-add">
-                        <button className='comp-add-btn' onClick={() => openModal()}>
+                    <div className="user-add">
+                        <button className='user-add-btn' onClick={() => openModal()}>
                             <Plus /> New Complaint
                         </button>
                     </div>
                 </div>
-                <div className="comp-table">
+                <div className="user-table">
                     <table>
                         <thead>
                             <tr>
@@ -208,7 +208,7 @@ function Complaint() {
                         </tbody>
                     </table>
                 </div>
-                <div className="comp-genbill" hidden={!isGenBillVisible}>
+                <div className="user-genbill" hidden={!isGenBillVisible}>
                     <button hidden={!isGenBillVisible} onClick={handlePrint}>Generate Bill .pdf</button>
                     <button hidden={!isGenBillVisible} onClick={onDownload}>Generate Bill .xlsx</button>
                 </div>

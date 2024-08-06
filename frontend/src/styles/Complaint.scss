@@ -18,26 +18,25 @@ $modal-text-color: #f1f1f1;
 $modal-border-radius: 8px;
 $modal-padding: 20px;
 
-.comp-main{
-    padding: 75px 50px 0px 350px;
+.user-main{
+    padding: 75px 0px 0px 300px;
     height: calc(100vh - 75px);
-    width: calc(100vw - 400px);
+    width: calc(100vw - 300px);
 
-    .comp-title{
+    .user-title{
         padding: 20px;
         font-size: 2.5rem;
         font-weight: 800;
     }
 
-    .comp-actions{
-        width: 100%;
+    .user-actions{
         height: 50px;
         padding-bottom: 25px;
         display: flex;
         justify-content: end;
         gap: 50px;
 
-        .comp-search{
+        .user-search{
             display: flex;
             align-items: center;
             input{
@@ -50,8 +49,8 @@ $modal-padding: 20px;
             }
         }
 
-        .comp-add{
-            .comp-add-btn{
+        .user-add{
+            .user-add-btn{
                 display: flex;
                 justify-content: center;
                 flex-direction: row;
@@ -63,14 +62,12 @@ $modal-padding: 20px;
         padding-right: 50px;
     }
 
-    .comp-table{
+    .user-table{
         height: calc(100vh - 235px);
         width: 100%;
         display: flex;
         justify-content: center;
         align-items: start;
-        overflow-y: scroll;
-        overflow-x: hidden;;
         table {
             table-layout:auto;
             width: 100%;
@@ -187,6 +184,6 @@ $modal-padding: 20px;
     align-items: center;
 }
 
-.comp-genbill{
+.user-genbill{
     gap: 20px;
 }
