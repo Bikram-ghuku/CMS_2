@@ -177,6 +177,7 @@ function Invenused() {
                                         onChange={() => handleAllSel()}
                                     />
                                 </th>
+                                <th>Sl No.</th>
                                 <th>Item Desc</th>
                                 <th>Quantity Used</th>
                                 <th>Length</th>
@@ -201,6 +202,7 @@ function Invenused() {
                                                     onChange={() => handleCheckboxChange(item.id)}
                                                 />
                                             </td>
+                                            <td>{idx + 1}</td>
                                             <td>{item.item_desc}</td>
                                             <td>{item.item_used}</td>
                                             <td>{item.item_l === 0 ? "nil" : item.item_l}</td>
