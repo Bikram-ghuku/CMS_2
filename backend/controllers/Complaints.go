@@ -33,6 +33,10 @@ var UpdtCompBody struct {
 	CompDate time.Time `json:"comp_date"`
 }
 
+var DelCompBody struct {
+	CompId string `json:"comp_id"`
+}
+
 func AddComplaint(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	if err := json.NewDecoder(req.Body).Decode(&CompBody); err != nil {
 		log.Println(err.Error())
@@ -143,4 +147,59 @@ func UpdateComp(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	res.WriteHeader(http.StatusOK)
 	res.Header().Set("Content-Type", "text/plain")
 	res.Write([]byte("Complaint Updated Successfully"))
+}
+
+func DelComp(res http.ResponseWriter, req *http.Request, db *sql.DB) {
+
+	// Decode the request body into the DelCompBody struct
+	if err := json.NewDecoder(req.Body).Decode(&DelCompBody); err != nil {
+		log.Println(err.Error())
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+	tx, err := db.Begin()
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+	defer func() {
+		if err != nil {
+			tx.Rollback()
+			http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+		tx.Commit()
+	}()
+
+	query := `
+		UPDATE inventory i
+		SET item_qty = item_qty + iu.item_used
+		FROM inven_used iu
+		WHERE iu.item_id = i.item_id AND iu.comp_id = $1
+	`
+	_, err = tx.Exec(query, DelCompBody.CompId)
+	if err != nil {
+		log.Println(err.Error())
+		return
+	}
+
+	query = "DELETE FROM inven_used WHERE comp_id = $1"
+	_, err = tx.Exec(query, DelCompBody.CompId)
+	if err != nil {
+		log.Println(err.Error())
+		return
+	}
+
+	query = "DELETE FROM complaints WHERE comp_id = $1"
+	_, err = tx.Exec(query, DelCompBody.CompId)
+	if err != nil {
+		log.Println(err.Error())
+		return
+	}
+
+	res.WriteHeader(http.StatusOK)
+	res.Write([]byte("Complaint deleted successfully"))
 }

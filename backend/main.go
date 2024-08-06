@@ -165,6 +165,13 @@ func main() {
 	http.Handle("POST /comp/update", middleware.JWTMiddleware(updtCompHandler))
 	log.Println("Loaded Route: POST /comp/update")
 
+	//------
+	delCompHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		controllers.DelComp(w, r, db)
+	})
+	http.Handle("POST /comp/delete", middleware.JWTMiddleware(delCompHandler))
+	log.Println("Loaded Route: POST /comp/delete")
+
 	//
 	//
 	// Inventory Used
