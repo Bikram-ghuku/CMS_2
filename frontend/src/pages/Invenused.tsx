@@ -190,12 +190,11 @@ function Invenused() {
                                 </th>
                                 <th>Sl No.</th>
                                 <th>Item Desc</th>
-                                <th>Quantity Used</th>
+                                <th>Qty</th>
                                 <th>Length</th>
                                 <th>Breadth</th>
                                 <td>Height</td>
-                                <th>Complaint No</th>
-                                <th>Used By</th>
+                                <th>Comp No</th>
                                 <th>Price Total</th>
                                 <th>Actions</th>
                             </tr>
@@ -220,9 +219,8 @@ function Invenused() {
                                             <td>{item.item_b === 0 ? "nil" : item.item_b}</td>
                                             <td>{item.item_h === 0 ? "nil" : item.item_h}</td>
                                             <td>{item.comp_nos}</td>
-                                            <td>{item.username}</td>
                                             <td>{'₹'+item.item_used * item.item_price}</td>
-                                            <td>
+                                            <td style={{width: "10px"}}>
                                                 <div onClick={() => handleOpen(item)} className='btn-opt'>
                                                     Edit
                                                 </div>
