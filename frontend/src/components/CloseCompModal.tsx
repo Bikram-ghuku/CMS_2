@@ -51,6 +51,24 @@ const CloseCompModal: React.FC<AddInventoryModalProps> = ({
             }
         })
     };
+
+    const handleDelete = () => {
+        fetch(BACKEND_URL+'/comp/delete', {
+            method: "POST",
+            credentials:"include",
+            body: JSON.stringify({comp_id: comp.comp_id})
+        }).then((data) => {
+            if(data.ok){
+                toast.success("Complaint Closed successfully", {
+                    position: "bottom-center"
+                })
+            }else{
+                toast.error("Error closing complaint", {
+                    position: "bottom-center"
+                })
+            }
+        })
+    }
     return (
         <Modal
             isOpen={isOpen}
@@ -78,6 +96,7 @@ const CloseCompModal: React.FC<AddInventoryModalProps> = ({
                     <label>Closing Text: </label>
                     <textarea value={newDesc} onChange={handleDescChange} placeholder='Enter Closing Message'></textarea>
                     <button type="button" onClick={handleRegister}>Close Complaint</button>
+                    <button type='button' onClick={handleDelete} style={{background: "red"}}>Delete Complaint</button>
                 </form>
         </Modal>
     );
