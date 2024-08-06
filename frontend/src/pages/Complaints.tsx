@@ -89,7 +89,7 @@ function Complaints() {
                                 return (
                                     <tr key={idx}>
                                         <td>{item.comp_nos}</td>
-                                        <td>{item.comp_loc}</td>
+                                        <td style={{maxWidth: "10px", wordBreak: "break-all"}}>{item.comp_loc}</td>
                                         <td className={'tr-'+item.comp_stat}>{item.comp_stat}</td>
                                         <td className='sm-hide'>{time.toLocaleDateString()}</td>
                                         <td className='sm-hide'>{time.toLocaleTimeString()}</td>

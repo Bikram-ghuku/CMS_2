@@ -69,7 +69,8 @@ $modal-padding: 20px;
         justify-content: center;
         align-items: start;
         table {
-            width: 90%;
+            table-layout:auto;
+            width: 100%;
             border-collapse: separate;
             border-spacing: 0 10px;
             font-size: $table-font-size;
