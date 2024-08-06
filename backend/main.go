@@ -145,6 +145,13 @@ func main() {
 	log.Println("Loaded Route: POST /comp/close")
 
 	//------
+	reOpenCompHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		controllers.OpenComplaint(w, r, db)
+	})
+	http.Handle("POST /comp/open", middleware.JWTMiddleware(reOpenCompHandler))
+	log.Println("Loaded Route: POST /comp/open")
+
+	//------
 	allCompHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		controllers.GetAllComp(w, r, db)
 	})

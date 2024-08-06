@@ -76,6 +76,27 @@ func CloseComplaint(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	res.Write([]byte("Compaint Closed Succesfully"))
 }
 
+func OpenComplaint(res http.ResponseWriter, req *http.Request, db *sql.DB) {
+	if err := json.NewDecoder(req.Body).Decode(&CloseCompBody); err != nil {
+		log.Println(err.Error())
+		http.Error(res, "Bad Request", http.StatusBadRequest)
+		return
+	}
+
+	query := fmt.Sprintf("UPDATE complaints SET fin_text = '', fin_datetime = '', comp_stat = '%s' WHERE comp_nos = '%s' AND comp_id = '%s'", models.CompOpen, CloseCompBody.CompNos, CloseCompBody.CompId)
+
+	_, err := db.Exec(query)
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+	res.WriteHeader(http.StatusOK)
+	res.Header().Set("Content-Type", "text/plain")
+	res.Write([]byte("Compaint ReOpend Succesfully"))
+}
+
 func GetAllComp(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	queryStr := "SELECT * FROM complaints ORDER BY comp_date ASC"
 	rows, err := db.Query(queryStr)
