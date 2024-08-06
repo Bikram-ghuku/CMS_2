@@ -81,6 +81,15 @@ $modal-padding: 20px;
                         padding: $table-padding;
                         text-align: left;
                         font-weight: bold;
+
+                        &:nth-child(1) { max-width: 5%; }
+                        &:nth-child(2) { max-width: 10%; }
+                        &:nth-child(3) { max-width: 20%; }
+                        &:nth-child(4) { max-width: 35%; }
+                        &:nth-child(5) { max-width: 10%; }
+                        &:nth-child(6) { max-width: 10%; }
+                        &:nth-child(7) { max-width: 10%; }
+                        &:nth-child(8) { max-width: 10%; }
                     }
                 }
             }
@@ -107,6 +116,14 @@ $modal-padding: 20px;
                                 background-color: $table-option-hover-bg;
                             }
                         }
+                        &:nth-child(1) { max-width: 5%; }
+                        &:nth-child(2) { max-width: 10%; }
+                        &:nth-child(3) { max-width: 20%; }
+                        &:nth-child(4) { max-width: 35%; }
+                        &:nth-child(5) { max-width: 10%; }
+                        &:nth-child(6) { max-width: 10%; }
+                        &:nth-child(7) { max-width: 10%; }
+                        &:nth-child(8) { max-width: 10%; }
                     }
                 }
             }
