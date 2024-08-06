@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import SideNav from '../components/SideNav'
 import TopNav from '../components/TopNav'
 import { BACKEND_URL } from '../constants'
-import { ToastContainer, toast } from 'react-toastify';
+import { Id, ToastContainer, toast } from 'react-toastify'
 import "../styles/Complaint.scss"
 import { Plus } from 'lucide-react';
 import Footer from '../components/Footer';
@@ -51,8 +51,10 @@ function Complaint() {
     const tableRef = useRef<HTMLTableElement>(null);
     const [isGenBillVisible, setGenBillVisible] = useState<boolean>(false)
     const [selectedItem, setSelectedItem] = useState<complaint>(empty);
+    const toastId = useRef<Id>();
 
     useEffect(() => {
+        toastId.current = toast.info("Getting complaints. Please Wait....", { autoClose: false, closeOnClick: false, })
         fetch(BACKEND_URL+'/comp/all', {
             method:"GET",
             credentials:'include'
@@ -62,15 +64,21 @@ function Complaint() {
                     setComps(jsondata)
                     setFilteredComps(jsondata)
                 })
+                toast.update(toastId.current!, {
+                    render: "Loaded Data", 
+                    autoClose: 2000
+                })
             }else{
-                toast.error("Loading Error", {
-                    position: "bottom-center"
-              })
+                toast.update(toastId.current!, {
+                    render: "Error Loading Data", 
+                    autoClose: 3000
+                })
             }
         }).catch((err) => {
-            toast.error("Error: "+err, {
-				position: "bottom-center"
-			});
+            toast.update(toastId.current!, {
+                render: "Error Loading Data: "+ err, 
+                autoClose: 3000
+            })
         })
     }, [])
 

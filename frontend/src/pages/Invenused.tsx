@@ -7,7 +7,7 @@ import { BACKEND_URL } from '../constants'
 import Invoice from '../components/Invoice'
 import { useReactToPrint } from 'react-to-print';
 import UpdateInventUse from '../components/UpdateInvenUse'
-import { ToastContainer } from 'react-toastify'
+import { Id, ToastContainer, toast } from 'react-toastify'
 
 type InvenUsed = {
     id: string;
@@ -63,8 +63,10 @@ function Invenused() {
     const [editeModalOpen, setEditModalOpen] = useState<boolean>(false);
     const [activeItem, setActiveItem] = useState<InvenUsed>(empty);
     const [allItem, setAllItem] = useState<item[]>([]);
+    const toastId = useRef<Id>();
 
     useEffect(() => {
+        toastId.current = toast.info("Getting inventory Used. Please Wait....", { autoClose: false, closeOnClick: false, })
         fetch(BACKEND_URL + "/inven/all", {
             method: "GET",
             credentials: "include"
@@ -72,6 +74,15 @@ function Invenused() {
             if(data.ok){
                 data.json().then((dataJson: item[]) => {
                     if(dataJson != null) setAllItem(dataJson)
+                })
+                toast.update(toastId.current!, {
+                    render: "Loaded Data", 
+                    autoClose: 2000
+                })
+            }else{
+                toast.update(toastId.current!, {
+                    render: "Error Loading Data", 
+                    autoClose: 3000
                 })
             }
         })
