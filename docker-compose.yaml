@@ -76,5 +76,23 @@ services:
     depends_on:
       - backend
 
+  backup:
+    image: bikramghuku05/psql-dbox:latest
+    restart: unless
+    environment:
+      - DB_UNAME=${DB_UNAME}
+      - DB_PSWD=${DB_PSWD}
+      - DB_NAME=${DB_NAME}
+      - DB_HOST=cims-database
+      - DB_PORT=${DB_PORT}
+      - DROPBOX_ACCESS_TOKEN=${DROPBOX_ACCESS_TOKEN}
+    networks:
+      cims-internal:
+        aliases:
+          - cims-bckup
+
+    depends_on:
+      - database
+
 networks:
   cims-internal:
