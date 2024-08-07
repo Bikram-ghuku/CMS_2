@@ -78,7 +78,7 @@ services:
 
   backup:
     image: bikramghuku05/psql-dbox:latest
-    restart: unless
+    restart: unless-stopped
     environment:
       - DB_UNAME=${DB_UNAME}
       - DB_PSWD=${DB_PSWD}
