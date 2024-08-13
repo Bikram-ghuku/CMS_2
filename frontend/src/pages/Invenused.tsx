@@ -33,6 +33,7 @@ type InvenUsed = {
     bill_no:string;
     upto_use: number;
     upto_amt: number;
+    serial_no: number;
 };
 
 const empty:InvenUsed = {
@@ -40,7 +41,7 @@ const empty:InvenUsed = {
     item_id:"", item_name:"", item_qty: 0, item_price: 0, item_desc: "", item_unit:"", 
     item_l: 0, item_b: 0, item_h: 0, bill_no:"",
     comp_id:"", comp_nos:"", comp_loc:"", comp_des:"", comp_stat:"", comp_date:"",
-    upto_use: 0, upto_amt: 0
+    upto_use: 0, upto_amt: 0, serial_no: 0
 };
 
 type item = {
@@ -195,6 +196,7 @@ function Invenused() {
                                 <th>Breadth</th>
                                 <td>Height</td>
                                 <th>Comp No</th>
+                                <th>BOQ No</th>
                                 <th>Total</th>
                                 <th>Actions</th>
                             </tr>
@@ -219,6 +221,7 @@ function Invenused() {
                                             <td>{item.item_b === 0 ? "nil" : item.item_b}</td>
                                             <td>{item.item_h === 0 ? "nil" : item.item_h}</td>
                                             <td>{item.comp_nos}</td>
+                                            <td>{item.serial_no}</td>
                                             <td>{'₹'+(item.item_used * item.item_price).toFixed(2)}</td>
                                             <td style={{width: "10px"}}>
                                                 <div onClick={() => handleOpen(item)} className='btn-opt'>

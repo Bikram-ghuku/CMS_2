@@ -20,6 +20,7 @@ type Item = {
     item_qty: number;
     item_price: number;
     item_id: string;
+    item_nos: number;
 };
 
 interface InventoryDetailsModalProps {
@@ -28,7 +29,7 @@ interface InventoryDetailsModalProps {
     comp: Complaint;
 }
 
-const emptyItem: Item = { item_name: "", item_desc: "", item_price: 0, item_qty: 0, item_id: "" };
+const emptyItem: Item = { item_name: "", item_desc: "", item_price: 0, item_qty: 0, item_id: "", item_nos: 0 };
 
 const CompDetailsModal: React.FC<InventoryDetailsModalProps> = ({
     isOpen,
@@ -135,7 +136,7 @@ const CompDetailsModal: React.FC<InventoryDetailsModalProps> = ({
 
     const selectOptions = invenItems.map((item) => ({
         value: item.item_id,
-        label: item.item_desc,
+        label: item.item_nos + ') ' + item.item_desc,
     }));
 
     const HandleQuantChange = (e: React.ChangeEvent<HTMLInputElement>) => {
