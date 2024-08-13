@@ -86,7 +86,7 @@ func GetProductByID(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 }
 
 func GetAllProducts(res http.ResponseWriter, req *http.Request, db *sql.DB) {
-	queryStr := `SELECT item_id, item_name, item_qty, item_price, item_desc, item_unit FROM inventory`
+	queryStr := `SELECT item_id, item_name, item_qty, item_price, item_desc, item_unit, serial_number FROM inventory ORDER BY serial_number`
 	rows, err := db.Query(queryStr)
 	if err != nil {
 		log.Println(err.Error())
@@ -96,16 +96,13 @@ func GetAllProducts(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	defer rows.Close()
 
 	items := []models.Inventory{}
-	var idx float32 = 1
 	for rows.Next() {
 		item := models.Inventory{}
-		if err := rows.Scan(&item.ItemID, &item.ItemName, &item.ItemQty, &item.ItemPrice, &item.ItemDesc, &item.ItemUnit); err != nil {
+		if err := rows.Scan(&item.ItemID, &item.ItemName, &item.ItemQty, &item.ItemPrice, &item.ItemDesc, &item.ItemUnit, &item.ItemNo); err != nil {
 			log.Println(err.Error())
 			http.Error(res, "Internal Server Error", http.StatusInternalServerError)
 			return
 		}
-		item.ItemNo = float64(idx)
-		idx++
 		items = append(items, item)
 	}
 

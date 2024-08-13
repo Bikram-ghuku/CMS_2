@@ -51,6 +51,7 @@ type InvenUsed struct {
 	CompStat  string  `json:"comp_stat"`
 	CompDate  string  `json:"comp_date"`
 	BillNo    string  `json:"bill_no"`
+	SerialNo  float64 `json:"serial_no"`
 }
 
 var delInvenUse struct {
@@ -140,6 +141,7 @@ func GetInvUsed(res http.ResponseWriter, req *http.Request, db *sql.DB) {
         i.item_price,
         i.item_desc,
 		i.item_unit,
+		i.serial_number,
 		iu.item_l,
 		iu.item_b,
 		iu.item_h,
@@ -157,7 +159,8 @@ func GetInvUsed(res http.ResponseWriter, req *http.Request, db *sql.DB) {
     JOIN 
         inventory i ON iu.item_id = i.item_id
     JOIN 
-        complaints c ON iu.comp_id = c.comp_id;
+        complaints c ON iu.comp_id = c.comp_id
+	ORDER BY i.serial_number;
     `
 
 	rows, err := db.Query(query)
@@ -184,6 +187,7 @@ func GetInvUsed(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 			&invenUsed.ItemPrice,
 			&invenUsed.ItemDesc,
 			&invenUsed.ItemUnit,
+			&invenUsed.SerialNo,
 			&invenUsed.ItemL,
 			&invenUsed.ItemB,
 			&invenUsed.ItemH,
