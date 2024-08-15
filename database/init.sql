@@ -20,6 +20,7 @@ CREATE TABLE inventory
     item_price numeric NOT NULL,
     item_desc  text NOT NULL,
     item_unit  text NOT NULL,
+    serial_number serial UNIQUE,
     CONSTRAINT PK_inventory PRIMARY KEY (item_id)
 );
 
