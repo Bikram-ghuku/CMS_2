@@ -6,6 +6,8 @@
 : "${DB_NAME:?DB_NAME is not set}"
 : "${DROPBOX_ACCESS_TOKEN:?DROPBOX_ACCESS_TOKEN is not set}"
 
+export PGPASSWORD="${DB_PSWD}"
+
 pg_dump -h ${DB_HOST} -p ${DB_PORT} -U ${DB_UNAME} ${DB_NAME} > /backups/db_backup.sql
 
 curl -X POST https://content.dropboxapi.com/2/files/upload \
