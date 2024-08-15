@@ -15,5 +15,3 @@ curl -X POST https://content.dropboxapi.com/2/files/upload \
   --header "Dropbox-API-Arg: {\"path\": \"/db_backup.sql\",\"mode\": \"overwrite\"}" \
   --header "Content-Type: application/octet-stream" \
   --data-binary @/backups/db_backup.sql
-
-rm /backups/db_backup.sql
