@@ -8,6 +8,7 @@ import Invoice from '../components/Invoice'
 import { useReactToPrint } from 'react-to-print';
 import UpdateInventUse from '../components/UpdateInvenUse'
 import { Id, ToastContainer, toast } from 'react-toastify'
+import MeasureMent from '../components/Measurement'
 
 type InvenUsed = {
     id: string;
@@ -61,6 +62,7 @@ function Invenused() {
     const [selectedItemsId, setSelectedItemsId] = useState<string[]>([]);
     const [selectedItem, setSelectedItem] = useState<InvenUsed[]>([]);
     const componentRef = useRef<HTMLDivElement>(null);
+    const measureRef = useRef<HTMLDivElement>(null);
     const [editeModalOpen, setEditModalOpen] = useState<boolean>(false);
     const [activeItem, setActiveItem] = useState<InvenUsed>(empty);
     const [allItem, setAllItem] = useState<item[]>([]);
@@ -164,6 +166,10 @@ function Invenused() {
         setEditModalOpen(true)
     }
 
+    const handleMesurePrint = useReactToPrint({
+        content:() => measureRef.current
+    })
+
     return (
         <div>
             <SideNav />
@@ -238,9 +244,11 @@ function Invenused() {
 
                 <div className="user-genbill" hidden={!isGenBillVisible}>
                     <button hidden={!isGenBillVisible} onClick={handlePrint}>Generate Bill</button>
+                    <button hidden={!isGenBillVisible} onClick={handleMesurePrint}>Generate Mesurements</button>
                 </div>
                 <div style={{ display: 'none' }}>
                     <Invoice ref={componentRef} selectedItems={selectedItem} allItems={allItem}/>
+                    <MeasureMent ref={measureRef} selectedItems={selectedItem} />
                 </div>
             </div>
             <Footer />
