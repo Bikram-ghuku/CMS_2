@@ -66,10 +66,6 @@ body{
         tbody {
             tr {
                 page-break-inside: avoid;
-                &:nth-child(even) {
-                    background-color: #fafafa;
-                }
-    
                 td {
                     padding: 10px;
                     border-bottom: 1px solid #eeeeee;
