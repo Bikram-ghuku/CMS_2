@@ -11,11 +11,12 @@ import (
 )
 
 var BodyInven struct {
-	ItemName  string  `json:"item_name"`
-	ItemQty   float64 `json:"item_qty"`
-	ItemPrice float64 `json:"item_price"`
-	ItemDesc  string  `json:"item_desc"`
-	ItemUnit  string  `json:"item_unit"`
+	ItemName   string  `json:"item_name"`
+	ItemQty    float64 `json:"item_qty"`
+	ItemPrice  float64 `json:"item_price"`
+	ItemDesc   string  `json:"item_desc"`
+	ItemUnit   string  `json:"item_unit"`
+	ItemSerial float64 `json:"serial_number"`
 }
 
 var RespItem struct {
@@ -47,7 +48,7 @@ func AddProducts(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 		return
 	}
 
-	queryStr := fmt.Sprintf(`INSERT INTO inventory(item_name, item_qty, item_price, item_desc, item_unit) VALUES ('%s', %f, %f, '%s', '%s')`, BodyInven.ItemName, BodyInven.ItemQty, BodyInven.ItemPrice, BodyInven.ItemDesc, BodyInven.ItemUnit)
+	queryStr := fmt.Sprintf(`INSERT INTO inventory(item_name, item_qty, item_price, item_desc, item_unit, serial_number) VALUES ('%s', %f, %f, '%s', '%s', %f)`, BodyInven.ItemName, BodyInven.ItemQty, BodyInven.ItemPrice, BodyInven.ItemDesc, BodyInven.ItemUnit, BodyInven.ItemSerial)
 
 	_, err := db.Exec(queryStr)
 	if err != nil {
