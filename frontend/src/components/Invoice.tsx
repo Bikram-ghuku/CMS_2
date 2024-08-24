@@ -70,7 +70,7 @@ const Invoice = React.forwardRef<HTMLDivElement, InvoiceProps>(({ selectedItems,
                 upto_amt = xd[j].upto_amt;
                 upto_use = xd[j].upto_use;
             }
-            var iteme: InvenUsed = {...empty, item_desc: allItems[i].item_desc, item_unit: allItems[i].item_unit, item_price: allItems[i].item_price, item_used: qty, upto_amt, upto_use};
+            var iteme: InvenUsed = {...empty, item_desc: allItems[i].item_desc, item_unit: allItems[i].item_unit, item_price: allItems[i].item_price, item_used: qty, upto_amt, upto_use, item_qty: allItems[i].item_qty};
             d.push(iteme);
         }
 
@@ -108,7 +108,7 @@ const Invoice = React.forwardRef<HTMLDivElement, InvoiceProps>(({ selectedItems,
                             <td>{idx + 1}</td>
                             <td style={{textAlign: "left"}}>{item.item_desc}</td>
                             <td>{item.item_unit}</td>
-                            <td>{item.item_used}</td>
+                            <td>{item.item_qty}</td>
                             <td>{`₹${item.item_price.toFixed(2)}`}</td>
                             <td>{`₹${(item.item_used * item.item_price).toFixed(2)}`}</td>
                             <td>{item.upto_use}</td>
