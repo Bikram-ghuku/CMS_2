@@ -14,12 +14,12 @@ CREATE TABLE users
 
 CREATE TABLE inventory
 (
-    item_id    uuid DEFAULT uuid_generate_v4() NOT NULL,
-    item_name  text NOT NULL,
-    item_qty   numeric NOT NULL,
-    item_price numeric NOT NULL,
-    item_desc  text NOT NULL,
-    item_unit  text NOT NULL,
+    item_id       uuid DEFAULT uuid_generate_v4() NOT NULL,
+    item_name     text NOT NULL,
+    item_qty      numeric NOT NULL,
+    item_price    numeric NOT NULL,
+    item_desc     text NOT NULL,
+    item_unit     text NOT NULL,
     serial_number serial UNIQUE,
     CONSTRAINT PK_inventory PRIMARY KEY (item_id)
 );
