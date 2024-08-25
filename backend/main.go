@@ -225,6 +225,12 @@ func main() {
 	http.Handle("GET /stat/num", middleware.JWTMiddleware(numHandler))
 	log.Println("Loaded Route: GET /stat/num")
 
+	chartHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		controllers.GetCompChart(w, r, db)
+	})
+	http.Handle("GET /stat/chart", middleware.JWTMiddleware(chartHandler))
+	log.Println("Loaded Route: GET /stat/chart")
+
 	//
 	//
 	// Bill Routes
