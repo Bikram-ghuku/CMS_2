@@ -91,7 +91,7 @@ const UpdateInventUse: React.FC<InventoryDetailsModalProps> = ({
     }
 
     useEffect(() => {
-        var x:number = 0;
+        let x:number = 0;
         if(l != 0 || b != 0 || h != 0) x = 1;
         if(l != 0) x*=l;
         if(b != 0) x*=b;

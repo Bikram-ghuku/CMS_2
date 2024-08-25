@@ -7,12 +7,17 @@ import { useEffect, useState } from "react";
 import { BACKEND_URL } from "../constants";
 import { ToastContainer, toast } from 'react-toastify';
 import PieChart from "../components/PieChart";
+import ChartComponent from "../components/GraphChart";
 
 type claims = {
     uname:string,
     role:string
 }
 
+type ghPoint = {
+    comp_data: string,
+    comp_count: number
+}
 type nums = {
     inven_nos:number,
     comp_open_nos:number,
@@ -30,6 +35,8 @@ function Home() {
         comp_close_nos:0,
         user_nos:0
     })
+    const [ghdata, setGhData] = useState<ghPoint[]>();
+    const [ghLoad, setIsghLoad] = useState(true);
 
     if(claimsJson.role == "worker"){
         document.location = "./complaints"
@@ -55,7 +62,29 @@ function Home() {
             toast.error("Error: "+err, {
 				position: "bottom-center"
 			});
-        })
+        });
+    }, [])
+
+    useEffect(()=>{
+        fetch(BACKEND_URL+"/stat/chart", {
+            method:"GET",
+            credentials: "include"
+        }).then((data) => {
+            if(data.ok){
+                data.json().then((data:ghPoint[]) => {
+                    setIsghLoad(false)
+                    setGhData(data);
+                })
+            }else{
+                toast.error("Loading Error", {
+                    position: "bottom-center"
+              })
+            }
+        }).catch((err) => {
+            toast.error("Error: "+err, {
+				position: "bottom-center"
+			});
+        });
     }, [])
 
     return (
@@ -111,7 +140,9 @@ function Home() {
                         <div className="home-stats-graph1">
                             {!load && <PieChart customProps={chartData}/>}
                         </div>
-                        <div className="home-stats-graph2"></div>
+                        <div className="home-stats-graph2">
+                            {!ghLoad && <ChartComponent data={ghdata!}/>}
+                        </div>
                     </div>
                 </div>
                 <div className="home-footer">

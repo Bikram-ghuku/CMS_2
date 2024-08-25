@@ -56,21 +56,21 @@ const Invoice = React.forwardRef<HTMLDivElement, InvoiceProps>(({ selectedItems,
     const [data, setData] = useState<InvenUsed[]>([]);
 
     useEffect(() => {
-        var d:InvenUsed[] = [];
-        for(var i = 0; i < allItems.length; i++){
+        const d:InvenUsed[] = [];
+        for(let i = 0; i < allItems.length; i++){
             //console.log(i);
             var item_id = allItems[i].item_id;
-            var xd: InvenUsed[] = selectedItems.filter((datx) => datx.item_id == item_id);
+            const xd: InvenUsed[] = selectedItems.filter((datx) => datx.item_id == item_id);
             var qty: number, upto_use: number, upto_amt: number;
             qty = 0;
             upto_amt = 0;
             upto_use = 0;
-            for(var j = 0; j < xd.length; j++){
+            for(let j = 0; j < xd.length; j++){
                 qty += xd[j].item_used;
                 upto_amt = xd[j].upto_amt;
                 upto_use = xd[j].upto_use;
             }
-            var iteme: InvenUsed = {...empty, item_desc: allItems[i].item_desc, item_unit: allItems[i].item_unit, item_price: allItems[i].item_price, item_used: qty, upto_amt, upto_use, item_qty: allItems[i].item_qty};
+            const iteme: InvenUsed = {...empty, item_desc: allItems[i].item_desc, item_unit: allItems[i].item_unit, item_price: allItems[i].item_price, item_used: qty, upto_amt, upto_use, item_qty: allItems[i].item_qty};
             d.push(iteme);
         }
 
