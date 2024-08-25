@@ -40,14 +40,14 @@ jobs:
             context: ./backend
             push: true
             tags: ${{ secrets.DOCKERHUB_USERNAME }}/cims-backend:latest
-            cache-from: type=local,src=/tmp/.buildx-cache-naarad-api
-            cache-to: type=local,dest=/tmp/.buildx-cache-naarad-api-new,mode=max
+            cache-from: type=local,src=/tmp/.buildx-cache
+            cache-to: type=local,dest=/tmp/.buildx-cache
 
       - name: Build & Push Backup
         uses: docker/build-push-action@v5
         with:
             context: ./backup_scripts
             push: true
-            tags: ${{ secrets.DOCKERHUB_USERNAME }}/cims-backend:latest
-            cache-from: type=local,src=/tmp/.buildx-cache-naarad-api
-            cache-to: type=local,dest=/tmp/.buildx-cache-naarad-api-new,mode=max
+            tags: ${{ secrets.DOCKERHUB_USERNAME }}/cims-backup:latest
+            cache-from: type=local,src=/tmp/.buildx-cache
+            cache-to: type=local,dest=/tmp/.buildx-cache
