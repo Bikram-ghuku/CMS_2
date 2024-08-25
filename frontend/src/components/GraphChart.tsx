@@ -19,8 +19,8 @@ const ChartComponent: React.FC<{data: ComplaintData[]}> = ({data}) => {
             {
                 label: 'Complaints Count',
                 data: counts,
-                borderColor: 'rgba(75,192,192,1)',
-                backgroundColor: 'rgba(75,192,192,0.2)',
+                borderColor: '#00BFFF',
+                backgroundColor: 'rgba(0, 191, 255, 0.2)',
                 fill: true,
             },
         ],
@@ -31,8 +31,14 @@ const ChartComponent: React.FC<{data: ComplaintData[]}> = ({data}) => {
         plugins: {
             legend: {
                 position: 'top' as const,
+                labels: {
+                    color: '#FFFFFF',
+                },
             },
             tooltip: {
+                backgroundColor: '#333333',
+                titleColor: '#FFFFFF',
+                bodyColor: '#FFFFFF',
                 callbacks: {
                     label: function(tooltipItem: any) {
                         return `Complaints Count: ${tooltipItem.raw}`;
@@ -45,14 +51,22 @@ const ChartComponent: React.FC<{data: ComplaintData[]}> = ({data}) => {
                 title: {
                     display: true,
                     text: 'Date',
+                    color: '#FFFFFF',
                 },
+                ticks:{
+                    color: '#FFFFFF',
+                }
             },
             y: {
                 title: {
                     display: true,
                     text: 'Number of Complaints',
+                    color: '#FFFFFF'
                 },
-                beginAtZero: true,
+                ticks: {
+                    beginAtZero: true,
+                    color: '#FFFFFF',
+                }
             },
         },
     };
