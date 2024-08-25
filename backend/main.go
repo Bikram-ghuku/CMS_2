@@ -228,6 +228,7 @@ func main() {
 	//
 	//
 	// Chart Route
+
 	chartHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		controllers.GetCompChart(w, r, db)
 	})
