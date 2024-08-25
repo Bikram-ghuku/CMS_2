@@ -48,6 +48,6 @@ jobs:
         with:
             context: ./backup_scripts
             push: true
-            tags: ${{ secrets.DOCKERHUB_USERNAME }}/cims-backup:latest
+            tags: ${{ secrets.DOCKERHUB_USERNAME }}/psql-dbox:latest
             cache-from: type=local,src=/tmp/.buildx-cache
             cache-to: type=local,dest=/tmp/.buildx-cache
