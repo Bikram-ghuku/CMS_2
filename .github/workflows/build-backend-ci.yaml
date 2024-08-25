@@ -41,11 +41,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
 
-      - name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          context: backend
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/cims-backend:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache
+      - name: Build Docker image
+        run: |
+          cd backup
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/cims-backend:latest .
+          docker push ${{ secrets.DOCKER_USERNAME }}/cims-backend:latest
