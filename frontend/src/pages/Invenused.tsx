@@ -210,7 +210,7 @@ function Invenused() {
                         </thead>
                         <tbody>
                             {
-                                filteredComps.map((item, idx) => {
+                                filteredComps.sort((a, b) => parseInt(a.comp_nos) - parseInt(b.comp_nos)).map((item, idx) => {
                                     if(item.item_used === 0) return
                                     return (
                                         <tr key={idx}>
