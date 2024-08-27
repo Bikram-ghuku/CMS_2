@@ -120,7 +120,8 @@ function Invenused() {
     const filterComps = (searchText: string) => {
         const filtered = comps.filter((comp) => 
             comp.item_desc.toLowerCase().includes(searchText.toLowerCase()) ||
-            comp.item_name.toLowerCase().includes(searchText.toLowerCase())
+            comp.item_name.toLowerCase().includes(searchText.toLowerCase()) || 
+            comp.comp_nos.toLowerCase().includes(searchText.toLowerCase())
         );
         setFilteredComps(filtered);
     };
@@ -248,7 +249,7 @@ function Invenused() {
                 </div>
                 <div style={{ display: 'none' }}>
                     <Invoice ref={componentRef} selectedItems={selectedItem} allItems={allItem}/>
-                    <MeasureMent ref={measureRef} selectedItems={selectedItem} />
+                    <MeasureMent ref={measureRef} selectedItems={selectedItem.sort((a, b) => parseInt(a.comp_nos) - parseInt(b.comp_nos))} />
                 </div>
             </div>
             <Footer />
