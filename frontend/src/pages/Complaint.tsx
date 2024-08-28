@@ -14,6 +14,7 @@ import InvoiceComp from '../components/InvoiceComp';
 import { useReactToPrint } from 'react-to-print';
 import InvoiceCompTable from '../components/InvoiceCompTable';
 import { useDownloadExcel } from 'react-export-table-to-excel';
+import InvenAppModal from '../components/InvenAppModal'
 
 
 interface FinDatetime {
@@ -51,6 +52,8 @@ function Complaint() {
     const tableRef = useRef<HTMLTableElement>(null);
     const [isGenBillVisible, setGenBillVisible] = useState<boolean>(false)
     const [selectedItem, setSelectedItem] = useState<complaint>(empty);
+    const [opInvenModal, setOpInvenModal] = useState<boolean>(false);
+    const [actInvenComp, setActInvenComp] = useState<string>('');
     const toastId = useRef<Id>();
 
     useEffect(() => {
@@ -150,6 +153,11 @@ function Complaint() {
         if(selectedItem.comp_id === comp.comp_id) setSelectedItem(empty)
         else setSelectedItem(comp)
     }
+
+    const openInvenModal = (comp_id:string) => {
+        setActInvenComp(comp_id)
+        setOpInvenModal(true);
+    }
     return (
         <div>
             <SideNav />
@@ -200,6 +208,7 @@ function Complaint() {
                                             <td>
                                                 <div onClick={() => openUpdateModal(item)} className='btn-opt'>Update</div>
                                                 {item.comp_stat === "open" ? <div onClick={() => openCloseModal(item)} className='btn-opt'>Close</div> : <div onClick={() => openClInfoModal(item)} className='btn-opt'>Info</div>}
+                                                <div onClick={() => openInvenModal(item.comp_id)} className='btn-opt'>Items</div>
                                             </td>
                                         </tr>
                                     )
@@ -220,6 +229,7 @@ function Complaint() {
             <CloseCompInfo isOpen={isClInfoModalOpen} onRequestClose={closeClInfoModal} comp={currComp} />
             <CloseCompModal isOpen={isCloseModalOpen} onRequestClose={closeCloseModal} comp={currComp}/>
             <AddCompModal isOpen={isModalOpen} onRequestClose={closeModal}/>
+            <InvenAppModal isOpen={opInvenModal} onRequestClose={() => setOpInvenModal(false)} compId={actInvenComp}/>
             <CompDetailsModal isOpen={isUpdateModalOpen} onRequestClose={closeUpdateModal} comp={currComp}/>
             <ToastContainer/>
             <Footer />
