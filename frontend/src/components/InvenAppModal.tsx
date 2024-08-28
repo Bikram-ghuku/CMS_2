@@ -145,28 +145,30 @@ const InvenAppModal = ({ isOpen, onRequestClose, compId }: InvenAppProp) => {
         >
             <h2 className="modal-title">Inventory Used</h2>
             <div className="modal-content">
-                <table className="user-table">
-                    <thead>
-                        <tr>
-                            <th>BOQ no</th>
-                            <th>Qty</th>
-                            <th>Length</th>
-                            <th>Breadth</th>
-                            <th>Height</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {viewItems.map((item) => (
-                            <tr key={item.serial_no}>
-                                <td>{item.serial_no}</td>
-                                <td>{item.item_used}</td>
-                                <td>{item.item_l}</td>
-                                <td>{item.item_b}</td>
-                                <td>{item.item_h}</td>
+                <div className="user-table-container">
+                    <table className="user-table">
+                        <thead>
+                            <tr>
+                                <th>BOQ no</th>
+                                <th>Qty</th>
+                                <th>Length</th>
+                                <th>Breadth</th>
+                                <th>Height</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {viewItems.map((item) => (
+                                <tr key={item.serial_no}>
+                                    <td>{item.serial_no}</td>
+                                    <td>{item.item_used}</td>
+                                    <td>{item.item_l}</td>
+                                    <td>{item.item_b}</td>
+                                    <td>{item.item_h}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
                 <form className="modal-form">
                     <div className="item-add">
                         <div className="item-add-item item-1">

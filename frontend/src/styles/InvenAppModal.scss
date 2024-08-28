@@ -21,30 +21,35 @@
         gap: 20px;
     }
 
-    .user-table {
-        width: 100%;
-        border-collapse: collapse;
+    .user-table-container {
+        max-height: 12.5rem;
+        overflow-y: auto;
         margin-bottom: 20px;
 
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #444;
-            text-align: center;
-        }
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
 
-        th {
-            background-color: #333;
-            color: #61dafb;
-        }
+            th, td {
+                padding: 10px;
+                text-align: left;
+                border-bottom: 1px solid #444;
+                text-align: center;
+            }
 
-        tr:nth-child(even) {
-            background-color: #2a2a2a;
-            text-align: center;
-        }
+            th {
+                background-color: #333;
+                color: #61dafb;
+            }
 
-        tr:hover {
-            background-color: #333;
+            tr:nth-child(even) {
+                background-color: #2a2a2a;
+                text-align: center;
+            }
+
+            tr:hover {
+                background-color: #333;
+            }
         }
     }
 
@@ -66,19 +71,16 @@
             &.item-1 {
                 flex: 4;
             }
-    
+
             &.item-2 {
                 flex: 1;
             }
-
-            
 
             label {
                 font-weight: bold;
                 font-size: 1rem;
                 color: #61dafb;
             }
-
 
             .item-add-sel {
                 .react-select__control {
