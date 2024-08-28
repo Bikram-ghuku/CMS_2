@@ -245,9 +245,11 @@ func GetInvUsedCompId(res http.ResponseWriter, req *http.Request, db *sql.DB) {
         i.item_price,
         i.item_desc,
 		i.item_unit,
+		i.serial_number,
 		iu.item_l,
 		iu.item_b,
 		iu.item_h,
+		COALESCE(CAST(iu.bill_id AS TEXT), '') AS bill_id,
         c.comp_id,
         c.comp_nos,
         c.comp_loc,
@@ -263,7 +265,8 @@ func GetInvUsedCompId(res http.ResponseWriter, req *http.Request, db *sql.DB) {
     JOIN 
         complaints c ON iu.comp_id = c.comp_id
 	WHERE
-		iu.comp_id='%s';
+		iu.comp_id='%s'
+	ORDER BY i.serial_number;
     `, CompIdBody.CompId)
 
 	rows, err := db.Query(query)
@@ -290,9 +293,11 @@ func GetInvUsedCompId(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 			&invenUsed.ItemPrice,
 			&invenUsed.ItemDesc,
 			&invenUsed.ItemUnit,
+			&invenUsed.SerialNo,
 			&invenUsed.ItemL,
 			&invenUsed.ItemB,
 			&invenUsed.ItemH,
+			&invenUsed.BillNo,
 			&invenUsed.CompID,
 			&invenUsed.CompNos,
 			&invenUsed.CompLoc,
@@ -306,32 +311,9 @@ func GetInvUsedCompId(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 			return
 		}
 
-		query2 := fmt.Sprintf(`
-			SELECT 
-				COALESCE(SUM(iu.item_used), 0), 
-				COALESCE(SUM(iu.item_used * i.item_price), 0)
-			FROM 
-				inven_used iu 
-			JOIN 
-        		inventory i ON iu.item_id = i.item_id
-    		JOIN 
-        		complaints c ON iu.comp_id = c.comp_id
-			WHERE
-				c.comp_date < '%s'
-			AND
-				iu.item_id = '%s'`,
-			invenUsed.CompDate, invenUsed.ItemID)
-
-		row := db.QueryRow(query2)
-
-		err = row.Scan(&invenUsed.UptoUse, &invenUsed.UptoAmt)
-
-		if err != nil {
-			log.Println("Error scanning rows:", err)
-			http.Error(res, "Internal Server Error", http.StatusInternalServerError)
-			return
-		}
-
+		query = fmt.Sprintf("SELECT SUM(iu.item_used), SUM(iu.item_used * i.item_price) FROM inven_used iu JOIN inventory i ON iu.item_id = i.item_id WHERE iu.item_id = '%s'", invenUsed.ItemID)
+		row := db.QueryRow(query)
+		row.Scan(&invenUsed.UptoUse, &invenUsed.UptoAmt)
 		invenUsedList = append(invenUsedList, invenUsed)
 	}
 

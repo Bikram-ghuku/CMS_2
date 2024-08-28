@@ -81,14 +81,14 @@ const InvenAppModal = ({isOpen, onRequestClose, compId} : InvenAppProp) => {
     };
 
     const fetchCompUse = () => {
-        fetch(BACKEND_URL + '/inven/allId', {
+        fetch(BACKEND_URL + '/inven/usecomp', {
             method: "POST",
             credentials: "include",
             body: JSON.stringify({comp_id: compId})
         }).then((data) => {
             if(data.ok){
                 data.json().then((dataJson: InvenUsed[]) => {
-                    setViewItems(dataJson)
+                    if(dataJson != null) setViewItems(dataJson);
                 })
             }
         }).catch()
@@ -156,19 +156,19 @@ const InvenAppModal = ({isOpen, onRequestClose, compId} : InvenAppProp) => {
                 <div>
                     <table>
                         <thead>
-                            <th>
-                                <td>BOQ no</td>
-                                <td>Qty</td>
-                                <td>Length</td>
-                                <td>Breadth</td>
-                                <td>Height</td>
-                            </th>
+                            <tr>
+                                <th>BOQ no</th>
+                                <th>Qty</th>
+                                <th>Length</th>
+                                <th>Breadth</th>
+                                <th>Height</th>
+                            </tr>
                         </thead>
                         <tbody>
                             {viewItems.map((item) => (
                                 <tr>
                                     <td>{item.serial_no}</td>
-                                    <td>{item.item_qty}</td>
+                                    <td>{item.item_used}</td>
                                     <td>{item.item_l}</td>
                                     <td>{item.item_b}</td>
                                     <td>{item.item_h}</td>
