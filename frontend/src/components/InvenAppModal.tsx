@@ -47,13 +47,13 @@ type InvenUsed = {
     serial_no: number;
 };
 
-const empty:InvenUsed = {
-    id: "", item_used:0, user_id:"", username:"", role:"", 
-    item_id:"", item_name:"", item_qty: 0, item_price: 0, item_desc: "", item_unit:"", 
-    item_l: 0, item_b: 0, item_h: 0, bill_no:"",
-    comp_id:"", comp_nos:"", comp_loc:"", comp_des:"", comp_stat:"", comp_date:"",
-    upto_use: 0, upto_amt: 0, serial_no: 0
-};
+// const empty:InvenUsed = {
+//     id: "", item_used:0, user_id:"", username:"", role:"", 
+//     item_id:"", item_name:"", item_qty: 0, item_price: 0, item_desc: "", item_unit:"", 
+//     item_l: 0, item_b: 0, item_h: 0, bill_no:"",
+//     comp_id:"", comp_nos:"", comp_loc:"", comp_des:"", comp_stat:"", comp_date:"",
+//     upto_use: 0, upto_amt: 0, serial_no: 0
+// };
 
 const emptyItem: Item = { item_name: "", item_desc: "", item_price: 0, item_qty: 0, item_id: "", item_nos: 0 };
 
