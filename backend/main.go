@@ -111,8 +111,8 @@ func main() {
 	allIdItemHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		controllers.GetProductByID(w, r, db)
 	})
-	http.Handle("POST /inven/allId", middleware.JWTMiddleware(allIdItemHandler))
-	log.Println("Loaded Route: POST /inven/allId")
+	http.Handle("GET /inven/allId", middleware.JWTMiddleware(allIdItemHandler))
+	log.Println("Loaded Route: GET /inven/allId")
 
 	//-----
 	updateItemHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
