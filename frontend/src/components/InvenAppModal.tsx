@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react"
-import Modal from 'react-modal'
-import { BACKEND_URL } from '../constants'
+import { useState, useEffect } from "react";
+import Modal from 'react-modal';
+import { BACKEND_URL } from '../constants';
 import { toast } from 'react-toastify';
-import "../styles/InventoryDetailsModal.scss"
+import "../styles/InvenAppModal.scss";
 import Select from 'react-select';
 
 interface InvenAppProp {
     isOpen: boolean;
     onRequestClose: () => void;
-    compId: string
+    compId: string;
 }
 
 type Item = {
@@ -41,24 +41,15 @@ type InvenUsed = {
     comp_des: string;
     comp_stat: string;
     comp_date: string;
-    bill_no:string;
+    bill_no: string;
     upto_use: number;
     upto_amt: number;
     serial_no: number;
 };
 
-// const empty:InvenUsed = {
-//     id: "", item_used:0, user_id:"", username:"", role:"", 
-//     item_id:"", item_name:"", item_qty: 0, item_price: 0, item_desc: "", item_unit:"", 
-//     item_l: 0, item_b: 0, item_h: 0, bill_no:"",
-//     comp_id:"", comp_nos:"", comp_loc:"", comp_des:"", comp_stat:"", comp_date:"",
-//     upto_use: 0, upto_amt: 0, serial_no: 0
-// };
-
 const emptyItem: Item = { item_name: "", item_desc: "", item_price: 0, item_qty: 0, item_id: "", item_nos: 0 };
 
-
-const InvenAppModal = ({isOpen, onRequestClose, compId} : InvenAppProp) => {
+const InvenAppModal = ({ isOpen, onRequestClose, compId }: InvenAppProp) => {
     const [quant, setQuant] = useState<number>(0);
     const [l, setL] = useState<number>(0);
     const [b, setB] = useState<number>(0);
@@ -84,11 +75,11 @@ const InvenAppModal = ({isOpen, onRequestClose, compId} : InvenAppProp) => {
         fetch(BACKEND_URL + '/inven/usecomp', {
             method: "POST",
             credentials: "include",
-            body: JSON.stringify({comp_id: compId})
+            body: JSON.stringify({ comp_id: compId })
         }).then((data) => {
-            if(data.ok){
+            if (data.ok) {
                 data.json().then((dataJson: InvenUsed[]) => {
-                    if(dataJson != null) setViewItems(dataJson);
+                    if (dataJson != null) setViewItems(dataJson);
                 })
             }
         }).catch()
@@ -100,11 +91,11 @@ const InvenAppModal = ({isOpen, onRequestClose, compId} : InvenAppProp) => {
     }, [compId]);
 
     useEffect(() => {
-        let x:number = 0;
-        if(l != 0 || b != 0 || h != 0) x = 1;
-        if(l != 0) x*=l;
-        if(b != 0) x*=b;
-        if(h != 0) x*=h;
+        let x: number = 0;
+        if (l != 0 || b != 0 || h != 0) x = 1;
+        if (l != 0) x *= l;
+        if (b != 0) x *= b;
+        if (h != 0) x *= h;
         setQuant(x)
     }, [l, b, h]);
 
@@ -137,13 +128,13 @@ const InvenAppModal = ({isOpen, onRequestClose, compId} : InvenAppProp) => {
         label: item.item_nos + ') ' + item.item_desc,
     }));
 
-    const HandleQuantChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleQuantChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setQuant(parseFloat(e.target.value));
         setL(0);
         setB(0);
         setH(0);
     }
-    
+
     return (
         <Modal
             isOpen={isOpen}
@@ -151,33 +142,32 @@ const InvenAppModal = ({isOpen, onRequestClose, compId} : InvenAppProp) => {
             contentLabel="Add Inventory Modal"
             className="modal"
             overlayClassName="overlay"
-            >
-                <h2>Inventory Used</h2>
-                <div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>BOQ no</th>
-                                <th>Qty</th>
-                                <th>Length</th>
-                                <th>Breadth</th>
-                                <th>Height</th>
+        >
+            <h2 className="modal-title">Inventory Used</h2>
+            <div className="modal-content">
+                <table className="user-table">
+                    <thead>
+                        <tr>
+                            <th>BOQ no</th>
+                            <th>Qty</th>
+                            <th>Length</th>
+                            <th>Breadth</th>
+                            <th>Height</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {viewItems.map((item) => (
+                            <tr key={item.serial_no}>
+                                <td>{item.serial_no}</td>
+                                <td>{item.item_used}</td>
+                                <td>{item.item_l}</td>
+                                <td>{item.item_b}</td>
+                                <td>{item.item_h}</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {viewItems.map((item) => (
-                                <tr>
-                                    <td>{item.serial_no}</td>
-                                    <td>{item.item_used}</td>
-                                    <td>{item.item_l}</td>
-                                    <td>{item.item_b}</td>
-                                    <td>{item.item_h}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-                <form>
+                        ))}
+                    </tbody>
+                </table>
+                <form className="modal-form">
                     <div className="item-add">
                         <div className="item-add-item item-1">
                             <label>Select Inventory item</label>
@@ -193,13 +183,12 @@ const InvenAppModal = ({isOpen, onRequestClose, compId} : InvenAppProp) => {
                             <input
                                 type="number"
                                 placeholder="Enter quantity"
-                                onChange={HandleQuantChange}
+                                onChange={handleQuantChange}
                                 value={quant}
                             />
                         </div>
                     </div>
                     <div className="item-add">
-                
                         <div className="item-add-item">
                             <label>Enter Length</label>
                             <input
@@ -230,8 +219,9 @@ const InvenAppModal = ({isOpen, onRequestClose, compId} : InvenAppProp) => {
                     </div>
                     <button onClick={handleAddInven} className="btn-updt">Add Inventory Item</button>
                 </form>
-            </Modal>
+            </div>
+        </Modal>
     )
 }
 
-export default InvenAppModal
+export default InvenAppModal;
