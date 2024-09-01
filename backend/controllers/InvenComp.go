@@ -90,12 +90,6 @@ func InvenToComp(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	row := db.QueryRow(currQtyQuery)
 	row.Scan(&CurrQty.Qty)
 
-	if CurrQty.Qty < InvenBody.ItemQty {
-		log.Println("Accessing more items than present in Inventory")
-		http.Error(res, "Items Not Present", http.StatusConflict)
-		return
-	}
-
 	claims := middleware.GetClaims(req)
 	query := fmt.Sprintf("INSERT INTO inven_used(user_id, comp_id, item_id, item_used, item_l, item_b, item_h) VALUES ('%s', '%s', '%s', %f, %f, %f, %f)", claims.User_id, InvenBody.CompId, InvenBody.ItemId, InvenBody.ItemQty, InvenBody.ItemL, InvenBody.ItemB, InvenBody.ItemH)
 
