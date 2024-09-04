@@ -235,10 +235,10 @@ const ItemNoViewModal = ({ isOpen, onRequestClose, compId }: InvenAppProp) => {
                     <table className="user-table">
                         <thead>
                             <tr>
-                                <th>Select</th>
+                                <th>Sel</th>
                                 <th>Comp no</th>
                                 <th>Qty</th>
-                                <th>Length</th>
+                                <th>Len</th>
                                 <th>Breadth</th>
                                 <th>Height</th>
                             </tr>
