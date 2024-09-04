@@ -61,7 +61,7 @@ type selOption = {
     value: string;
     label: string;
 }
-const InvenAppModal = ({ isOpen, onRequestClose, compId }: InvenAppProp) => {
+const ItemNoViewModal = ({ isOpen, onRequestClose, compId }: InvenAppProp) => {
     const [quant, setQuant] = useState<number>(0);
     const [l, setL] = useState<number>(0);
     const [b, setB] = useState<number>(0);
@@ -89,10 +89,10 @@ const InvenAppModal = ({ isOpen, onRequestClose, compId }: InvenAppProp) => {
     };
 
     const fetchCompUse = () => {
-        fetch(BACKEND_URL + '/inven/usecomp', {
+        fetch(BACKEND_URL + '/inven/boqId', {
             method: "POST",
             credentials: "include",
-            body: JSON.stringify({ comp_id: compId })
+            body: JSON.stringify({ serial_number: compId })
         }).then((data) => {
             if (data.ok) {
                 data.json().then((dataJson: InvenUsed[]) => {
@@ -236,7 +236,7 @@ const InvenAppModal = ({ isOpen, onRequestClose, compId }: InvenAppProp) => {
                         <thead>
                             <tr>
                                 <th>Select</th>
-                                <th>BOQ no</th>
+                                <th>Comp no</th>
                                 <th>Qty</th>
                                 <th>Length</th>
                                 <th>Breadth</th>
@@ -253,7 +253,7 @@ const InvenAppModal = ({ isOpen, onRequestClose, compId }: InvenAppProp) => {
                                             onChange={() => handleCheckboxChange(item)}
                                         />
                                     </td>
-                                    <td>{item.serial_no}</td>
+                                    <td>{item.comp_nos}</td>
                                     <td>{item.item_used}</td>
                                     <td>{item.item_l || "nil"}</td>
                                     <td>{item.item_b || "nil"}</td>
@@ -323,4 +323,4 @@ const InvenAppModal = ({ isOpen, onRequestClose, compId }: InvenAppProp) => {
     )
 }
 
-export default InvenAppModal;
+export default ItemNoViewModal;

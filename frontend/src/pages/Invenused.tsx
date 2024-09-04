@@ -9,6 +9,7 @@ import { useReactToPrint } from 'react-to-print';
 import UpdateInventUse from '../components/UpdateInvenUse'
 import { Id, ToastContainer, toast } from 'react-toastify'
 import MeasureMent from '../components/Measurement'
+import ItemNoViewModal from '../components/ItemNoViewModal'
 
 type InvenUsed = {
     id: string;
@@ -67,6 +68,8 @@ function Invenused() {
     const [activeItem, setActiveItem] = useState<InvenUsed>(empty);
     const [allItem, setAllItem] = useState<item[]>([]);
     const toastId = useRef<Id>();
+    const [isBoqIdViewOpen, setIsBoqViewOpen] = useState<boolean>(false);
+    const [actItem, setActItem] = useState<string>("");
 
     useEffect(() => {
         toastId.current = toast.info("Getting inventory Used. Please Wait....", { autoClose: false, closeOnClick: false, })
@@ -159,7 +162,8 @@ function Invenused() {
     }
 
     const handleClose = () => {
-        setEditModalOpen(false)
+        setEditModalOpen(false);
+        setIsBoqViewOpen(false);
     }
 
     const handleOpen = (item: InvenUsed) => {
@@ -170,6 +174,11 @@ function Invenused() {
     const handleMesurePrint = useReactToPrint({
         content:() => measureRef.current
     })
+
+    const viewAllUsage = (serial_no: string) => {
+        setActItem(serial_no)
+        setIsBoqViewOpen(true);
+    }
 
     return (
         <div>
@@ -228,7 +237,8 @@ function Invenused() {
                                             <td>{item.item_b === 0 ? "nil" : item.item_b}</td>
                                             <td>{item.item_h === 0 ? "nil" : item.item_h}</td>
                                             <td>{item.comp_nos}</td>
-                                            <td>{item.serial_no}</td>
+                                            <td>
+                                                <div onClick={() => viewAllUsage(item.serial_no.toString())} style={{textDecoration: "underline", cursor: "pointer"}}>{item.serial_no}</div></td>
                                             <td>{'₹'+(item.item_used * item.item_price).toFixed(2)}</td>
                                             <td style={{width: "10px"}}>
                                                 <div onClick={() => handleOpen(item)} className='btn-opt'>
@@ -254,6 +264,7 @@ function Invenused() {
             </div>
             <Footer />
             <UpdateInventUse onRequestClose={handleClose} inveUse={activeItem} isOpen={editeModalOpen}/>
+            <ItemNoViewModal onRequestClose={handleClose} isOpen={isBoqIdViewOpen} compId={actItem}/>
             <ToastContainer />
         </div>
     )
