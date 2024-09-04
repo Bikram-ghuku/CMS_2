@@ -49,6 +49,18 @@ type InvenUsed = {
 
 const emptyItem: Item = { item_name: "", item_desc: "", item_price: 0, item_qty: 0, item_id: "", item_nos: 0 };
 
+const emptyInven:InvenUsed = {
+    id: "", item_used:0, user_id:"", username:"", role:"", 
+    item_id:"", item_name:"", item_qty: 0, item_price: 0, item_desc: "", item_unit:"", 
+    item_l: 0, item_b: 0, item_h: 0, bill_no:"",
+    comp_id:"", comp_nos:"", comp_loc:"", comp_des:"", comp_stat:"", comp_date:"",
+    upto_use: 0, upto_amt: 0, serial_no: 0
+};
+
+type selOption = {
+    value: string;
+    label: string;
+}
 const InvenAppModal = ({ isOpen, onRequestClose, compId }: InvenAppProp) => {
     const [quant, setQuant] = useState<number>(0);
     const [l, setL] = useState<number>(0);
@@ -57,6 +69,11 @@ const InvenAppModal = ({ isOpen, onRequestClose, compId }: InvenAppProp) => {
     const [invenItems, setInvenItem] = useState<Item[]>([]);
     const [itemSel, setItemSel] = useState<Item>(emptyItem);
     const [viewItems, setViewItems] = useState<InvenUsed[]>([]);
+    const [selectedItemsId, setSelectedItemsId] = useState<string>("");
+    const [selectedItem, setSelectedItem] = useState<InvenUsed>(emptyInven);
+    const [isUpdtVisible, setUpdtVisible] = useState<boolean>(false);
+    const [selValue, setSelValue] = useState<selOption>({value: "-1", label: "Select Item"});
+
 
     const fetchInvenItems = () => {
         fetch(BACKEND_URL + '/inven/all', {
@@ -119,6 +136,7 @@ const InvenAppModal = ({ isOpen, onRequestClose, compId }: InvenAppProp) => {
     };
 
     const handleSelectChange = (selectedOption: any) => {
+        setSelValue({value: selectedOption.value, label: selectedOption.label})
         const foundItem = invenItems.find(item => item.item_id === selectedOption.value);
         setItemSel(foundItem!);
     };
@@ -135,6 +153,74 @@ const InvenAppModal = ({ isOpen, onRequestClose, compId }: InvenAppProp) => {
         setH(0);
     }
 
+    const handleCheckboxChange = (item: InvenUsed) => {
+        setSelectedItemsId((str) => {
+            return str == "" ? item.id : "";
+        });
+
+        setSelectedItem(item);
+    };
+
+    const updtItemUsed = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        event.preventDefault()
+        fetch(BACKEND_URL+"/inven/updtuse", {
+            method:"POST",
+            credentials:'include',
+            body: JSON.stringify({item_qty_diff: quant - selectedItem.item_used, id: selectedItem.id, item_id: selectedItem.item_id, item_l_diff: l - selectedItem.item_l, item_b_diff: b - selectedItem.item_b, item_h_diff: h - selectedItem.item_h})
+        }).then((data) => {
+            onRequestClose()
+            if(data.ok){
+                toast.success("Item Updated Successfully", {
+                    position: "bottom-center"
+                })
+            }else{
+                toast.error("Error updating Item", {
+                    position: "bottom-center"
+                })
+            }
+        })
+    }
+
+    const delItemUsed = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        event.preventDefault()
+        fetch(BACKEND_URL+"/inven/deluse",{
+            method: "POST",
+            credentials:'include',
+            body: JSON.stringify({id: selectedItem.id})
+        }).then((data) => {
+            onRequestClose()
+            if(data.ok){
+                toast.success("Item Deleted successfully", {
+                    position: "bottom-center"
+                })
+            }else{
+                toast.error("Error deleting item", {
+                    position: "bottom-center"
+                })
+            }
+        })
+    }
+
+    useEffect(() => {
+        setUpdtVisible(selectedItemsId.length != 0);
+        if(selectedItemsId.length != 0){
+            setQuant(selectedItem.item_used);
+            setL(selectedItem.item_l);
+            setB(selectedItem.item_b);
+            setH(selectedItem.item_h);
+            setSelValue({
+                value: selectedItem.item_id,
+                label: selectedItem.serial_no + ') ' + selectedItem.item_desc,
+            });
+        }else{
+            setQuant(0);
+            setL(0);
+            setB(0);
+            setH(0);
+            setSelValue({value: "-1", label: "Select Item"});
+        }
+    }, [selectedItemsId])
+
     return (
         <Modal
             isOpen={isOpen}
@@ -149,6 +235,7 @@ const InvenAppModal = ({ isOpen, onRequestClose, compId }: InvenAppProp) => {
                     <table className="user-table">
                         <thead>
                             <tr>
+                                <th>Select</th>
                                 <th>BOQ no</th>
                                 <th>Qty</th>
                                 <th>Length</th>
@@ -159,6 +246,13 @@ const InvenAppModal = ({ isOpen, onRequestClose, compId }: InvenAppProp) => {
                         <tbody>
                             {viewItems.map((item) => (
                                 <tr key={item.serial_no}>
+                                    <td>
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedItemsId === item.id}
+                                            onChange={() => handleCheckboxChange(item)}
+                                        />
+                                    </td>
                                     <td>{item.serial_no}</td>
                                     <td>{item.item_used}</td>
                                     <td>{item.item_l}</td>
@@ -178,6 +272,7 @@ const InvenAppModal = ({ isOpen, onRequestClose, compId }: InvenAppProp) => {
                                 options={selectOptions}
                                 onChange={handleSelectChange}
                                 placeholder="Select Item"
+                                value={selValue}
                             />
                         </div>
                         <div className="item-add-item item-2">
@@ -219,7 +314,9 @@ const InvenAppModal = ({ isOpen, onRequestClose, compId }: InvenAppProp) => {
                             />
                         </div>
                     </div>
-                    <button onClick={handleAddInven} className="btn-updt">Add Inventory Item</button>
+                    <button onClick={handleAddInven} className="btn-updt" hidden={isUpdtVisible}>Add Inventory Item</button>
+                    <button className="btn-updt" hidden={!isUpdtVisible} onClick={updtItemUsed}>Update Inventory Usage</button>
+                    <button className="btn-updt" hidden={!isUpdtVisible} onClick={delItemUsed}>Delete Inventory Usage</button>
                 </form>
             </div>
         </Modal>
