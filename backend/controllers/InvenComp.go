@@ -264,7 +264,7 @@ func GetInvUsedCompId(res http.ResponseWriter, req *http.Request, db *sql.DB) {
         complaints c ON iu.comp_id = c.comp_id
 	WHERE
 		iu.comp_id='%s'
-	ORDER BY i.serial_number;
+	ORDER BY c.comp_nos;
     `, CompIdBody.CompId)
 
 	rows, err := db.Query(query)
