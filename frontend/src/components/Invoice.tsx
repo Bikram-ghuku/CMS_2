@@ -95,10 +95,9 @@ const Invoice = React.forwardRef<HTMLDivElement, InvoiceProps>(({ selectedItems,
                         <th style={{maxWidth: '10px'}}>Sl. No</th>
                         <th style={{maxWidth: '65px'}}>Description of Item</th>
                         <th style={{maxWidth: '10px'}}>Unit</th>
-                        <th style={{maxWidth: 'fit-content'}}>Quantity</th>
+                        <th style={{maxWidth: '50px', minWidth: '50px'}}>Total upto date Qty</th>
                         <th style={{maxWidth: '10px'}}>Rate</th>
                         <th style={{maxWidth: 'fit-content'}}>Amount (Rs.)</th>
-                        <th style={{maxWidth: '25px'}}>Total upto date Qty</th>
                         <th style={{maxWidth: '25px'}}>Total upto date Amount</th>
                     </tr>
                 </thead>
@@ -108,10 +107,9 @@ const Invoice = React.forwardRef<HTMLDivElement, InvoiceProps>(({ selectedItems,
                             <td>{idx + 1}</td>
                             <td style={{textAlign: "left"}}>{item.item_desc}</td>
                             <td>{item.item_unit}</td>
-                            <td>{item.item_qty}</td>
+                            <td>{item.upto_use}</td>
                             <td>{`₹${item.item_price.toFixed(2)}`}</td>
                             <td>{`₹${(item.item_used * item.item_price).toFixed(2)}`}</td>
-                            <td>{item.upto_use}</td>
                             <td>{`₹${(item.upto_amt).toFixed(2)}`}</td>
                         </tr>
                     ))}

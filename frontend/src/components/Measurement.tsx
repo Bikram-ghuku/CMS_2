@@ -47,6 +47,7 @@ const MeasureMent = React.forwardRef<HTMLDivElement, InvoiceProps>(({ selectedIt
                         <th style={{maxWidth: '20px'}}>BOQ No.</th>
                         <th style={{maxWidth: '65px'}}>Description of Item</th>
                         <th style={{maxWidth: '30px'}}>Comp No.</th>
+                        <th style={{maxWidth: '30px'}}>Comp. Loc.</th>
                         <th style={{maxWidth: '10px'}}>Unit</th>
                         <th style={{maxWidth: '25px'}}>L</th>
                         <th style={{maxWidth: '25px'}}>B</th>
@@ -61,6 +62,7 @@ const MeasureMent = React.forwardRef<HTMLDivElement, InvoiceProps>(({ selectedIt
                             <td>{item.serial_no}</td>
                             <td style={{textAlign: "left"}}>{item.item_desc}</td>
                             <td>{item.comp_nos}</td>
+                            <td>{item.comp_loc}</td>
                             <td>{item.item_unit}</td>
                             <td>{item.item_l}</td>
                             <td>{item.item_b}</td>
