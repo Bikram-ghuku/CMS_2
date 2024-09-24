@@ -62,7 +62,7 @@ const MeasureMent = React.forwardRef<HTMLDivElement, InvoiceProps>(({ selectedIt
                             <td>{item.serial_no}</td>
                             <td style={{textAlign: "left"}}>{item.item_desc}</td>
                             <td>{item.comp_nos}</td>
-                            <td>{item.comp_loc}</td>
+                            <td style={{wordBreak: 'break-word', whiteSpace:'break-spaces'}}>{item.comp_loc}</td>
                             <td>{item.item_unit}</td>
                             <td>{item.item_l}</td>
                             <td>{item.item_b}</td>
