@@ -17,7 +17,7 @@ jobs:
       - name: Make env files
         run: |
           mkdir -p .frontend
-          echo "VITE_BACKEND=${{ secrets.DB_URL }}" >> .frontend/.env
+          echo "VITE_BACKEND=${{ secrets.DB_URL }}" >> ./frontend/.env
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
