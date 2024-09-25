@@ -271,6 +271,7 @@ func main() {
 		AllowedOrigins:   []string{frontend_url},
 		AllowCredentials: true,
 	})
+
 	log.Printf("Listening for conn on %s", frontend_url)
 	handler := c.Handler(http.DefaultServeMux)
 	log.Printf("Listening on port: %s", port)
