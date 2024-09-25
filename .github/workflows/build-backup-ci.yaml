@@ -6,8 +6,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - ./backup_scripts
 
 jobs:
   docker:
