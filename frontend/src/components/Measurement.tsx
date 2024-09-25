@@ -38,7 +38,12 @@ const MeasureMent = React.forwardRef<HTMLDivElement, InvoiceProps>(({ selectedIt
     return (
         <div ref={ref} className="invoice-main">
             <div className="invoice-header">
-                <div>Institute Works <br/> Sanitary Section <br/> IIT Kharagpur</div>
+                <div className='invoice-header-title'>Measurement of 1<sup>st</sup> R/A Bill</div>
+                <div className='invoice-header-section'>Name of work - Routine/repir maintenance in connection with sanitary infrastructure at IIT Kharagpur</div>
+                <div className='invoice-header-section'>Work order no - IW/SS/WO/Maintenance/2023-24/18</div>
+                <div className='invoice-header-section'>Date of Commencement: 09.02.2024</div>
+                <div className='invoice-header-section'>Date of Completion: 08.02.2025</div>
+                <div className='invoice-header-section'>Date of Measurement: 09.02.2024 to 21.08.2024</div>
             </div>
             <table className='invoice-table'>
                 <thead>

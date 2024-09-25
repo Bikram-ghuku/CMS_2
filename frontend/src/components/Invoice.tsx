@@ -87,7 +87,12 @@ const Invoice = React.forwardRef<HTMLDivElement, InvoiceProps>(({ selectedItems,
     return (
         <div ref={ref} className="invoice-main">
             <div className="invoice-header">
-                <div>Institute Works <br/> Sanitary Section <br/> IIT Kharagpur</div>
+                <div className='invoice-header-title'>Abstract of 1<sup>st</sup> R/A Bill</div>
+                <div className='invoice-header-section'>Name of work - Routine/repir maintenance in connection with sanitary infrastructure at IIT Kharagpur</div>
+                <div className='invoice-header-section'>Work order no - IW/SS/WO/Maintenance/2023-24/18</div>
+                <div className='invoice-header-section'>Date of Commencement: 09.02.2024</div>
+                <div className='invoice-header-section'>Date of Completion: 08.02.2025</div>
+                <div className='invoice-header-section'>Date of Measurement: 09.02.2024 to 21.08.2024</div>
             </div>
             <table className='invoice-table'>
                 <thead>
@@ -97,8 +102,7 @@ const Invoice = React.forwardRef<HTMLDivElement, InvoiceProps>(({ selectedItems,
                         <th style={{maxWidth: '10px'}}>Unit</th>
                         <th style={{maxWidth: '50px', minWidth: '50px'}}>Total upto date Qty</th>
                         <th style={{maxWidth: '10px'}}>Rate</th>
-                        <th style={{maxWidth: 'fit-content'}}>Amount (Rs.)</th>
-                        <th style={{maxWidth: '25px'}}>Total upto date Amount</th>
+                        <th style={{maxWidth: '25px'}}>Total upto date Amount (Rs.)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -109,7 +113,6 @@ const Invoice = React.forwardRef<HTMLDivElement, InvoiceProps>(({ selectedItems,
                             <td>{item.item_unit}</td>
                             <td>{item.upto_use}</td>
                             <td>{`₹${item.item_price.toFixed(2)}`}</td>
-                            <td>{`₹${(item.item_used * item.item_price).toFixed(2)}`}</td>
                             <td>{`₹${(item.upto_amt).toFixed(2)}`}</td>
                         </tr>
                     ))}
@@ -120,8 +123,6 @@ const Invoice = React.forwardRef<HTMLDivElement, InvoiceProps>(({ selectedItems,
                         <td style={{borderLeft: "none", borderRight: "none"}}></td>
                         <td  style={{borderLeft: "none", borderRight: "none"}}></td>
                         <td>{`₹${calculateTotal().toFixed(2)}`}</td>
-                        <td></td>
-                        <td></td>
                     </tr>
                 </tbody>
             </table>
