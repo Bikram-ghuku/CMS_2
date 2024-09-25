@@ -39,7 +39,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
 
-      - name: Build & Push Backend
+      - name: Build & Push Frontend
         uses: docker/build-push-action@v5
         with:
             context: ./frontend
