@@ -1,4 +1,4 @@
-name: Building backend docker image
+name: Building backup docker image
 
 on:
   repository_dispatch:
@@ -7,7 +7,7 @@ on:
     branches:
       - main
     paths:
-      - ./backend
+      - ./backup_scripts
 
 jobs:
   docker:
@@ -36,11 +36,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
 
-      - name: Build & Push Backend
+      - name: Build & Push Backup
         uses: docker/build-push-action@v5
         with:
-            context: ./backend
+            context: ./backup_scripts
             push: true
-            tags: ${{ secrets.DOCKERHUB_USERNAME }}/cims-backend:latest
+            tags: ${{ secrets.DOCKERHUB_USERNAME }}/psql-dbox:latest
             cache-from: type=local,src=/tmp/.buildx-cache
             cache-to: type=local,dest=/tmp/.buildx-cache
