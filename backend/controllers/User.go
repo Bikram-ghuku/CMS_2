@@ -135,9 +135,20 @@ func Login(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	}
 
 	http.SetCookie(res, &cookie)
-	res.WriteHeader(http.StatusOK)
-	res.Header().Set("Content-Type", "text/plain")
-	res.Write([]byte("Login Successful"))
+
+	var response struct {
+		SessionToken string `json:"session-token"`
+	}
+
+	response.SessionToken = tokenString
+
+	res.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(res).Encode(response)
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
 }
 
 func GetAllUser(res http.ResponseWriter, req *http.Request, db *sql.DB) {
