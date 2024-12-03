@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
-	"strconv"
 
 	"github.com/bikram-ghuku/CMS/backend/controllers"
 	"github.com/bikram-ghuku/CMS/backend/middleware"
@@ -17,13 +17,7 @@ import (
 )
 
 var (
-	db_port  int
-	db_host  string
-	db_uname string
-	db_pass  string
-	db_name  string
-	db       *sql.DB
-	port     string
+	port string
 )
 
 func main() {
@@ -32,21 +26,15 @@ func main() {
 		log.Println(err.Error())
 	}
 
-	db_host = os.Getenv("DB_HOST")
-	db_uname = os.Getenv("DB_UNAME")
-	db_pass = os.Getenv("DB_PSWD")
-	db_name = os.Getenv("DB_NAME")
 	frontend_url := os.Getenv("FRONTEND_URL")
 
-	db_port, err = strconv.Atoi(os.Getenv("DB_PORT"))
-	if err != nil {
-		log.Panic(err.Error())
-	}
+	serviceURI := os.Getenv("DB_STRING")
 
-	port = os.Getenv("PORT")
-	psqlconn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", db_host, db_port, db_uname, db_pass, db_name)
+	conn, _ := url.Parse(serviceURI)
+	conn.RawQuery = "sslmode=verify-ca;sslrootcert=ca.pem"
 
-	db, err = sql.Open("postgres", psqlconn)
+	db, err := sql.Open("postgres", conn.String())
+
 	if err != nil {
 		log.Panic(err.Error())
 	}
