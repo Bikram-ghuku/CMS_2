@@ -130,7 +130,7 @@ func Login(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 		Expires:  expiryTime,
 		HttpOnly: false,
 		Secure:   false,
-		SameSite: http.SameSiteDefaultMode,
+		SameSite: http.SameSiteNoneMode,
 		Path:     "/",
 	}
 
