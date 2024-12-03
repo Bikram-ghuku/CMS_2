@@ -5,6 +5,7 @@ import { Loader2 } from 'lucide-react'
 import { BACKEND_URL } from '../constants';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { setCookie} from 'typescript-cookie'
 
 const Login = () => {
   	const [username, setUsername] = useState('');
@@ -19,6 +20,9 @@ const Login = () => {
     	}).then((data) => {
 			setLoad(false)
       		if(data.ok){
+				data.json().then((res) => {
+					setCookie(res["Name"], res["Value"]);
+				})
         		toast.success("Login successful", {
           			position: "bottom-center"
         		})
