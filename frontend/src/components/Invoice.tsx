@@ -87,7 +87,7 @@ const Invoice = React.forwardRef<HTMLDivElement, InvoiceProps>(({ selectedItems,
     return (
         <div ref={ref} className="invoice-main">
             <div className="invoice-header">
-                <div className='invoice-header-title'>Abstract of 1<sup>st</sup> R/A Bill</div>
+                <div className='invoice-header-title'>Abstract of 2<sup>nd</sup> R/A Bill</div>
                 <div className='invoice-header-section'>Name of work - Routine/repir maintenance in connection with sanitary infrastructure at IIT Kharagpur</div>
                 <div className='invoice-header-section'>Work order no - IW/SS/WO/Maintenance/2023-24/18</div>
                 <div className='invoice-header-section'>Date of Commencement: 09.02.2024</div>

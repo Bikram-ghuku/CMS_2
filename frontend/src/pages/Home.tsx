@@ -72,6 +72,7 @@ function Home() {
         }).then((data) => {
             if(data.ok){
                 data.json().then((data:ghPoint[]) => {
+                    if(data == null) return;
                     setIsghLoad(false)
                     setGhData(data);
                 })
