@@ -136,14 +136,8 @@ func Login(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 
 	http.SetCookie(res, &cookie)
 
-	var response struct {
-		SessionToken string `json:"session-token"`
-	}
-
-	response.SessionToken = tokenString
-
 	res.Header().Set("Content-Type", "application/json")
-	err = json.NewEncoder(res).Encode(response)
+	err = json.NewEncoder(res).Encode(cookie)
 	if err != nil {
 		log.Println(err.Error())
 		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
