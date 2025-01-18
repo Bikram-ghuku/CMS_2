@@ -28,9 +28,10 @@ type NewInvenItem struct {
 }
 
 type RetBill struct {
-	Id       string `json:"bill_id"`
-	DateTime string `json:"bill_dt"`
-	WorkName string `json:"bill_wn"`
+	Id         string `json:"bill_id"`
+	DateTime   string `json:"bill_dt"`
+	WorkName   string `json:"bill_wn"`
+	BillNumber int32  `json:"bill_no"`
 }
 
 var MakeBody struct {
@@ -85,7 +86,7 @@ func GetAllBills(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	for rows.Next() {
 		var billItem RetBill
 
-		err := rows.Scan(&billItem.Id, &billItem.DateTime, &billItem.WorkName)
+		err := rows.Scan(&billItem.Id, &billItem.DateTime, &billItem.WorkName, &billItem.BillNumber)
 		if err != nil {
 			log.Println(err.Error())
 			http.Error(res, "Internal Server Error", http.StatusInternalServerError)
@@ -117,20 +118,44 @@ func GetBill(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 
 	row.Scan(&BillDateTime)
 
-	query = fmt.Sprintf(`SELECT 
-		i.item_id,
-		i.item_desc,
+	query2 := fmt.Sprintf(`
+    SELECT 
+        iu.id,
+        iu.item_used,
+        u.user_id,
+        u.username,
+        u.role,
+        i.item_id,
+        i.item_name,
+        i.item_qty,
+        i.item_price,
+        i.item_desc,
 		i.item_unit,
-		COALESCE(iu.item_used, 0) AS item_used,
-		i.item_price
-	FROM 
-		inventory i
-	LEFT JOIN 
-		inven_used iu ON iu.item_id = i.item_id 
-	AND 
-		iu.bill_id = '%s';`, BillBody.BillId)
+		i.serial_number,
+		iu.item_l,
+		iu.item_b,
+		iu.item_h,
+		COALESCE(CAST(iu.bill_id AS TEXT), '') AS bill_id,
+        c.comp_id,
+        c.comp_nos,
+        c.comp_loc,
+        c.comp_des,
+        c.comp_stat,
+        c.comp_date
+    FROM 
+        inven_used iu
+    JOIN 
+        users u ON iu.user_id = u.user_id
+    JOIN 
+        inventory i ON iu.item_id = i.item_id
+    JOIN 
+        complaints c ON iu.comp_id = c.comp_id
+	WHERE
+		iu.bill_id='%s'
+	ORDER BY c.comp_nos;
+    `, BillBody.BillId)
 
-	rows, err := db.Query(query)
+	rows, err := db.Query(query2)
 	if err != nil {
 		log.Println("Error executing query:", err)
 		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
@@ -138,16 +163,33 @@ func GetBill(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	}
 	defer rows.Close()
 
-	var invenUsedList []NewInvenItem
+	var invenUsedList []InvenUsed
 
 	for rows.Next() {
-		var invenUsed NewInvenItem
+		var invenUsed InvenUsed
 		err := rows.Scan(
+			&invenUsed.ID,
+			&invenUsed.ItemUsed,
+			&invenUsed.UserID,
+			&invenUsed.Username,
+			&invenUsed.Role,
 			&invenUsed.ItemID,
+			&invenUsed.ItemName,
+			&invenUsed.ItemQty,
+			&invenUsed.ItemPrice,
 			&invenUsed.ItemDesc,
 			&invenUsed.ItemUnit,
-			&invenUsed.ItemUsed,
-			&invenUsed.ItemPrice,
+			&invenUsed.SerialNo,
+			&invenUsed.ItemL,
+			&invenUsed.ItemB,
+			&invenUsed.ItemH,
+			&invenUsed.BillNo,
+			&invenUsed.CompID,
+			&invenUsed.CompNos,
+			&invenUsed.CompLoc,
+			&invenUsed.CompDes,
+			&invenUsed.CompStat,
+			&invenUsed.CompDate,
 		)
 		if err != nil {
 			log.Println("Error scanning rows:", err)
@@ -170,10 +212,71 @@ func GetBill(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 		row = db.QueryRow(query)
 		err = row.Scan(&invenUsed.UptoUse, &invenUsed.UptoAmt)
 		if err != nil {
-			log.Println("Error scanning rows:", err)
+			log.Println("Error scanning rows: ", err)
 			http.Error(res, "Internal Server Error", http.StatusInternalServerError)
 			return
 		}
+		invenUsedList = append(invenUsedList, invenUsed)
+	}
+
+	res.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(res).Encode(invenUsedList); err != nil {
+		log.Println("Error encoding JSON:", err)
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+}
+
+func GetBillJoinInven(res http.ResponseWriter, req *http.Request, db *sql.DB) {
+	var InvenBillBody struct {
+		BillNumber int32 `json:"bill_no"`
+	}
+
+	if err := json.NewDecoder(req.Body).Decode(&InvenBillBody); err != nil {
+		log.Println(err.Error())
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+	query := fmt.Sprintf(`SELECT 
+					i.item_id,
+					i.item_desc,
+					i.item_unit,
+					i.item_price,
+					i.serial_number,
+					SUM(CASE WHEN b.bill_no <= %d THEN iu.item_used ELSE 0 END) AS total_item_used_upto_bill_no,
+					SUM(CASE WHEN b.bill_no = %d THEN iu.item_used ELSE 0 END) AS total_item_used_for_given_bill_no
+				FROM 
+					inventory i
+				LEFT JOIN 
+					inven_used iu ON i.item_id = iu.item_id
+				LEFT JOIN 
+					bills b ON iu.bill_id = b.id
+				GROUP BY 
+					i.item_id, i.item_desc, i.item_unit, i.item_price
+				ORDER BY 
+					i.serial_number;
+				`, InvenBillBody.BillNumber, InvenBillBody.BillNumber)
+
+	rows, err := db.Query(query)
+	if err != nil {
+		log.Println("Error executing query:", err)
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	var invenUsedList []InvenUsed
+
+	for rows.Next() {
+		var invenUsed InvenUsed
+		err := rows.Scan(&invenUsed.ItemID, &invenUsed.ItemDesc, &invenUsed.ItemUnit, &invenUsed.ItemPrice, &invenUsed.SerialNo, &invenUsed.UptoUse, &invenUsed.ItemUsed)
+		if err != nil {
+			log.Println("Error scanning rows: ", err)
+			http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+		invenUsed.UptoAmt = invenUsed.UptoUse * invenUsed.ItemPrice
 		invenUsedList = append(invenUsedList, invenUsed)
 	}
 

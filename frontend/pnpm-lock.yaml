@@ -20,6 +20,9 @@ importers:
       chart.js:
         specifier: ^4.4.3
         version: 4.4.3
+      frontend:
+        specifier: 'file:'
+        version: file:(@types/react@18.3.3)
       jwt-decode:
         specifier: ^4.0.0
         version: 4.0.0
@@ -947,6 +950,9 @@ packages:
 
   flatted@3.3.1:
     resolution: {integrity: sha512-X8cqMLLie7KsNUDSdzeN8FYK9rEt4Dt67OsG/DNGnYTSDBG4uFAJFBnUeiV+zCVAvwFy56IjM9sH51jVaEhNxw==}
+
+  'frontend@file:':
+    resolution: {directory: '', type: directory}
 
   fs.realpath@1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
@@ -2343,6 +2349,29 @@ snapshots:
       rimraf: 3.0.2
 
   flatted@3.3.1: {}
+
+  frontend@file:(@types/react@18.3.3):
+    dependencies:
+      '@sentry/react': 8.17.0(react@18.3.1)
+      '@sentry/tracing': 7.114.0
+      '@types/react-modal': 3.16.3
+      chart.js: 4.4.3
+      jwt-decode: 4.0.0
+      lucide-react: 0.400.0(react@18.3.1)
+      react: 18.3.1
+      react-chartjs-2: 5.2.0(chart.js@4.4.3)(react@18.3.1)
+      react-dom: 18.3.1(react@18.3.1)
+      react-export-table-to-excel: 1.0.6
+      react-modal: 3.16.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-router-dom: 6.24.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-select: 5.8.0(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-to-print: 2.15.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-toastify: 10.0.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      to-words: 4.0.1
+      typescript-cookie: 1.0.6
+    transitivePeerDependencies:
+      - '@types/react'
+      - supports-color
 
   fs.realpath@1.0.0: {}
 

@@ -255,6 +255,12 @@ func main() {
 	http.Handle("POST /bill/get", middleware.JWTMiddleware(billGetHandler))
 	log.Println("Loaded Route: POST /bill/get")
 
+	billItemsAbstract := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		controllers.GetBillJoinInven(w, r, db)
+	})
+	http.Handle("POST /bill/getItems", middleware.JWTMiddleware(billItemsAbstract))
+	log.Println("Loaded Route: POST /bill/getItems")
+
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{frontend_url},
 		AllowCredentials: true,

@@ -10,14 +10,16 @@ import AbsComp from '../components/Abstract'
 import { useReactToPrint } from 'react-to-print'
 import Modal from 'react-modal';
 import "../styles/AddInventoryModal.scss"
+import BillInvoice from '../components/BillInvoice'
 
 type bill = {
     bill_id: string;
     bill_dt: string;
     bill_wn: string;
+    bill_no: number;
 }
 
-const empty: bill = {bill_dt: "", bill_id: "", bill_wn: ""}
+const empty = {} as bill;
 
 function Abstract() {
     const [bills, setBills] = useState<bill[]>([]);
@@ -26,6 +28,7 @@ function Abstract() {
     const [workName, setWorkName] = useState<string>('');
     const toastId = useRef<Id>();
     const componentRef = useRef<HTMLDivElement>(null);
+    const invoiceRef = useRef<HTMLDivElement>(null);
     const [isGenBillVisible, setGenBillVisible] = useState<boolean>(false);
 
 
@@ -77,7 +80,7 @@ function Abstract() {
     }
 
     useEffect(() => {
-        setGenBillVisible(actBill.bill_id !== "")
+        setGenBillVisible(actBill !== empty)
     }, [actBill])
 
     const handleSel = (comp: bill) => {
@@ -87,6 +90,10 @@ function Abstract() {
 
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
+    });
+
+    const handleBillPrint = useReactToPrint({
+        content: () => invoiceRef.current,
     });
 
     const openModal = () => {
@@ -103,11 +110,11 @@ function Abstract() {
             <TopNav />
             <SideNav />
             <div className="user-main">
-                <div className="user-title">Bills Made</div>
+                <div className="user-title">Measurements Made</div>
                 <div className="user-actions">
                     <div className="user-add">
                         <button className='user-add-btn' onClick={() => openModal()}>
-                            <Plus /> New Abstract
+                            <Plus /> New Measurement
                         </button>
                     </div>
                 </div>
@@ -139,10 +146,12 @@ function Abstract() {
                     </table>
                 </div>
                 <div className="user-genbill" hidden={!isGenBillVisible}>
-                        <button hidden={!isGenBillVisible} onClick={handlePrint}>Generate Bill .pdf</button>
+                        <button hidden={!isGenBillVisible} onClick={handlePrint}>Generate Measurements .pdf</button>
+                        <button hidden={!isGenBillVisible} onClick={handleBillPrint}>Generate Bill .pdf</button>
                     </div>
                 <div style={{ display: 'none' }}>
                     <AbsComp ref={componentRef} CompId={actBill.bill_id} compDesc={actBill.bill_wn} />
+                    <BillInvoice billId={actBill.bill_no} ref={invoiceRef} desc={actBill.bill_wn}/>
                 </div>
             </div>
             <Footer />
@@ -155,11 +164,11 @@ function Abstract() {
                 className="modal"
                 overlayClassName="overlay"
             >
-                <h2>Create New Bill</h2>
+                <h2>Create New Measurements</h2>
                 <form>
                     <label>Description: </label>
-                    <textarea value={workName} onChange={(e) => setWorkName(e.target.value)} placeholder='Enter Complaint Description'></textarea>
-                    <button type="button" onClick={createBill}>New Bill</button>
+                    <textarea value={workName} onChange={(e) => setWorkName(e.target.value)} placeholder='Enter Measurements Description'></textarea>
+                    <button type="button" onClick={createBill}>New Measurement</button>
                 </form>
             </Modal>
         </div>
